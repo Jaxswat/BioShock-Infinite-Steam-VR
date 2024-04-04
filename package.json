@@ -1,0 +1,24 @@
+{
+  "name": "bsi-vr",
+  "private": true,
+  "scripts": {
+    "clean:vscript": "rm -rf ./vscript_build",
+    "build:vscript": "tstl",
+    "copy:vscript": "copyfiles -u 1 \"./vscript_build/**/*\" \"C:/Program Files (x86)/Steam/steamapps/common/SteamVR/tools/steamvr_environments/game/steamtours_addons/bsi_battleship_bay/scripts/vscripts\"",
+    "build-and-copy": "bun run clean:vscript && bun run build:vscript && bun run copy:vscript",
+    "build:vsnd": "bun run ./vsnd_generator_src/liz_speech_vsnd_builder.js",
+    "voicedb:transcribe": "bun run ./voicedb_src/transcribe.js",
+    "voicedb:dupecheck": "bun run ./voicedb_src/dupecheck.js",
+    "voicedb:tag": "bun run ./voicedb_src/tag.js",
+    "dev": "tstl --watch"
+  },
+  "devDependencies": {
+    "@typescript-to-lua/language-extensions": "^1.19.0",
+    "copyfiles": "^2.4.1",
+    "express": "^4.18.3",
+    "express-async-handler": "^1.2.0",
+    "lowdb": "^7.0.1",
+    "typescript": "^5.4.4",
+    "typescript-to-lua": "^1.25.1"
+  }
+}

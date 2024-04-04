@@ -1,0 +1,64 @@
+"soundscape_saddle_the_pony"
+{
+                "playlooping"
+                {
+                                "volume"        "0.5"
+                                "pitch"         "100"
+                                "wave"          "sounds/saddle_the_pony.vsnd"
+                }
+}
+
+"soundscape_girls_just_wanna_have_fun"
+{
+                "playlooping"
+                {
+                                "volume"        "0.5"
+                                "pitch"         "100"
+                                "wave"          "sounds/girls_just_wanna_have_fun.vsnd"
+                }
+}
+"soundscape_ocean_waves"
+{
+                "playlooping"
+                {
+                                "volume"        "0.6"
+                                "pitch"         "100"
+                                "wave"          "sounds/ocean_waves.vsnd"
+                }
+}
+"soundscape_crowd_background_chatter"
+{
+                "playlooping"
+                {
+                                "volume"        "0.25"
+                                "pitch"         "100"
+                                "wave"          "sounds/crowd_background_chatter.vsnd"
+                }
+}
+"soundscape_crowd_background_chatter_with_music"
+{
+                "playlooping"
+                {
+                                "volume"        "0.3"
+                                "pitch"         "100"
+                                "wave"          "sounds/crowd_background_chatter_with_music.vsnd"
+                }
+}
+"soundscape_ambient_beach"
+{
+                "playlooping"
+                {
+                                "volume"        "0.3"
+                                "pitch"         "100"
+                                "wave"          "sounds/ambient_beach.vsnd"
+                }
+}
+"soundscape_ambient_library"
+{
+                "playlooping"
+                {
+                                "volume"        "0.15"
+                                "pitch"         "100"
+                                "wave"          "sounds/ambient_library.vsnd"
+                }
+}

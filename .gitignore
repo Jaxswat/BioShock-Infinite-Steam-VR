@@ -1,0 +1,6 @@
+.idea/
+node_modules/
+build/
+vscript_build/
+vsnd_generator_build/
+.env

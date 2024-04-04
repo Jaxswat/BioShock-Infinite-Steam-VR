@@ -1,0 +1,214 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<style>
+			body {
+				background-color: black;
+				font: 1em sans-serif;
+			}
+
+			.clips {
+				display: flex;
+				flex-direction: column;
+			}
+			.clip {
+				display: flex;
+				flex-direction: column;
+				padding: 1em;
+				background-color: #333;
+				margin-top: 1em;
+			}
+
+			.title {
+				padding: 1em;
+				color: #eee;
+				font-weight: bold;
+			}
+			.reviewed .title {
+				color: mediumspringgreen;
+			}
+
+			.transcript {
+				background-color: #111;
+				color: #eee;
+				padding: 1em;
+			}
+
+			.tags {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.tag {
+				color: white;
+				padding: 1em;
+				margin: 2em;
+				user-select: none;
+				cursor: pointer;
+			}
+			.tag.selected {
+				font-weight: bold;
+				outline: white 3px solid;
+			}
+
+			.tag.plot {
+				background-color: blue;
+			}
+			.tag.chirp {
+				background-color: green;
+			}
+			.tag.loot {
+				background-color: brown;
+			}
+			.tag.combat {
+				background-color: red;
+			}
+
+			.tag.somber {
+				background-color: blueviolet;
+			}
+			.tag.cheerful {
+				background-color: green;
+			}
+			.tag.assertive {
+				background-color: orange;
+			}
+			.tag.yelling {
+				background-color: red;
+			}
+			.tag.bakedsfx {
+				background-color: gray;
+			}
+			.tag.nonspeech {
+				background-color: purple;
+			}
+			.tag.reusable {
+				background-color: fuchsia;
+			}
+
+			.buttons {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.button {
+				color: white;
+				padding: 1em;
+				margin: 2em;
+				user-select: none;
+				cursor: pointer;
+				background-color: gray;
+			}
+			.button:active {
+				font-weight: bold;
+				outline: white 3px solid;
+			}
+
+			
+		</style>
+	</head>
+
+	<body>
+	</body>
+
+	<script>
+		let viewerMode = false;
+		let tags = [];
+		let clips = [];
+
+		function getClipHtml(clip) {
+			let nextHtml = '';
+			const clipTags = new Set(clip.tags);
+			let tagsHtml = '<div class="tags">';
+			if (viewerMode) {
+				for (let tag of clipTags) {
+					tagsHtml += `
+						<div class="tag ${tag} selected">
+							${tag}
+						</div>
+					`;
+				}
+			} else {
+				for (let tag of tags) {
+					tagsHtml += `
+						<div class="tag ${tag} ${clipTags.has(tag) ? 'selected' : ''}" onClick="toggleTag('${clip.file}', '${tag}')">
+							${tag}
+						</div>
+					`;
+				}
+			}
+			tagsHtml += '</div>';
+
+			let viewerOptionsHtml = `
+				<div class="buttons">
+					<div class="button copy" onClick="copyClip('${clip.file}')">
+						Copy to local dir
+					</div>
+				</div>
+			`;
+
+			nextHtml += `
+			<div id="${clip.file}" class="clip ${clipTags.size > 0 ? 'reviewed' : ''}">
+				<div class="title">
+					${clip.index+1}/${clips.length} ${clip.file}
+				</div>
+				<div class="transcript">
+					${clip.text}
+				</div>
+				<audio controls preload="none">
+					<source src="${'/clip/' + clip.file}" type="audio/ogg">
+				</audio>
+				${tagsHtml}
+				${viewerMode ? viewerOptionsHtml : ''}
+			</div>
+			`;
+			return nextHtml;
+		}
+
+		function renderClips() {
+			let nextHtml = '';
+
+			nextHtml += '<div class="clips">';
+			for (let clip of clips) {
+				nextHtml += getClipHtml(clip);
+			}
+			nextHtml += '</div>';
+
+			document.body.innerHTML = nextHtml;
+		}
+
+		function renderClip(file) {
+			const existingClip = document.getElementById(file);
+			const clip = clips.find(c => c.file === file);
+			existingClip.outerHTML = getClipHtml(clip);
+		}
+
+		async function fetchClips() {
+			const clipsReq = await axios.get('/clips');
+			clips = clipsReq.data;
+			for (let i in clips) {
+				clips[i].index = Number(i);
+			}
+		}
+
+		async function toggleTag(file, tag) {
+			await axios.post('/toggle-tag', { file, tag });
+			await fetchClips();
+			renderClip(file);
+		}
+
+		async function copyClip(file) {
+			await axios.post('/copy-clip', { file });
+		}
+
+		async function onLoad() {
+			const configReq = await axios.get('/config');
+			viewerMode = configReq.data.viewerMode;
+			tags = configReq.data.tags;
+			await fetchClips();
+			renderClips();
+		}
+
+		onLoad().catch(console.error);
+	</script>
+</html>
