@@ -80,7 +80,7 @@ It only supports a few specific types of animations, but it works for the animat
 
 It was published on August 29th, 2016 by a mysterious character named [id-dameon on the Zenhax forums](https://web.archive.org/web/20230429095935/https://zenhax.com/viewtopic.php?f=5&t=3009).
 The entire forum seems to be gone, but I've preserved the original executable in this repo (`asset_tools/animations/bsi_anim.exe`).
-I'm not even sure the id-dameon knew the format, they probably reverse engineered it from the game's assembly.
+I'm not even sure if id-dameon knew the format, they probably reverse engineered it from the game's assembly.
 It's incredibly mysterious to me, but it works.
 
 The original executable is a harmless C# program that reads the binary protocol and outputs SMD files.
