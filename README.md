@@ -36,6 +36,7 @@ All of the scripts at the moment use [`bun`](https://github.com/oven-sh/bun).
 These are the game scripts that run in the SteamVR environment.
 
 Directory: `vscript`
+
 Scripts:
 - `bun run clean` - deletes `build/`
 - `bun run build` - builds the code into `build/`
@@ -51,6 +52,7 @@ This script does code generation for the .vsndevts file as well as my TypeScript
 Sounds are configured in the code of this file, and then I paste in the generated code into the respective files.
 
 Directory: `vsnd_generator`
+
 Scripts:
 - `bun run generate` - Creates code snippets for `.vsndevts` and TypeScript speech config.
 
@@ -65,6 +67,7 @@ Whisper isn't completely accurate, but these files are good for simple CTRL+F se
 The JSON files are stored in `data/`.
 
 Directory: `voicedb`
+
 The scripts have some hardcoded configuration, but they work:
 - `bun run transcribe` - runs `whisper` command on all audio files
 - `bun run dupecheck` - Verifies that there are no duplicate files. (I don't think the game would pack duplicated but I was suspicous at some point)
