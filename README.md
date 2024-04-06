@@ -73,6 +73,25 @@ The scripts have some hardcoded configuration, but they work:
 - `bun run dupecheck` - Verifies that there are no duplicate files. (I don't think the game would pack duplicated but I was suspicous at some point)
 - `bun run tag` - runs express server on `localhost:3000` for a simple tagging interface
 
+# bsi_anim (Morpheme Animation to Source SMD)
+
+This tool converts Morpheme animations (`MorphemeAnimSet` and .`MorphemeAnimSequence`) to Source SMD files (`smd`).
+It only supports a few specific types of animations, but it works for the animations I cared to extract.
+
+It was published a couple years after the game's release by a mysterious character named [ID-Dameon](https://www.gildor.org/smf/index.php?topic=2478.0) on the Zenhax forums.
+The entire forum seems to be gone, but I've preserved the original executable in this repo (`asset_tools/animations/bsi_anim.exe`).
+
+The original executable is a harmless C# program that reads the binary protocol and outputs SMD files.
+In an attempt to improve (or at least open source) the tool, I've decompiled it with ILSpy and began translating it to rust.
+It runs 10x faster, but it's not perfect. As expected, a lot of things were lost in translation.
+I'm not even sure the original author knew the format, they probably reverse engineered it from the game's assembly.
+It's an absolute mess of code, but it is able to traverse the undocumented Morpheme binary format.
+
+My rust translation runs, but skips some keyframes due to some math/data type conversion issues.
+Should be fixable.
+
+Directory: `bsi_anim`
+
 # Questions / Suggestions
 
 Scripting in Source 2 can be very hard due to the sparse documentation. If you have any questions, ideas, or suggestions let me know.

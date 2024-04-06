@@ -10,12 +10,6 @@ pub mod read {
         Ok(value)
     }
 
-    pub fn read_bool<R: Read + Seek>(reader: &mut R) -> io::Result<bool> {
-        let mut buf = [0; 1];
-        reader.read_exact(&mut buf)?;
-        Ok(buf[0] == 1)
-    }
-
     pub fn read_i32<R: Read + Seek>(reader: &mut R) -> io::Result<i32> {
         let mut buf = [0; 4];
         reader.read_exact(&mut buf)?;
@@ -29,6 +23,14 @@ pub mod read {
         reader.read_exact(&mut buf)?;
 
         let value = i16::from_le_bytes(buf);
+        Ok(value)
+    }
+
+    pub fn read_u16<R: Read + Seek>(reader: &mut R) -> io::Result<u16> {
+        let mut buf = [0; 2];
+        reader.read_exact(&mut buf)?;
+
+        let value = u16::from_le_bytes(buf);
         Ok(value)
     }
 
