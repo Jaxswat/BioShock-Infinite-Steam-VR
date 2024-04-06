@@ -73,7 +73,7 @@ The scripts have some hardcoded configuration, but they work:
 - `bun run dupecheck` - Verifies that there are no duplicate files. (I don't think the game would pack duplicated but I was suspicous at some point)
 - `bun run tag` - runs express server on `localhost:3000` for a simple tagging interface
 
-# bsi_anim (Morpheme Animation to Source SMD)
+### bsi_anim (Morpheme Animation to Source SMD)
 
 This tool converts Morpheme animations (`MorphemeAnimSet` and .`MorphemeAnimSequence`) to Source SMD files (`smd`).
 It only supports a few specific types of animations, but it works for the animations I cared to extract.
