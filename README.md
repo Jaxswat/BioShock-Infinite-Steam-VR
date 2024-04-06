@@ -1,4 +1,4 @@
-# Bioshock: Infinite for SteamVR Home
+# BioShock: Infinite for SteamVR Home
 
 I like BioShock: Infinite so I wanted to make an experience around it in SteamVR Home.
 This repository contains the code and other custom tools I wrote to make it.
@@ -35,10 +35,11 @@ All of the scripts at the moment use [`bun`](https://github.com/oven-sh/bun).
 
 These are the game scripts that run in the SteamVR environment.
 
+Directory: `vscript`
 Scripts:
-- `bun run clean:vscript` - deletes `vscript_build/`
-- `bun run build:vscript` - builds the code into `vscript_build/`
-- `bun run copy:vscript` - copies `vscript_build/` into the SteamVR environment's `vscripts` directory
+- `bun run clean` - deletes `build/`
+- `bun run build` - builds the code into `build/`
+- `bun run copy` - copies `build/` into the SteamVR environment's `vscripts` directory
 - `bun run build-and-copy` does all of the above steps
 
 ### VSND Generator
@@ -49,8 +50,9 @@ I also require these clips to be cataloged for Elizabeth's AI code.
 This script does code generation for the .vsndevts file as well as my TypeScript code.
 Sounds are configured in the code of this file, and then I paste in the generated code into the respective files.
 
+Directory: `vsnd_generator`
 Scripts:
-- `bun run build:vsnd` - Creates code snippets for `.vsndevts` and TypeScript speech config.
+- `bun run generate` - Creates code snippets for `.vsndevts` and TypeScript speech config.
 
 ### VoiceDB
 
@@ -60,12 +62,13 @@ To help catalog these, I transcribed them with [OpenAI's Whisper](https://github
 I also transcribed the other characters' lines, but I haven't tagged them yet.
 Whisper isn't completely accurate, but these files are good for simple CTRL+F searching.
 
-The JSON files are stored in `voicedb_data/`.
+The JSON files are stored in `data/`.
 
-The scrips have some hardcoded configuration, but they work:
-- `bun run voicedb:transcribe` - runs `whisper` command on all audio files
-- `bun run voicedb:dupecheck` - Verifies that there are no duplicate files. (I don't think the game would pack duplicated but I was suspicous at some point)
-- `bun run voicedb:tag` - runs express server on `localhost:3000` for a simple tagging interface
+Directory: `voicedb`
+The scripts have some hardcoded configuration, but they work:
+- `bun run transcribe` - runs `whisper` command on all audio files
+- `bun run dupecheck` - Verifies that there are no duplicate files. (I don't think the game would pack duplicated but I was suspicous at some point)
+- `bun run tag` - runs express server on `localhost:3000` for a simple tagging interface
 
 # Questions / Suggestions
 

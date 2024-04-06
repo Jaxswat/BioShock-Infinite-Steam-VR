@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/TypeScriptToLua/TypeScriptToLua/master/tsconfig-schema.json",
-	"include": ["vscript_src/**/*.ts"],
+	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		"target": "ESNext",
 		"lib": [
@@ -9,8 +9,8 @@
 		"moduleResolution": "Node",
 		"types": ["@typescript-to-lua/language-extensions"],
 		"strict": true,
-		"rootDir": "vscript_src/",
-		"outDir": "vscript_build/"
+		"rootDir": "src/",
+		"outDir": "build/"
 	},
 	"tstl": {
 		"buildMode": "library",

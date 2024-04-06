@@ -1,0 +1,10 @@
+{
+  "name": "vsnd_generator",
+  "private": true,
+  "scripts": {
+    "generate": "bun run src/generate.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.0.12"
+  }
+}

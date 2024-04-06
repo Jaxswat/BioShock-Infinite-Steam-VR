@@ -10,7 +10,7 @@ const copyrightPrefix = `--[[---------------------------------------------------
 
 ]]----------------------------------------------------------------------------------------------------------------
 -- BioShock: Infinite for Steam VR Home
--- GitHub: https://github.com/Jaxswat/bsi-vr
+-- https://github.com/Jaxswat/BioShock-Infinite-Steam-VR
 `;
 
 const bundleTag = '____exports.__BundleAsGameScript = nil\n';

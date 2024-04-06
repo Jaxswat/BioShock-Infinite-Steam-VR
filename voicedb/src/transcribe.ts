@@ -1,8 +1,8 @@
-import fs from 'fs';
+import { readdirSync } from 'fs';
+import { readFile } from 'fs/promises';
 import { promisify } from 'util';
 import { exec as execSync } from 'child_process';
 import { JSONFilePreset } from 'lowdb/node';
-const readFile = promisify(fs.readFile);
 const exec = promisify(execSync);
 
 class Clip {
@@ -39,7 +39,7 @@ async function main() {
 	const voicedb = await JSONFilePreset(fileName, { clips: [] });
 	await voicedb.read();
 
-	const allFiles = fs.readdirSync(rootPath);
+	const allFiles = readdirSync(rootPath);
 	const oggFiles = allFiles.filter(f => f.endsWith('.ogg'));
 	
 	for (let file of oggFiles) {

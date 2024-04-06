@@ -1,12 +1,7 @@
 import { JSONFilePreset } from 'lowdb/node';
 import express from 'express';
-import asyncHandler from 'express-async-handler';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import { copyFile } from 'fs/promises';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const asyncHandler = require('express-async-handler');
 
 const allTags = [
 	'plot',
@@ -28,9 +23,9 @@ const tagFiltersForViewer = [
 
 let viewerMode = true;
 let voicedb;
-let voiceDbFile = './voicedb_liz.json';
+let voiceDbFile = './data/voicedb_liz.json';
 const rootPath = ''; // TODO: set this to the path of the unpacked .wav audio files
-const copiedClipsDir = './copied_clips';
+const copiedClipsDir = './copied_clips'; // Directory where clips are copied to when saved via UI
 const port = 3000;
 const app = express();
 

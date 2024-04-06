@@ -1,0 +1,17 @@
+{
+  "name": "voicedb",
+  "private": true,
+  "scripts": {
+    "transcribe": "bun run src/transcribe.ts",
+    "dupecheck": "bun run src/dupecheck.ts",
+    "tag": "bun run src/tag.ts",
+    "dev": "tstl --watch"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.0.12"
+  },
+  "dependencies": {
+    "express": "^4.18.3",
+    "express-async-handler": "^1.2.0"
+  }
+}

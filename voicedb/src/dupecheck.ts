@@ -1,8 +1,6 @@
-import fs from 'fs';
-import { promisify } from 'util';
+import { readFile } from 'fs/promises';
 import { JSONFilePreset } from 'lowdb/node';
 import { createHash } from 'crypto';
-const readFile = promisify(fs.readFile);
 
 class Clip {
 	file = '';
