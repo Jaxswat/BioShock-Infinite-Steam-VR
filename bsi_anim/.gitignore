@@ -1,4 +1,5 @@
 target/
-debug.data
-debug.data2
-debug.smd
+testdata/
+*.MorphemeAnimSet
+*.MorphemeAnimSequence
+*.smd

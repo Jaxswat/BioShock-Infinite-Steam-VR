@@ -5,6 +5,7 @@ use std::{env, io};
 use std::fmt::Write;
 use std::fs::File;
 use std::io::{BufReader, Read, Seek, SeekFrom};
+use std::path::{Path};
 use std::process::exit;
 use read::read::read_u8;
 use crate::math::math::{Quat4, Vector3};
@@ -22,7 +23,15 @@ const WHAT_SCALE: f64 = 65536.0;
 const VEC_SCALE: f64 = 50.0;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let file = File::open("debug.data").unwrap_or_else(|err| {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        eprintln!("must provide a .MorphemeAnimSequence file as an argument with an .MorphemeAnimSet in a higher directory");
+        exit(1);
+    }
+
+    let sequence_file_path = Path::new(&args[1]);
+    let file = File::open(&sequence_file_path).unwrap_or_else(|err| {
         eprintln!("Failed to read file: {}", err);
         exit(1);
     });
@@ -73,8 +82,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     stream.write_str("version 1\n")?;
     stream.write_str("nodes\n")?;
 
-    let file2 = File::open("debug.data2").unwrap_or_else(|err| {
-        eprintln!("animset not found, failed to open file2: {}", err);
+
+    let sequence_dir_path = sequence_file_path.parent().expect("Failed to get sequence directory");
+    let sequence_parent_dir_path = sequence_dir_path.parent().expect("Failed to get sequence parent directory");
+    let parent_dir_name = sequence_dir_path.file_name().expect("Failed to get parent directory name");
+    let animset_file_path = sequence_parent_dir_path.join(format!("{}.MorphemeAnimSet", parent_dir_name.to_str().unwrap()));
+    if !animset_file_path.exists() {
+        println!("Animset not found: {}", animset_file_path.display());
+        exit(1);
+    }
+
+    let file2 = File::open(&animset_file_path).unwrap_or_else(|err| {
+        eprintln!("failed to open {}: {}", &animset_file_path.to_str().unwrap_or(""), err);
         exit(1);
     });
     let mut reader2 = BufReader::new(file2);
@@ -660,8 +679,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     stream.write_str("end\n")?;
 
-    let mut output = File::create("debug.smd")?;
-    std::io::Write::write(&mut output, stream.as_bytes())?;
+    let output_file_path = sequence_file_path.with_extension("smd");
+    let mut output_file = File::create(&output_file_path).expect("Failed to create output file");
+    std::io::Write::write(&mut output_file, stream.as_bytes())?;
 
     // println!("{}", stream);
     Ok(())
