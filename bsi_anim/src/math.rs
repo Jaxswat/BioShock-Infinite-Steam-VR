@@ -1,24 +1,15 @@
 pub mod math {
-    use std::f32::consts::PI;
     use std::ops::{Add, Mul, Sub, SubAssign};
 
     #[derive(Debug, Default, Clone)]
     pub struct Vector3 {
-        pub x: f32,
-        pub y: f32,
-        pub z: f32,
+        pub x: f64,
+        pub y: f64,
+        pub z: f64,
     }
 
     impl Vector3 {
-        pub fn invalid() -> Self {
-            Vector3 { x: f32::NAN, y: f32::NAN, z: f32::NAN }
-        }
-
-        pub fn is_invalid(&self) -> bool {
-            self.x.is_nan() && self.y.is_nan() && self.z.is_nan()
-        }
-
-        pub fn cross(&self, b: Vector3) -> Vector3 {
+        pub fn cross(&self, b: &Vector3) -> Vector3 {
             Vector3 {
                 x: self.y * b.z - self.z * b.y,
                 y: self.z * b.x - self.x * b.z,
@@ -26,7 +17,7 @@ pub mod math {
             }
         }
 
-        pub fn dot(&self, b: &Vector3) -> f32 {
+        pub fn dot(&self, b: &Vector3) -> f64 {
             self.x * b.x + self.y * b.y + self.z * b.z
         }
     }
@@ -56,7 +47,7 @@ pub mod math {
     }
 
     impl SubAssign<&Vector3> for Vector3 {
-        fn sub_assign(&mut self, b: &Vector3){
+        fn sub_assign(&mut self, b: &Vector3) {
             self.x -= b.x;
             self.y -= b.y;
             self.z -= b.z;
@@ -77,21 +68,13 @@ pub mod math {
 
     #[derive(Debug, Default, Clone)]
     pub struct Quat4 {
-        pub w: f32,
-        pub x: f32,
-        pub y: f32,
-        pub z: f32,
+        pub w: f64,
+        pub x: f64,
+        pub y: f64,
+        pub z: f64,
     }
 
     impl Quat4 {
-        pub fn invalid() -> Self {
-            Quat4 { x: f32::NAN, y: f32::NAN, z: f32::NAN, w: f32::NAN }
-        }
-
-        pub fn is_invalid(&self) -> bool {
-            self.x.is_nan() && self.y.is_nan() && self.z.is_nan() && self.w.is_nan()
-        }
-
         pub fn xyz(&self) -> Vector3 {
             Vector3 {
                 x: self.x,
@@ -101,26 +84,7 @@ pub mod math {
         }
 
         pub fn to_euler_angles(&self) -> Vector3 {
-            let (sinr_cosp, cosr_cosp) = (2.0 * (self.w * self.x + self.y * self.z),
-                                          1.0 - 2.0 * (self.x * self.x + self.y * self.y));
-            let roll = sinr_cosp.atan2(cosr_cosp);
-
-            let sinp = 2.0 * (self.w * self.y - self.z * self.x);
-            let pitch = if sinp.abs() >= 1.0 {
-                (PI / 2.0).copysign(sinp)
-            } else {
-                sinp.asin()
-            };
-
-            let (siny_cosp, cosy_cosp) = (2.0 * (self.w * self.z + self.x * self.y),
-                                          1.0 - 2.0 * (self.y * self.y + self.z * self.z));
-            let yaw = siny_cosp.atan2(cosy_cosp);
-
-            Vector3 {
-                x: pitch,
-                y: yaw,
-                z: roll,
-            }
+            eul_from_quat(self)
         }
     }
 
@@ -128,13 +92,65 @@ pub mod math {
         type Output = Quat4;
 
         fn mul(self, b: &Quat4) -> Quat4 {
-            let cross = self.xyz().cross(b.xyz());
+            let cross = self.xyz().cross(&b.xyz());
             Quat4 {
                 w: self.w * b.w - self.xyz().dot(&b.xyz()),
-                x: b.w * b.x + self.w * b.x + cross.x,
-                y: b.w * b.y + self.w * b.y + cross.y,
-                z: b.w * b.z + self.w * b.z + cross.z,
+                x: b.w * self.x + self.w * b.x + cross.x,
+                y: b.w * self.y + self.w * b.y + cross.y,
+                z: b.w * self.z + self.w * b.z + cross.z,
             }
         }
+    }
+
+    fn eul_from_quat(q: &Quat4) -> Vector3 {
+        let mut m = [[0.0; 4]; 4];
+
+        let x2 = q.x + q.x;
+        let y2 = q.y + q.y;
+        let z2 = q.z + q.z;
+        let xx = q.x * x2;
+        let xy = q.x * y2;
+        let xz = q.x * z2;
+        let yy = q.y * y2;
+        let yz = q.y * z2;
+        let zz = q.z * z2;
+        let wx = q.w * x2;
+        let wy = q.w * y2;
+        let wz = q.w * z2;
+
+        m[0][0] = 1.0 - (yy + zz);
+        m[0][1] = xy - wz;
+        m[0][2] = xz + wy;
+
+        m[1][0] = xy + wz;
+        m[1][1] = 1.0 - (xx + zz);
+        m[1][2] = yz - wx;
+
+        m[2][0] = xz - wy;
+        m[2][1] = yz + wx;
+        m[2][2] = 1.0 - (xx + yy);
+
+        m[3][3] = 1.0;
+
+
+        eul_from_mat(m)
+    }
+
+    fn eul_from_mat(m: [[f64; 4]; 4]) -> Vector3 {
+        let mut angle = Vector3::default();
+
+        let sy = (m[0][0] * m[0][0] + m[1][0] * m[1][0]).sqrt();
+
+        if sy > 1.6e-4 {
+            angle.x = m[2][1].atan2(m[2][2]);
+            angle.y = (0.0 - m[2][0]).atan2(sy);
+            angle.z = m[1][0].atan2(m[0][0]);
+        } else {
+            angle.x = (0.0 - m[1][2]).atan2(m[1][1]);
+            angle.y = (0.0 - m[2][0]).atan2(sy);
+            angle.z = 0.0;
+        }
+
+        angle
     }
 }

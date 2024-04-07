@@ -12,14 +12,14 @@ use crate::read::read::{read_f32, read_i16, read_i32, read_u16};
 
 /**
  * This is a work in progress decompiling the mysterious bsi_anim.exe
- * This program will convert Morpheme animation files to SMD format
- *
- * It builds and runs 10x faster than the original, but the output is not yet correct.
- * I'm still getting the occasional NaN for the Vector values which causes some keyframes to be skipped
+ * This program will convert Morpheme animation files to SMD format.
+ * The output matches the original program, and runs 10x faster.
  */
 
-const WHAT: usize = 0xFFFFFFFC; // Uhh...what?
-const VEC_SCALE: f32 = 50.0;
+const WHAT: usize = 0xFFFFFFFC;
+const WHAT_SCALE: f64 = 65536.0;
+// Uhh...what?
+const VEC_SCALE: f64 = 50.0;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = File::open("debug.data").unwrap_or_else(|err| {
@@ -61,8 +61,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     reader.seek(SeekFrom::Current(20))?; // Skip
-    let anim_length_seconds = read_f32(&mut reader)?; // num5
-    let anim_fps = read_f32(&mut reader)?; // num6
+    let anim_length_seconds = read_f32(&mut reader)? as f64; // num5
+    let anim_fps = read_f32(&mut reader)? as f64; // num6
     println!("{} sec {} fps", anim_length_seconds, anim_fps);
 
     reader.seek(SeekFrom::Current(12))?; // Skip
@@ -135,10 +135,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut array3: Vec<Quat4> = vec![Quat4::default(); num10];
     for i in 0..num10 {
-        array3[i].x = read_f32(&mut reader2)?;
-        array3[i].y = read_f32(&mut reader2)?;
-        array3[i].z = read_f32(&mut reader2)?;
-        array3[i].w = read_f32(&mut reader2)?;
+        array3[i].x = read_f32(&mut reader2)? as f64;
+        array3[i].y = read_f32(&mut reader2)? as f64;
+        array3[i].z = read_f32(&mut reader2)? as f64;
+        array3[i].w = read_f32(&mut reader2)? as f64;
     }
 
     reader2.seek(SeekFrom::Start(offset2))?; // Go to mysterious offset
@@ -146,9 +146,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut vector_3d;
     for i in 0..num10 {
         vector_3d = array3[i].to_euler_angles();
-        let x = read_f32(&mut reader2)? * VEC_SCALE;
-        let y = read_f32(&mut reader2)? * VEC_SCALE;
-        let z = read_f32(&mut reader2)? * VEC_SCALE;
+        let x = read_f32(&mut reader2)? as f64 * VEC_SCALE;
+        let y = read_f32(&mut reader2)? as f64 * VEC_SCALE;
+        let z = read_f32(&mut reader2)? as f64 * VEC_SCALE;
         reader2.seek(SeekFrom::Current(4))?; // Skip
 
         stream.write_str(&i.to_string())?;
@@ -162,10 +162,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Close file2
 
     // Back to main reader
-    let _i = read_f32(&mut reader)?;
-    let _j = read_f32(&mut reader)?;
-    let _k = read_f32(&mut reader)?;
-    let _real = read_f32(&mut reader)?;
+    let _i = read_f32(&mut reader)? as f64;
+    let _j = read_f32(&mut reader)? as f64;
+    let _k = read_f32(&mut reader)? as f64;
+    let _real = read_f32(&mut reader)? as f64;
     // new Quat4 (doesn't get assigned?)
 
     let num11 = 60;
@@ -174,26 +174,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let num13 = read_i16(&mut reader)?;
     let num14 = read_i16(&mut reader)?;
     let vector_3d2 = Vector3 {
-        x: read_f32(&mut reader)?,
-        y: read_f32(&mut reader)?,
-        z: read_f32(&mut reader)?,
+        x: read_f32(&mut reader)? as f64,
+        y: read_f32(&mut reader)? as f64,
+        z: read_f32(&mut reader)? as f64,
     };
     let mut vector_3d3 = Vector3 {
-        x: read_f32(&mut reader)?,
-        y: read_f32(&mut reader)?,
-        z: read_f32(&mut reader)?,
+        x: read_f32(&mut reader)? as f64,
+        y: read_f32(&mut reader)? as f64,
+        z: read_f32(&mut reader)? as f64,
     };
     vector_3d3 -= &vector_3d2;
 
     let vector_3d4 = Vector3 {
-        x: read_f32(&mut reader)?,
-        y: read_f32(&mut reader)?,
-        z: read_f32(&mut reader)?,
+        x: read_f32(&mut reader)? as f64,
+        y: read_f32(&mut reader)? as f64,
+        z: read_f32(&mut reader)? as f64,
     };
     let mut vector_3d5 = Vector3 {
-        x: read_f32(&mut reader)?,
-        y: read_f32(&mut reader)?,
-        z: read_f32(&mut reader)?,
+        x: read_f32(&mut reader)? as f64,
+        y: read_f32(&mut reader)? as f64,
+        z: read_f32(&mut reader)? as f64,
     };
     vector_3d5 -= &vector_3d4;
 
@@ -249,22 +249,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut array12: Vec<Vec<Option<Quat4>>> = vec![vec![None; num12 as usize]; num11];
 
     reader.seek(SeekFrom::Start(position2))?; // Go to some mysterious offset
-    let some_scale_constant = 65536f32;
     for i in 0..num13 as usize {
         array11[0][array4[i] as usize] = Some(Vector3 {
-            x: ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d3.x) + vector_3d2.x,
-            y: ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d3.y) + vector_3d2.y,
-            z: ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d3.z) + vector_3d2.z,
+            x: ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d3.x) + vector_3d2.x,
+            y: ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d3.y) + vector_3d2.y,
+            z: ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d3.z) + vector_3d2.z,
         });
     }
 
     let some_mysterious_offset = ((reader.seek(SeekFrom::Current(0))? - (position as u64) + 3) & (WHAT as u64)) + position as u64;
     reader.seek(SeekFrom::Start(some_mysterious_offset))?; // Go to some mysterious offset
-    let some_scale_constant = 65536f32;
     for i in 0..num14 as usize {
-        let x = ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d5.x) + vector_3d4.x;
-        let y = ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d5.y) + vector_3d4.y;
-        let z = ((read_u16(&mut reader)? as f32 / some_scale_constant) * vector_3d5.z) + vector_3d4.z;
+        let x = ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d5.x) + vector_3d4.x;
+        let y = ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d5.y) + vector_3d4.y;
+        let z = ((read_u16(&mut reader)? as i32 as f64 / WHAT_SCALE) * vector_3d5.z) + vector_3d4.z;
         let mut num20 = x * x + y * y + z * z; // Squared length?
         let w = (1.0 - num20) / 2.0;
         num20 = 2.0 / (1.0 + num20); // some kind of inverse?
@@ -284,12 +282,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if env::args().count() > 1 {
         num21 = 1;
     } else {
-        println!("Expanding {}x to {} fps", num21, anim_fps * num21 as f32);
+        println!("Expanding {}x to {} fps", num21, anim_fps * num21 as f64);
     }
 
     let num22 = read_i32(&mut reader)?;
     println!("{} segments", num22);
-    let mut num23 = 1;
+    let mut frame = 1;
 
     for _ in 0..num22 {
         let num24 = read_i32(&mut reader)?;
@@ -313,26 +311,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let num33 = read_i16(&mut reader)?;
         reader.seek(SeekFrom::Current(4))?;
         let vector3d6 = Vector3 {
-            x: read_f32(&mut reader)?,
-            y: read_f32(&mut reader)?,
-            z: read_f32(&mut reader)?,
+            x: read_f32(&mut reader)? as f64,
+            y: read_f32(&mut reader)? as f64,
+            z: read_f32(&mut reader)? as f64,
         };
         let mut vector3d7 = Vector3 {
-            x: read_f32(&mut reader)?,
-            y: read_f32(&mut reader)?,
-            z: read_f32(&mut reader)?,
+            x: read_f32(&mut reader)? as f64,
+            y: read_f32(&mut reader)? as f64,
+            z: read_f32(&mut reader)? as f64,
         };
         vector3d7 -= &vector3d6;
         reader.seek(SeekFrom::Current(92))?;
         let mut array13 = vec![Vector3::default(); num31 as usize];
         let mut array14 = vec![Vector3::default(); num31 as usize];
         for i in 0..num31 as usize {
-            array13[i].x = read_f32(&mut reader)?;
-            array13[i].y = read_f32(&mut reader)?;
-            array13[i].z = read_f32(&mut reader)?;
-            array14[i].x = read_f32(&mut reader)?;
-            array14[i].y = read_f32(&mut reader)?;
-            array14[i].z = read_f32(&mut reader)?;
+            array13[i].x = read_f32(&mut reader)? as f64;
+            array13[i].y = read_f32(&mut reader)? as f64;
+            array13[i].z = read_f32(&mut reader)? as f64;
+            array14[i].x = read_f32(&mut reader)? as f64;
+            array14[i].y = read_f32(&mut reader)? as f64;
+            array14[i].z = read_f32(&mut reader)? as f64;
             array14[i] -= &array13[i];
         }
         let mut array17: Vec<i32> = vec![0; num15 as usize];
@@ -371,8 +369,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     num36 += 1;
                     num38 *= 2;
                 }
-                let mut num39 = array20[i] as f32 / 256.0 * vector3d7.x + vector3d6.x;
-                next_vec.x = num37 as f32 / num38 as f32 * array14[array23[i] as usize].x + array13[array23[i] as usize].x + num39;
+                let mut num39 = array20[i] as f64 / 256.0 * vector3d7.x + vector3d6.x;
+                next_vec.x = num37 as f64 / num38 as f64 * array14[array23[i] as usize].x + array13[array23[i] as usize].x + num39;
                 num37 = 0;
                 num38 = 1;
                 for _ in 0..array18[i] {
@@ -383,8 +381,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     num36 += 1;
                     num38 *= 2;
                 }
-                num39 = array21[i] as f32 / 256.0 * vector3d7.y + vector3d6.y;
-                next_vec.y = num37 as f32 / num38 as f32 * array14[array23[i] as usize].y + array13[array23[i] as usize].y + num39;
+                num39 = array21[i] as f64 / 256.0 * vector3d7.y + vector3d6.y;
+                next_vec.y = num37 as f64 / num38 as f64 * array14[array23[i] as usize].y + array13[array23[i] as usize].y + num39;
                 num37 = 0;
                 num38 = 1;
                 for _ in 0..array19[i] {
@@ -395,8 +393,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     num36 += 1;
                     num38 *= 2;
                 }
-                num39 = array22[i] as f32 / 256.0 * vector3d7.z + vector3d6.z;
-                next_vec.z = num37 as f32 / num38 as f32 * array14[array25[i] as usize].z + array13[array25[i] as usize].z + num39;
+                num39 = array22[i] as f64 / 256.0 * vector3d7.z + vector3d6.z;
+                next_vec.z = num37 as f64 / num38 as f64 * array14[array25[i] as usize].z + array13[array25[i] as usize].z + num39;
                 array11[m][array6[i] as usize] = Some(next_vec);
             }
         }
@@ -405,12 +403,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut array27 = vec![Vector3::default(); num32 as usize];
         let mut array28 = vec![Vector3::default(); num32 as usize];
         for i in 0..num32 as usize {
-            array27[i].x = read_f32(&mut reader)?;
-            array27[i].y = read_f32(&mut reader)?;
-            array27[i].z = read_f32(&mut reader)?;
-            array28[i].x = read_f32(&mut reader)?;
-            array28[i].y = read_f32(&mut reader)?;
-            array28[i].z = read_f32(&mut reader)?;
+            array27[i].x = read_f32(&mut reader)? as f64;
+            array27[i].y = read_f32(&mut reader)? as f64;
+            array27[i].z = read_f32(&mut reader)? as f64;
+            array28[i].x = read_f32(&mut reader)? as f64;
+            array28[i].y = read_f32(&mut reader)? as f64;
+            array28[i].z = read_f32(&mut reader)? as f64;
             array28[i] -= &array27[i];
         }
         let mut array17: Vec<i32> = vec![0; num16 as usize];
@@ -440,9 +438,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             reader.read_exact(&mut array26)?;
             for i in 0..num16 as usize {
                 let mut quat = Quat4::default();
-                quat.x = (array20[i] as f32) / 127.5 - 1.0;
-                quat.y = (array21[i] as f32) / 127.5 - 1.0;
-                quat.z = (array22[i] as f32) / 127.5 - 1.0;
+                quat.x = (array20[i] as f64) / 127.5 - 1.0;
+                quat.y = (array21[i] as f64) / 127.5 - 1.0;
+                quat.z = (array22[i] as f64) / 127.5 - 1.0;
                 let num20 = quat.x * quat.x + quat.y * quat.y + quat.z * quat.z; // squared length?
                 quat.w = (1.0 - num20) / 2.0;
                 let num20 = 2.0 / (1.0 + num20);
@@ -453,33 +451,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array17[i] {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
                     num38 *= 2;
                 }
-                let x = (num37 as f32) / (num38 as f32) * array28[array23[i] as usize].x + array27[array23[i] as usize].x;
+                let x = (num37 as f64) / (num38 as f64) * array28[array23[i] as usize].x + array27[array23[i] as usize].x;
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array18[i] {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
                     num38 *= 2;
                 }
-                let y = (num37 as f32) / (num38 as f32) * array28[array24[i] as usize].y + array27[array24[i] as usize].y;
+                let y = (num37 as f64) / (num38 as f64) * array28[array24[i] as usize].y + array27[array24[i] as usize].y;
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array19[i] {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
                     num38 *= 2;
                 }
-                let z = (num37 as f32) / (num38 as f32) * array28[array25[i] as usize].z + array27[array25[i] as usize].z;
+                let z = (num37 as f64) / (num38 as f64) * array28[array25[i] as usize].z + array27[array25[i] as usize].z;
                 let num20 = x * x + y * y + z * z; // squared length?
                 let w = (1.0 - num20) / 2.0;
                 let num20 = 2.0 / (1.0 + num20);
@@ -487,7 +485,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     x: x * num20,
                     y: y * num20,
                     z: z * num20,
-                    w: w * num20
+                    w: w * num20,
                 };
                 array12[m][array7[i] as usize] = Some(quat * &next_quat);
             }
@@ -501,12 +499,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut array31: Vec<Vector3> = vec![Vector3::default(); num33 as usize];
         let mut array32: Vec<Vector3> = vec![Vector3::default(); num33 as usize];
         for i in 0..num33 as usize {
-            array31[i].x = read_f32(&mut reader)?;
-            array31[i].y = read_f32(&mut reader)?;
-            array31[i].z = read_f32(&mut reader)?;
-            array32[i].x = read_f32(&mut reader)?;
-            array32[i].y = read_f32(&mut reader)?;
-            array32[i].z = read_f32(&mut reader)?;
+            array31[i].x = read_f32(&mut reader)? as f64;
+            array31[i].y = read_f32(&mut reader)? as f64;
+            array31[i].z = read_f32(&mut reader)? as f64;
+            array32[i].x = read_f32(&mut reader)? as f64;
+            array32[i].y = read_f32(&mut reader)? as f64;
+            array32[i].z = read_f32(&mut reader)? as f64;
             array32[i] -= &array31[i];
         }
         let mut array17: Vec<i32> = vec![0; num17 as usize];
@@ -538,13 +536,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             for i in 0..num17 as usize {
                 let num43 = array8[i] as usize;
                 let mut next_vec = Vector3::default();
-                let x = (array20[i] as f32) / 255.0 * vector3d7.x + vector3d6.x;
-                let y = (array21[i] as f32) / 255.0 * vector3d7.y + vector3d6.y;
-                let z = (array22[i] as f32) / 255.0 * vector3d7.z + vector3d6.z;
+                let x = (array20[i] as f64) / 255.0 * vector3d7.x + vector3d6.x;
+                let y = (array21[i] as f64) / 255.0 * vector3d7.y + vector3d6.y;
+                let z = (array22[i] as f64) / 255.0 * vector3d7.z + vector3d6.z;
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array17[i] as usize {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
@@ -553,11 +551,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if num37 > 0 {
                     num38 -= 1;
                 }
-                next_vec.x = (num37 as f32) / (num38 as f32) * array32[array23[i] as usize].x + array31[array23[i] as usize].x + x;
+                next_vec.x = (num37 as f64) / (num38 as f64) * array32[array23[i] as usize].x + array31[array23[i] as usize].x + x;
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array18[i] {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
@@ -566,11 +564,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if num37 > 0 {
                     num38 -= 1;
                 }
-                next_vec.y = (num37 as f32) / (num38 as f32) * array32[array24[i] as usize].y + array31[array24[i] as usize].y + y;
+                next_vec.y = (num37 as f64) / (num38 as f64) * array32[array24[i] as usize].y + array31[array24[i] as usize].y + y;
                 let mut num37 = 0;
                 let mut num38 = 1;
                 for _ in 0..array19[i] as usize {
-                    if ((array26[num36 / 8] >> (num36 % 8)) & 1) != 0 {
+                    if ((array26[num36 / 8] >> num36 % 8) as u32 & 1u32) != 0 {
                         num37 += num38;
                     }
                     num36 += 1;
@@ -579,19 +577,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if num37 > 0 {
                     num38 -= 1;
                 }
-                next_vec.z = (num37 as f32) / (num38 as f32) * array32[array25[i] as usize].z + array31[array25[i] as usize].z + z;
+                next_vec.z = (num37 as f64) / (num38 as f64) * array32[array25[i] as usize].z + array31[array25[i] as usize].z + z;
                 if m > 0 {
                     let num44 = array30[m - 1] - num25 as i32;
-                    let _ = 1.0 / ((num42 - num44) as f32); // ???
+                    let _ = 1.0 / ((num42 - num44) as f64); // ???
                     let vec_b = array11[num44 as usize][num43].clone().unwrap();
-                    let num45 = (next_vec.x - vec_b.x) / ((num42 - num44) as f32);
-                    let num46 = (next_vec.y - vec_b.y) / ((num42 - num44) as f32);
-                    let num47 = (next_vec.z - vec_b.z) / ((num42 - num44) as f32);
+                    let num45 = (next_vec.x - vec_b.x) / ((num42 - num44) as f64);
+                    let num46 = (next_vec.y - vec_b.y) / ((num42 - num44) as f64);
+                    let num47 = (next_vec.z - vec_b.z) / ((num42 - num44) as f64);
                     for num48 in 1..(num42 - num44 as i32) {
                         array11[(num44 + num48) as usize][num43] = Some(Vector3 {
-                            x: num45 * (num48 as f32) + vec_b.x,
-                            y: num46 * (num48 as f32) + vec_b.y,
-                            z: num47 * (num48 as f32) + vec_b.z,
+                            x: num45 * (num48 as f64) + vec_b.x,
+                            y: num46 * (num48 as f64) + vec_b.y,
+                            z: num47 * (num48 as f64) + vec_b.z,
                         });
                     }
                 }
@@ -614,7 +612,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             break;
                         }
 
-                        quat2 = quat2.clone() * &quat2;
+                        quat2 = array12[0][num49 as usize].clone().unwrap() * &quat2;
                     }
 
                     if num49 > 0 {
@@ -635,8 +633,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         for m in 0..(frames - 1) as usize {
             for _ in 0..num21 {
-                stream.write_str(&format!("time {}\n", num23))?;
-                num23 += 1;
+                stream.write_str(&format!("time {}\n", frame))?;
+                frame += 1;
             }
             stream.write_str(&format!("0  0 0 0  0 0 0\n"))?;
             for i in 0..num12 as usize {
