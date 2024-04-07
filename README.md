@@ -84,12 +84,9 @@ I'm not even sure if id-dameon knew the format, they probably reverse engineered
 It's incredibly mysterious to me, but it works.
 
 The original executable is a harmless C# program that reads the binary protocol and outputs SMD files.
-In an attempt to improve (or at least open source) the tool, I've decompiled it with ILSpy and began translating it to rust.
-It runs 10x faster, but it's not perfect. As expected, a lot of things were lost in translation.
+In an attempt to improve (or at least open source) the tool, I've decompiled it with ILSpy and translated it to rust.
+It now runs 10x faster than the original.
 It's an absolute mess of code, but it is able to traverse the undocumented Morpheme binary format.
-
-My rust translation runs, but skips some keyframes due to some math/data type conversion issues.
-Should be fixable.
 
 Directory: `bsi_anim`
 
