@@ -1,7 +1,9 @@
 mod math;
 mod read;
 
+use clap::Parser;
 use std::{env, io};
+use std::collections::HashMap;
 use std::fmt::Write;
 use std::fs::File;
 use std::io::{BufReader, Read, Seek, SeekFrom};
@@ -12,25 +14,38 @@ use crate::math::math::{Quat4, Vector3};
 use crate::read::read::{read_f32, read_i16, read_i32, read_u16};
 
 /**
- * This is a work in progress decompiling the mysterious bsi_anim.exe
- * This program will convert Morpheme animation files to SMD format.
- * The output matches the original program, and runs 10x faster.
+Converts .MorphemeAnimSequence files to Source Engine .smd
+https://github.com/Jaxswat/BioShock-Infinite-Steam-VR
  */
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Outputs in the original program's format.
+    /// By default, the program will use the updated version which scales/mirrors the animation
+    /// so that it appears correctly in regular 3D programs.
+    #[arg(short, long)]
+    legacy: bool,
+
+    /// The input .MorphemeAnimSequence file. Requires a .MorphemeAnimSet to be in the parent directory.
+    #[arg(required = true)]
+    file_path: String,
+}
 
 const WHAT: usize = 0xFFFFFFFC;
 const WHAT_SCALE: f64 = 65536.0;
 // Uhh...what?
-const VEC_SCALE: f64 = 50.0;
+const PARSE_VEC_SCALE: f64 = 50.0;
+// Unknown why 50 is important for parsing
+const SMD_VEC_SCALE: f64 = 0.01; // Scale for SMD output
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args: Vec<String> = env::args().collect();
+    let args = Args::parse();
 
-    if args.len() != 2 {
-        eprintln!("must provide a .MorphemeAnimSequence file as an argument with an .MorphemeAnimSet in a higher directory");
-        exit(1);
+    if args.legacy {
+        println!("legacy output enabled");
     }
 
-    let sequence_file_path = Path::new(&args[1]);
+    let sequence_file_path = Path::new(&args.file_path);
     let file = File::open(&sequence_file_path).unwrap_or_else(|err| {
         eprintln!("Failed to read file: {}", err);
         exit(1);
@@ -124,6 +139,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     reader2.seek(SeekFrom::Start(offset))?; // Seek from mysterious offset
     let mysterious_offset = read_i32(&mut reader2)? - 20;
     reader2.seek(SeekFrom::Current(mysterious_offset as i64))?; // Skip mysterious offset
+    let mirrored_bones = get_mirrored_bones();
     for i in 0..num10 {
         let mut str_len = 0;
         while read_u8(&mut reader2)? != 0 {
@@ -133,7 +149,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         reader2.seek(SeekFrom::Current(-(str_len + 1)))?; // Go to start of string
         let mut buf: Vec<u8> = vec![0; str_len as usize];
         reader2.read_exact(&mut buf)?;
-        let str = String::from_utf8(buf)?;
+        let mut str = String::from_utf8(buf)?;
+        if !args.legacy {
+            str = mirrored_bones.get(&str as &str).unwrap().to_string();
+        }
+
         array2[i] = str.clone();
         let mut stream_line = String::new();
         write!(&mut stream_line, "{} \"{}\" {}\n", i, str, array[i])?;
@@ -162,21 +182,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     reader2.seek(SeekFrom::Start(offset2))?; // Go to mysterious offset
     stream.write_str("time 0\n")?;
-    let mut vector_3d;
+    let mut rotation;
     for i in 0..num10 {
-        vector_3d = array3[i].to_euler_angles();
-        let x = read_f32(&mut reader2)? as f64 * VEC_SCALE;
-        let y = read_f32(&mut reader2)? as f64 * VEC_SCALE;
-        let z = read_f32(&mut reader2)? as f64 * VEC_SCALE;
+        rotation = array3[i].to_euler_angles();
+        let mut x = read_f32(&mut reader2)? as f64 * PARSE_VEC_SCALE;
+        let mut y = read_f32(&mut reader2)? as f64 * PARSE_VEC_SCALE;
+        let mut z = read_f32(&mut reader2)? as f64 * PARSE_VEC_SCALE;
         reader2.seek(SeekFrom::Current(4))?; // Skip
+
+        if !args.legacy {
+            x *= SMD_VEC_SCALE;
+            y *= SMD_VEC_SCALE;
+            z *= SMD_VEC_SCALE;
+        }
+
+        if !args.legacy {
+            rotation.x += std::f64::consts::PI;
+        }
 
         stream.write_str(&i.to_string())?;
         stream.write_str(&format!("  {:.6}", x))?;
         stream.write_str(&format!(" {:.6}", y))?;
         stream.write_str(&format!(" {:.6}", z))?;
-        stream.write_str(&format!("  {:.6}", vector_3d.x))?;
-        stream.write_str(&format!(" {:.6}", vector_3d.y))?;
-        stream.write_str(&format!(" {:.6}\n", vector_3d.z))?;
+        stream.write_str(&format!("  {:.6}", rotation.x))?;
+        stream.write_str(&format!(" {:.6}", rotation.y))?;
+        stream.write_str(&format!(" {:.6}\n", rotation.z))?;
     }
     // Close file2
 
@@ -669,9 +699,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     if array12[m][i].is_none() {
                         num50 = 0;
                     }
-                    let vector3d = array12[num50][i].clone().unwrap().to_euler_angles();
-                    let vector3d2 = array11[num51][i].clone().unwrap();
-                    stream.write_str(&format!("{}  {:.6} {:.6} {:.6}  {:.6} {:.6} {:.6}\n", i + 1, vector3d2.x * VEC_SCALE, vector3d2.y * VEC_SCALE, vector3d2.z * VEC_SCALE, vector3d.x, vector3d.y, vector3d.z))?;
+
+
+                    let mut position = array11[num51][i].clone().unwrap();
+                    position.x *= PARSE_VEC_SCALE;
+                    position.y *= PARSE_VEC_SCALE;
+                    position.z *= PARSE_VEC_SCALE;
+                    if !args.legacy {
+                        position.x *= SMD_VEC_SCALE;
+                        position.y *= SMD_VEC_SCALE;
+                        position.z *= SMD_VEC_SCALE;
+                    }
+
+                    let mut rotation = array12[num50][i].clone().unwrap().to_euler_angles();
+                    if !args.legacy {
+                        rotation.x += std::f64::consts::PI;
+                    }
+
+                    stream.write_str(&format!("{}  {:.6} {:.6} {:.6}  {:.6} {:.6} {:.6}\n", i + 1, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z))?;
                 }
             }
         }
@@ -694,4 +739,177 @@ fn return_to_mysterious_start<R: Read + Seek>(reader: &mut R, position: i32) -> 
     let current_pos = reader.seek(SeekFrom::Current(0))?;
     reader.seek(SeekFrom::Start(((current_pos - position as u64 + 3) & WHAT as u64) + position as u64))?;
     Ok(())
+}
+
+
+fn get_mirrored_bones() -> HashMap<&'static str, &'static str> {
+    let b: HashMap<&'static str, &'static str> = [
+        // Elizabeth
+        ("CharacterWorldSpaceTM", "CharacterWorldSpaceTM"),
+        ("Scene_Root", "Scene_Root"),
+        ("GenericHumanRoot", "GenericHumanRoot"),
+        ("GenericHumanPelvis", "GenericHumanPelvis"),
+        ("GenericHumanDressBone_FR1", "GenericHumanDressBone_FL1"),
+        ("GenericHumanDressBone_FR2", "GenericHumanDressBone_FL2"),
+        ("GenericHumanDressBone_FR3", "GenericHumanDressBone_FL3"),
+        ("GenericHumanDressBone_FR4", "GenericHumanDressBone_FL4"),
+        ("GenericHumanDressBone_FR5", "GenericHumanDressBone_FL5"),
+        ("GenericHumanDressBone_R1", "GenericHumanDressBone_L1"),
+        ("GenericHumanDressBone_R2", "GenericHumanDressBone_L2"),
+        ("GenericHumanDressBone_R3", "GenericHumanDressBone_L3"),
+        ("GenericHumanDressBone_L1", "GenericHumanDressBone_R1"),
+        ("GenericHumanDressBone_L2", "GenericHumanDressBone_R2"),
+        ("GenericHumanDressBone_L3", "GenericHumanDressBone_R3"),
+        ("GenericHumanDressBone_BL1", "GenericHumanDressBone_BR1"),
+        ("GenericHumanDressBone_BL2", "GenericHumanDressBone_BR2"),
+        ("GenericHumanDressBone_BL3", "GenericHumanDressBone_BR3"),
+        ("GenericHumanDressBone_BR1", "GenericHumanDressBone_BL1"),
+        ("GenericHumanDressBone_BR2", "GenericHumanDressBone_BL2"),
+        ("GenericHumanDressBone_BR3", "GenericHumanDressBone_BL3"),
+        ("GenericHumanDressBone_FL1", "GenericHumanDressBone_FR1"),
+        ("GenericHumanDressBone_FL2", "GenericHumanDressBone_FR2"),
+        ("GenericHumanDressBone_FL3", "GenericHumanDressBone_FR3"),
+        ("GenericHumanDressBone_FL4", "GenericHumanDressBone_FR4"),
+        ("GenericHumanDressBone_FL5", "GenericHumanDressBone_FR5"),
+        ("GenericHumanLThigh", "GenericHumanRThigh"),
+        ("GenericHumanLCalf", "GenericHumanRCalf"),
+        ("GenericHumanLFoot", "GenericHumanRFoot"),
+        ("GenericHumanLToe1", "GenericHumanRToe1"),
+        ("GenericHumanRThigh", "GenericHumanLThigh"),
+        ("GenericHumanRCalf", "GenericHumanLCalf"),
+        ("GenericHumanRFoot", "GenericHumanLFoot"),
+        ("GenericHumanRToe1", "GenericHumanLToe1"),
+        ("GenericHumanSpine1", "GenericHumanSpine1"),
+        ("GenericHumanSpine2", "GenericHumanSpine2"),
+        ("GenericHumanSpine3", "GenericHumanSpine3"),
+        ("GenericHumanRibcage", "GenericHumanRibcage"),
+        ("GenericHumanBreathingBone", "GenericHumanBreathingBone"),
+        ("GenericHumanLCollarbone", "GenericHumanRCollarbone"),
+        ("GenericHumanLUpperarm1", "GenericHumanRUpperarm1"),
+        ("GenericHumanLUpperarm2", "GenericHumanRUpperarm2"),
+        ("GenericHumanLForearm1", "GenericHumanRForearm1"),
+        ("GenericHumanLForearm2", "GenericHumanRForearm2"),
+        ("GenericHumanLPalm", "GenericHumanRPalm"),
+        ("GenericHumanLDigit11", "GenericHumanRDigit11"),
+        ("GenericHumanLDigit12", "GenericHumanRDigit12"),
+        ("GenericHumanLDigit13", "GenericHumanRDigit13"),
+        ("GenericHumanLDigit21", "GenericHumanRDigit21"),
+        ("GenericHumanLDigit22", "GenericHumanRDigit22"),
+        ("GenericHumanLDigit23", "GenericHumanRDigit23"),
+        ("GenericHumanLDigit31", "GenericHumanRDigit31"),
+        ("GenericHumanLDigit32", "GenericHumanRDigit32"),
+        ("GenericHumanLDigit33", "GenericHumanRDigit33"),
+        ("GenericHumanLDigit41", "GenericHumanRDigit41"),
+        ("GenericHumanLDigit42", "GenericHumanRDigit42"),
+        ("GenericHumanLDigit43", "GenericHumanRDigit43"),
+        ("GenericHumanLDigit51", "GenericHumanRDigit51"),
+        ("GenericHumanLDigit52", "GenericHumanRDigit52"),
+        ("GenericHumanLDigit53", "GenericHumanRDigit53"),
+        ("GenericHumanRCollarbone", "GenericHumanLCollarbone"),
+        ("GenericHumanRUpperarm1", "GenericHumanLUpperarm1"),
+        ("GenericHumanRUpperarm2", "GenericHumanLUpperarm2"),
+        ("GenericHumanRForearm1", "GenericHumanLForearm1"),
+        ("GenericHumanRForearm2", "GenericHumanLForearm2"),
+        ("GenericHumanRPalm", "GenericHumanLPalm"),
+        ("L_Grip", "R_Grip"),
+        ("R_Grip", "L_Grip"),
+        ("GenericHumanRDigit11", "GenericHumanLDigit11"),
+        ("GenericHumanRDigit12", "GenericHumanLDigit12"),
+        ("GenericHumanRDigit13", "GenericHumanLDigit13"),
+        ("GenericHumanRDigit21", "GenericHumanLDigit21"),
+        ("GenericHumanRDigit22", "GenericHumanLDigit22"),
+        ("GenericHumanRDigit23", "GenericHumanLDigit23"),
+        ("GenericHumanRDigit31", "GenericHumanLDigit31"),
+        ("GenericHumanRDigit32", "GenericHumanLDigit32"),
+        ("GenericHumanRDigit33", "GenericHumanLDigit33"),
+        ("GenericHumanRDigit41", "GenericHumanLDigit41"),
+        ("GenericHumanRDigit42", "GenericHumanLDigit42"),
+        ("GenericHumanRDigit43", "GenericHumanLDigit43"),
+        ("GenericHumanRDigit51", "GenericHumanLDigit51"),
+        ("GenericHumanRDigit52", "GenericHumanLDigit52"),
+        ("GenericHumanRDigit53", "GenericHumanLDigit53"),
+        ("GenericHumanNeck", "GenericHumanNeck"),
+        ("GenericHumanHead", "GenericHumanHead"),
+        ("GenericHumanDummyHead", "GenericHumanDummyHead"),
+        ("GenericHuman_LSquint", "GenericHuman_RSquint"),
+        ("GenericHuman_l_browCJnt", "GenericHuman_r_browCJnt"),
+        ("GenericHuman_r_browBJnt", "GenericHuman_l_browBJnt"),
+        ("GenericHuman_c_uppLipJnt", "GenericHuman_c_uppLipJnt"),
+        ("GenericHuman_l_browBJnt", "GenericHuman_r_browBJnt"),
+        ("GenericHuman_l_uppLipJnt", "GenericHuman_r_uppLipJnt"),
+        ("GenericHuman_l_cornerLipJnt", "GenericHuman_r_cornerLipJnt"),
+        ("GenericHuman_r_loCheekJnt", "GenericHuman_l_loCheekJnt"),
+        ("GenericHuman_l_loCheekJnt", "GenericHuman_r_loCheekJnt"),
+        ("GenericHuman_C_jawJnt", "GenericHuman_C_jawJnt"),
+        ("GenericHuman_C_chinJnt", "GenericHuman_C_chinJnt"),
+        ("GenericHuman_r_loLipJnt", "GenericHuman_l_loLipJnt"),
+        ("GenericHuman_c_loLipJnt", "GenericHuman_c_loLipJnt"),
+        ("GenericHuman_l_loLipJnt", "GenericHuman_r_loLipJnt"),
+        ("GenericHuman_C_tongue_a_Jnt", "GenericHuman_C_tongue_a_Jnt"),
+        ("GenericHuman_C_tongue_b_Jnt", "GenericHuman_C_tongue_b_Jnt"),
+        ("GenericHuman_l_nostrilJnt", "GenericHuman_r_nostrilJnt"),
+        ("GenericHuman_r_uppCheekJnt", "GenericHuman_l_uppCheekJnt"),
+        ("GenericHuman_r_nostrilJnt", "GenericHuman_l_nostrilJnt"),
+        ("GenericHuman_l_uppCheekJnt", "GenericHuman_r_uppCheekJnt"),
+        ("GenericHuman_l_uppLidJnt", "GenericHuman_r_uppLidJnt"),
+        ("GenericHuman_l_loLidJnt", "GenericHuman_r_loLidJnt"),
+        ("GenericHuman_r_loLidJnt", "GenericHuman_l_loLidJnt"),
+        ("GenericHuman_r_uppLidJnt", "GenericHuman_l_uppLidJnt"),
+        ("GenericHuman_l_EyeJnt", "GenericHuman_r_EyeJnt"),
+        ("GenericHuman_r_browCJnt", "GenericHuman_l_browCJnt"),
+        ("GenericHuman_r_browAJnt", "GenericHuman_l_browAJnt"),
+        ("GenericHuman_l_browAJnt", "GenericHuman_r_browAJnt"),
+        ("GenericHuman_C_forehead", "GenericHuman_C_forehead"),
+        ("GenericHuman_RSquint", "GenericHuman_LSquint"),
+        ("GenericHuman_R_InnerCheek", "GenericHuman_L_InnerCheek"),
+        ("GenericHuman_L_InnerCheek", "GenericHuman_R_InnerCheek"),
+        ("GenericHuman_r_EyeJnt", "GenericHuman_l_EyeJnt"),
+        ("GenericHuman_r_uppLipJnt", "GenericHuman_l_uppLipJnt"),
+        ("GenericHuman_r_cornerLipJnt", "GenericHuman_l_cornerLipJnt"),
+        ("GenericHuman_BackHair01", "GenericHuman_BackHair01"),
+        ("GenericHuman_BackHair02", "GenericHuman_BackHair02"),
+        ("GenericHuman_PonyTail01", "GenericHuman_PonyTail01"),
+        ("GenericHuman_PonyTail02", "GenericHuman_PonyTail02"),
+        ("GenericHuman_PonyTail03", "GenericHuman_PonyTail03"),
+        ("GenericHuman_LHair01", "GenericHuman_RHair01"),
+        ("GenericHuman_LHair02", "GenericHuman_RHair02"),
+        ("GenericHuman_RHair01", "GenericHuman_LHair01"),
+        ("GenericHuman_RHair02", "GenericHuman_LHair02"),
+        ("GenericHuman_RFaceHair01", "GenericHuman_LFaceHair01"),
+        ("GenericHuman_RFaceHair02", "GenericHuman_LFaceHair02"),
+        ("GenericHuman_LFaceHair01", "GenericHuman_RFaceHair01"),
+        ("GenericHuman_LFaceHair02", "GenericHuman_RFaceHair02"),
+        ("GenericHuman_FrontHair01", "GenericHuman_FrontHair01"),
+        ("GenericHuman_FrontHair02", "GenericHuman_FrontHair02"),
+        ("TrajectoryBone", "TrajectoryBone"),
+
+        // idk, other chumps
+        ("GenMaleRoot", "GenMaleRoot"),
+        ("GenericHumanPelvis_offset", "GenericHumanPelvis_offset"),
+        ("Back_Grip", "Back_Grip"),
+        ("GenericHumanLFoot_IKTarget", "GenericHumanRFoot_IKTarget"),
+        ("GenericHumanRFoot_IKTarget", "GenericHumanLFoot_IKTarget"),
+        ("GenericHumanLPalm_IKTarget", "GenericHumanRFoot_IKTarget"),
+        ("GenericHumanRPalm_IKTarget", "GenericHumanLFoot_IKTarget"),
+        ("GenericHumanLUpperarm", "GenericHumanRUpperarm"),
+        ("GenericHumanRUpperarm", "GenericHumanLUpperarm"),
+        ("GenericHumanLPalm_WpnIKTarget", "GenericHumanRPalm_WpnIKTarget"),
+        ("GenericHumanRPalm_WpnIKTarget", "GenericHumanLPalm_WpnIKTarget"),
+
+        // idk, skyhook
+        ("Particle_View_01", "Particle_View_01"),
+        ("HookPARENT", "HookPARENT"),
+        ("Bone_Body", "Bone_Body"),
+        ("Bone_BodyGear", "Bone_BodyGear"),
+        ("Bone_HookParent", "Bone_HookParent"),
+        ("Bone_ROT", "Bone_ROT"),
+        ("Bone_Hook3", "Bone_Hook3"),
+        ("Bone_Hook1", "Bone_Hook1"),
+        ("Bone_Hook2", "Bone_Hook2"),
+        ("Bone_HookGear", "Bone_HookGear"),
+    ].iter()
+        .cloned()
+        .collect();
+
+    b
 }
