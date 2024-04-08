@@ -78,17 +78,26 @@ The scripts have some hardcoded configuration, but they work:
 This tool converts Morpheme animations (`MorphemeAnimSet` and .`MorphemeAnimSequence`) to Source SMD files (`smd`).
 It only supports a few specific types of animations, but it works for the animations I cared to extract.
 
-It was published on August 29th, 2016 by a mysterious character named [id-dameon on the Zenhax forums](https://web.archive.org/web/20230429095935/https://zenhax.com/viewtopic.php?f=5&t=3009).
-The entire forum seems to be gone, but I've preserved the original executable in this repo (`asset_tools/animations/bsi_anim.exe`).
-I'm not even sure if id-dameon knew the format, they probably reverse engineered it from the game's assembly.
-It's incredibly mysterious to me, but it works.
+The original executable was published on August 29th, 2016 by a mysterious character named [id-dameon on the Zenhax forums](https://web.archive.org/web/20230429095935/https://zenhax.com/viewtopic.php?f=5&t=3009).
+The entire forum seems to be gone now, but I still have my local copy.
+In an effort to improve the tool, I have decompiled it and rewritten it in rust.
+It now runs faster and looks way less suspicious now that I have full control of the code.
 
-The original executable is a harmless C# program that reads the binary protocol and outputs SMD files.
-In an attempt to improve (or at least open source) the tool, I've decompiled it with ILSpy and translated it to rust.
-It now runs 10x faster than the original.
-It's an absolute mess of code, but it is able to traverse the undocumented Morpheme binary format.
+The code is chaotic as it originates from decompiled/obfuscated C#.
+I'm not even sure if id-dameon knew the Morpheme format when making it, he probably reverse engineered it from the game's assembly.
+It's incredibly mysterious to me, but it is able to traverse the undocumented Morpheme binary format.
+
+I have added a better CLI interface, as well as some logic that makes it work with Blender's SMD importer.
 
 Directory: `bsi_anim`
+
+Usage: `bsi_anim.exe ./path/to/your/animation.MorphemeAnimSequence`
+
+Optional flag: `-l` / `--legacy` - Uses the original program output
+
+Point it to a `.MorphemeAnimSequence` file and it will output a `.smd` file in that same directory.
+It does require the `MorphemeAnimSet` file to be in the parent directory, but it will find it automatically.
+If you've used the UModel exporter, they should already be unpacked in this folder structure.
 
 # Questions / Suggestions
 
