@@ -78,15 +78,12 @@ The scripts have some hardcoded configuration, but they work:
 This tool converts Morpheme animations (`MorphemeAnimSet` and .`MorphemeAnimSequence`) to Source SMD files (`smd`).
 It only supports a few specific types of animations, but it works for the animations I cared to extract.
 
-The original executable was published on August 29th, 2016 by a mysterious character named [id-dameon on the Zenhax forums](https://web.archive.org/web/20230429095935/https://zenhax.com/viewtopic.php?f=5&t=3009).
-The entire forum seems to be gone now, but I still have my local copy.
-In an effort to improve the tool, I have decompiled it and rewritten it in rust.
-It now runs faster and looks way less suspicious now that I have full control of the code.
+The original executable was written in C# and published on August 29th, 2016 by [id-dameon on the Zenhax forums](https://web.archive.org/web/20230429095935/https://zenhax.com/viewtopic.php?f=5&t=3009).
+The Zenhax forum is no longer online, but [id-dameon is still an active member on ResHax](https://reshax.com/profile/8-id-daemon).
+Without any documentation or source code, he reverse engineered the animation data from the Morpheme files to create the tool.
 
-The code is chaotic as it originates from decompiled/obfuscated C#.
-I'm not even sure if id-dameon knew the Morpheme format when making it, he probably reverse engineered it from the game's assembly.
-It's incredibly mysterious to me, but it is able to traverse the undocumented Morpheme binary format.
-
+In an effort to improve and preserve the tool, I have decompiled it and rewritten it in rust.
+The code is chaotic as it originates from decompiled/obfuscated C#, but it works.
 I have added a better CLI interface, as well as some logic that makes it work with Blender's SMD importer.
 
 Directory: `bsi_anim`
