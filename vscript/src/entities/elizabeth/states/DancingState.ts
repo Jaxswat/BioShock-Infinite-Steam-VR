@@ -7,7 +7,8 @@ export default class DancingState extends LizState {
     }
 
     public enter(): void {
-        // Do nothing
+        this.liz.getEntity().ResetSequence("dancing");
+        this.liz.getEmotion().setSmile(1.0);
     }
 
     public exit(): void {

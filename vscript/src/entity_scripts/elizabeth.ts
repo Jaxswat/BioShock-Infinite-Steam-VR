@@ -12,10 +12,9 @@ let poseDelta: TickDelta;
 
 export function Spawn(this: void, entityKeyValues: any) {
     liz = new Elizabeth(thisEntity);
+
     tickDelta = new TickDelta();
     poseDelta = new TickDelta();
-
-    liz.spawn();
     liz.getEntity().SetThink(ThinkLogic, "logic", logicUpdateRate);
     liz.getEntity().SetThink(ThinkPose, "pose", poseUpdateRate);
 }

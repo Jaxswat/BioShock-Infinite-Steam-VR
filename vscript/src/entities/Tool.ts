@@ -1,24 +1,38 @@
+import BioshockEntity from "./BioshockEntity";
 
-export default interface Tool {
+export default abstract class Tool extends BioshockEntity {
+	protected constructor(entity: CDestinationsPropTool) {
+		super(entity);
+	}
+
+	public getEntity(): CDestinationsPropTool {
+		return this.entity as CDestinationsPropTool;
+	}
+
 	/**
 	 * Called before the tool activates to precache resources.
 	 * Lua: Precache()
 	 * @param context 
 	 */
-	precache(context: any): void;
+	public precache(context: any): void {
+
+	}
 
 	/**
 	 * Called when the tool is activated/spawned.
 	 * Lua: OnActivate()
 	 */
-	activate(): void;
+	public activate(): void {
+
+	}
 
 	/**
 	 * Called every update.
 	 * Return next think time.
 	 * Lua: SetThink(...)
 	 */
-	think(): number;
+	public update(delta: number): void {
+	}
 	
 	/**
 	 * Called when the tool is picked up.
@@ -29,14 +43,18 @@ export default interface Tool {
 	 * @param handAttachment ref to hand attachment 
 	 * @param player player
 	 */
-	equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean;
+	public equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean {
+		return true;
+	}
 
 	/**
 	 * Called when the tool is dropped.
 	 * Return true if tool should be dropped.
 	 * Lua: SetUnequipped()
 	 */
-	drop(): boolean;
+	public drop(): boolean {
+		return true;
+	}
 
 	/**
 	 * Called on controller input.
@@ -44,5 +62,7 @@ export default interface Tool {
 	 * Return original or modified input.
 	 * @param input input data
 	 */
-	handleInput(input: CHandInputData): CHandInputData
+	public handleInput(input: CHandInputData): CHandInputData {
+		return input;
+	}
 }

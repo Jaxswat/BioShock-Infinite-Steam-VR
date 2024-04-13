@@ -1,9 +1,7 @@
 import Tool from "../Tool";
 import TickDelta from "../../utils/TickDelta";
 
-export default class Skyhook implements Tool {
-	private entity: CDestinationsPropTool;
-
+export default class Skyhook extends Tool {
 	private isEquipped: boolean = false;
 	private hand: CPropVRHand | null = null;
 	private handID: number = -1;
@@ -37,7 +35,7 @@ export default class Skyhook implements Tool {
 	private equippedAt = 0;
 
 	constructor(entity: CDestinationsPropTool) {
-		this.entity = entity;
+		super(entity);
 		this.tickDelta = new TickDelta();
 	}
 
@@ -47,14 +45,15 @@ export default class Skyhook implements Tool {
 	}
 
 	public activate() {
-		const attachmentID = this.entity.ScriptLookupAttachment( "hooks_attach" );
-		const spawnPosition = this.entity.GetAttachmentOrigin( attachmentID );
+		const entity = this.getEntity();
+		const attachmentID = entity.ScriptLookupAttachment( "hooks_attach" );
+		const spawnPosition = entity.GetAttachmentOrigin( attachmentID );
 
 		const hooksSpawnInfo: EntitySpawnInfo & any = {
 			targetname: "hooks",
 			model: this.skyhookHooksModel,
 			origin: spawnPosition,
-			angles: this.entity.GetAngles(),
+			angles: entity.GetAngles(),
 			solid: 1, // disable collisions
 			DefaultAnim: "",
 			Collisions: "Solid",
@@ -62,7 +61,7 @@ export default class Skyhook implements Tool {
 		}
 
 		this.hooksAttachment = SpawnEntityFromTableSynchronous( "prop_dynamic", hooksSpawnInfo ) as CBaseAnimating;
-		this.hooksAttachment.SetParent( this.entity, this.skyhookHooksAttachmentPointName );
+		this.hooksAttachment.SetParent( entity, this.skyhookHooksAttachmentPointName );
 
 		this.hooksAttachment.SetLocalOrigin( Vector(0, 0, 0) );
 		this.hooksAttachment.SetLocalAngles( 0, 90, 0 );
@@ -124,7 +123,7 @@ export default class Skyhook implements Tool {
 	}
 
 	public drop(): boolean {
-		this.hooksAttachment!.SetParent(this.entity, this.skyhookHooksAttachmentPointName);
+		this.hooksAttachment!.SetParent(this.getEntity(), this.skyhookHooksAttachmentPointName);
 		this.hooksAttachment!.SetLocalOrigin(Vector(0, 0, 0));
 		this.hooksAttachment!.SetLocalAngles(0, 90, 0);
 
@@ -152,7 +151,7 @@ export default class Skyhook implements Tool {
 			input.buttonsReleased.ClearBit(IN_GRIP);
 
 			// Drop the tool when grip is pressed
-			this.entity.ForceDropTool();
+			this.getEntity().ForceDropTool();
 		}
 
 		if (this.disableSpinning && input.triggerValue == 0 && (Time() - this.equippedAt) > this.disableSpinningSeconds) {

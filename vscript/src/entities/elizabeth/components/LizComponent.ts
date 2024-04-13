@@ -3,7 +3,7 @@ import Elizabeth from "../Elizabeth";
 export default abstract class LizComponent {
     protected liz: Elizabeth;
 
-    constructor(liz: Elizabeth) {
+    public constructor(liz: Elizabeth) {
         this.liz = liz;
     }
 

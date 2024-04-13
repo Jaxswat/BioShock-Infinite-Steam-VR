@@ -1,24 +1,25 @@
 import {PlayerConnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
 import {LizEvent, LizEventManager} from "./elizabeth/lizEvents";
+import BioshockEntity from "./BioshockEntity";
 
-export default class BioshockPlayer {
+export default class BioshockPlayer extends BioshockEntity {
     private connectEvent: PlayerConnectEvent;
     private steamID: number;
     private name: string;
     private userID: number;
-    private entity: CBasePlayer | null;
 
     private weaponCheckTimer: Timer;
     private lizReadyTimer: Timer;
     private lizReadyClicks: number;
 
     public constructor(connectEvent: PlayerConnectEvent) {
+        super(null as any as CBasePlayer);
+
         this.connectEvent = connectEvent;
         this.steamID = this.connectEvent.xuid;
         this.name = this.connectEvent.name;
         this.userID = this.connectEvent.userid
-        this.entity = null;
 
         this.weaponCheckTimer = new Timer(0.2);
         this.lizReadyTimer = new Timer(0.75);
@@ -41,8 +42,8 @@ export default class BioshockPlayer {
         return this.userID;
     }
 
-    public getEntity(): CBasePlayer | null {
-        return this.entity;
+    public getEntity(): CBasePlayer {
+        return this.entity as CBasePlayer;
     }
 
     public setEntity(entity: CBasePlayer) {
@@ -77,7 +78,8 @@ export default class BioshockPlayer {
      * Called every update. Entity will always be set before this is called.
      */
     public update(delta: number): void {
-        const currentPress = this.entity!.IsVRControllerButtonPressed(IN_USE_HAND0) || this.entity!.IsVRControllerButtonPressed(IN_USE_HAND1);
+        const entity = this.getEntity();
+        const currentPress = entity.IsVRControllerButtonPressed(IN_USE_HAND0) || entity.IsVRControllerButtonPressed(IN_USE_HAND1);
         if (currentPress !== this.lastPress && currentPress) {
             this.lizReadyClicks++;
             if (this.lizReadyClicks == 2) {
@@ -118,7 +120,7 @@ export default class BioshockPlayer {
     }
 
     private getToolInHand(handID: number): CDestinationsPropTool | null {
-        const hand = this.entity!.GetHMDAvatar()!.GetVRHand(handID);
+        const hand = this.getEntity().GetHMDAvatar()!.GetVRHand(handID);
         if (hand === null) {
             return null;
         }
