@@ -1,7 +1,7 @@
 import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LizSpeechClip} from "../speechConfig";
-import Timer from "../../utils/Timer";
+import Timer from "../../../utils/Timer";
 
 export default class SpeechComponent extends LizComponent {
     private speakerEntity: CBaseEntity;

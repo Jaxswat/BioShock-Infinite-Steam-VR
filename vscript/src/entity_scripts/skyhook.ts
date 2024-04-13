@@ -1,4 +1,4 @@
-import Skyhook from "../weapons/Skyhook";
+import Skyhook from "../entities/weapons/Skyhook";
 
 export const __BundleAsGameScript = null;
 

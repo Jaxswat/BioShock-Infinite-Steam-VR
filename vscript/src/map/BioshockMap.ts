@@ -1,4 +1,4 @@
-import { Skyline } from '../skyline/skyline';
+import { Skyline } from '../entities/skyline/skyline';
 import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";

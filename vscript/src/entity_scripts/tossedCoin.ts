@@ -1,4 +1,4 @@
-import {LizEvent, LizEventManager} from "../elizabeth/lizEvents";
+import {LizEvent, LizEventManager} from "../entities/elizabeth/lizEvents";
 
 export const __BundleAsGameScript = null;
 

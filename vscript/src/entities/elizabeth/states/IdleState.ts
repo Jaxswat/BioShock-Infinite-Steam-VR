@@ -1,6 +1,6 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
-import Timer from "../../utils/Timer";
+import Timer from "../../../utils/Timer";
 
 export default class IdleState extends LizState {
 

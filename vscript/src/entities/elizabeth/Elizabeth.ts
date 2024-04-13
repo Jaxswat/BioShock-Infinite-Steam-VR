@@ -6,7 +6,6 @@ import {getSpeechClip, LizSpeechTag} from "./speechConfig";
 import IdleState from "./states/IdleState";
 import ThrowingState from "./states/ThrowingState";
 import {LizStateName} from "./states/LizState";
-import Timer from "../utils/Timer";
 import {LizStateManager} from "./states/LizStateManager";
 import LookAtComponent from "./components/LookAtComponent";
 import EmotionComponent from "./components/EmotionComponent";

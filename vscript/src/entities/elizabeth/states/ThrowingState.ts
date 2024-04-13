@@ -1,10 +1,10 @@
 import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {getClipByName, getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../speechConfig";
-import {sqrMagnitude} from "../../utils/Math";
+import {sqrMagnitude} from "../../../utils/Math";
 import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
 import {LizStateManager} from "./LizStateManager";
-import Timer from "../../utils/Timer";
+import Timer from "../../../utils/Timer";
 
 enum ThrowingStateName {
     Waiting = 'waiting',

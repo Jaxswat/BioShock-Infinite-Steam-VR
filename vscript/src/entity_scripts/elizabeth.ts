@@ -1,5 +1,4 @@
-import Elizabeth from "../elizabeth/Elizabeth";
-import { LizEventManager, LizEvent } from "../elizabeth/lizEvents";
+import Elizabeth from "../entities/elizabeth/Elizabeth";
 import TickDelta from "../utils/TickDelta";
 
 export const __BundleAsGameScript = null;

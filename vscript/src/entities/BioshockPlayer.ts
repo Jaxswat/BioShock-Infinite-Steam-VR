@@ -1,6 +1,6 @@
 import {PlayerConnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
-import {LizEvent, LizEventManager} from "../elizabeth/lizEvents";
+import {LizEvent, LizEventManager} from "./elizabeth/lizEvents";
 
 export default class BioshockPlayer {
     private connectEvent: PlayerConnectEvent;

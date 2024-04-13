@@ -1,5 +1,5 @@
 import {BioshockMap} from "./BioshockMap";
-import {Skyline} from "../skyline/skyline";
+import {Skyline} from "../entities/skyline/skyline";
 
 export default class BattleshipBayMap extends BioshockMap {
     private readonly skylineOrigin = Vector(6450.64, -3950.89, 1500.97);

@@ -1,5 +1,5 @@
-import Tool from "../tools/Tool";
-import TickDelta from "../utils/TickDelta";
+import Tool from "../Tool";
+import TickDelta from "../../utils/TickDelta";
 
 export default class Skyhook implements Tool {
 	private entity: CDestinationsPropTool;
