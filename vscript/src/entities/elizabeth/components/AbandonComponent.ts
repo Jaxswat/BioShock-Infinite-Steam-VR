@@ -8,6 +8,7 @@ import {LineTrace} from "../../../utils/Trace";
  */
 export default class AbandonComponent extends LizComponent {
     private readonly maxAbandonSeconds = 3;
+    private readonly maxAbandonDistance = 500;
     private abandonTimer: Timer;
 
     public constructor(liz: Elizabeth) {
@@ -16,11 +17,11 @@ export default class AbandonComponent extends LizComponent {
     }
 
     public update(delta: number) {
-        const isPlayerLooking = this.liz.isPlayerLooking();
-        if (isPlayerLooking) {
-            this.abandonTimer.resetTime();
-        } else {
+        const distanceToPlayer = VectorDistance(this.liz.getPlayer().GetAbsOrigin(), this.liz.getPosition());
+        if (distanceToPlayer > this.maxAbandonDistance && !this.liz.isPlayerLooking()) {
             this.abandonTimer.tick(delta);
+        } else {
+            this.abandonTimer.resetTime();
         }
 
         if (this.abandonTimer.isDone()) {
