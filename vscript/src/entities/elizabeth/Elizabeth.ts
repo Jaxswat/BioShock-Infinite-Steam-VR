@@ -12,6 +12,7 @@ import SpeechComponent from "./components/SpeechComponent";
 import BioshockEntity from "../BioshockEntity";
 import AbandonComponent from "./components/AbandonComponent";
 import {LineTrace} from "../../utils/Trace";
+import PlayerLookingComponent from "./components/PlayerLookingComponent";
 
 export default class Elizabeth extends BioshockEntity {
 	private animController: LizAnimationController;
@@ -21,14 +22,11 @@ export default class Elizabeth extends BioshockEntity {
 	private currentSpeed = 0;
 
 	private player: CBasePlayer;
-	private readonly playerFovDegrees = 120;
-	private readonly playerMaxDistanceLineOfSight = 1500;
-	private playerLooking: boolean;
-	private playerLookingCalculated: boolean;
 
 	private headOffset: number;
 
 	private speech: SpeechComponent;
+	private playerLooking: PlayerLookingComponent;
 	private floorSnap: FloorSnapComponent;
 	private lookAt: LookAtComponent;
 	private emotion: EmotionComponent;
@@ -45,10 +43,9 @@ export default class Elizabeth extends BioshockEntity {
 		this.animController = new LizAnimationController(entity);
 
 		this.player = Entities.GetLocalPlayer();
-		this.playerLooking = false;
-		this.playerLookingCalculated = false;
 
 		this.speech = new SpeechComponent(this);
+		this.playerLooking = new PlayerLookingComponent(this);
 		this.floorSnap = new FloorSnapComponent(this, true);
 		this.lookAt = new LookAtComponent(this);
 		this.emotion = new EmotionComponent(this);
@@ -70,8 +67,8 @@ export default class Elizabeth extends BioshockEntity {
 			this.player = Entities.GetLocalPlayer();
 		}
 
-		this.playerLookingCalculated = false;
 		this.speech.update(delta);
+		this.playerLooking.update(delta);
 		this.floorSnap.update(delta);
 		this.abandon.update(delta);
 		this.stateManager.update(delta);
@@ -197,56 +194,13 @@ export default class Elizabeth extends BioshockEntity {
 		return Vector(pos.x, pos.y, pos.z + this.headOffset);
 	}
 
-	/**
-	 * Calculates if the player is looking at Elizabeth.
-	 * Computed in order of the least complexity: distance, fov, line of sight trace.
-	 */
-	private calculatePlayerLooking(): boolean {
-		const hmd = this.player.GetHMDAvatar()!;
-		const playerPos = hmd.GetAbsOrigin();
-		const playerForward = hmd.GetForwardVector();
 
-		const lizPos = this.getHeadPosition();
-		const lizDirection = subVector(lizPos, playerPos);
-		const lizDistance = lizDirection.Length();
-
-		// LOS distance check
-		if (lizDistance > this.playerMaxDistanceLineOfSight) {
-			return false;
-		}
-
-		const lizDirectionNormalized = lizDirection.Normalized();
-
-		const dotProduct = playerForward.Dot(lizDirectionNormalized);
-		const angleInRadians = Math.acos(dotProduct);
-		const angleInDegrees = (angleInRadians * 180) / Math.PI;
-
-		// FOV check
-		if (angleInDegrees > this.playerFovDegrees / 2) {
-			return false;
-		}
-
-		const trace = new LineTrace(playerPos, lizPos);
-		trace.setIgnoreEntity(this.player);
-
-		// Trace check
-		const traceResult = trace.run();
-		const hasObstacle = traceResult.getFraction() < 0.9;
-		return !hasObstacle;
-	}
 
 	/**
 	 * Returns true if the player is looking at Elizabeth.
-	 * Result is cached per tick.
 	 */
 	public isPlayerLooking(): boolean {
-		if (!this.playerLookingCalculated) {
-			this.playerLooking = this.calculatePlayerLooking();
-			this.playerLookingCalculated = true;
-		}
-
-
 		// DebugDrawLine(this.player.GetHMDAvatar()!.GetAbsOrigin(), this.getHeadPosition(), this.playerLooking ? 0 : 255, this.playerLooking ? 255 : 0, 0, false, 0.1);
-		return this.playerLooking;
+		return this.playerLooking.isLooking();
 	}
 }
