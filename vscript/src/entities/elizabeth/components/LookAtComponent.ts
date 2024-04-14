@@ -2,7 +2,6 @@ import Elizabeth from "../Elizabeth";
 import LizComponent from "./LizComponent";
 
 export default class LookAtComponent extends LizComponent {
-    private enabled: boolean;
     private target: Vector;
 
     public constructor(liz: Elizabeth) {
@@ -13,10 +12,6 @@ export default class LookAtComponent extends LizComponent {
     }
 
     public updatePose(delta: number) {
-        if (!this.enabled) {
-            return;
-        }
-
         const lizEntity = this.liz.getEntity();
         const lizPos = lizEntity.GetAbsOrigin();
         const lizFwd = lizEntity.GetForwardVector();
@@ -66,14 +61,6 @@ export default class LookAtComponent extends LizComponent {
 
         lizEntity.SetPoseParameter("eyes_pitch", headPitch/2);
         lizEntity.SetPoseParameter("eyes_yaw", -headYaw/2);
-    }
-
-    public isEnabled(): boolean {
-        return this.enabled;
-    }
-
-    public setEnabled(enabled: boolean) {
-        this.enabled = enabled;
     }
 
     public getTarget(): Vector {

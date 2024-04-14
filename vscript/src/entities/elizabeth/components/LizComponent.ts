@@ -1,23 +1,11 @@
 import Elizabeth from "../Elizabeth";
+import {BioshockEntityComponent} from "../../BioshockEntityComponent";
 
-export default abstract class LizComponent {
+export default abstract class LizComponent extends BioshockEntityComponent {
     protected liz: Elizabeth;
 
     public constructor(liz: Elizabeth) {
+        super();
         this.liz = liz;
-    }
-
-    /**
-     * Called every tick
-     */
-    public update(delta: number): void {
-
-    }
-
-    /**
-     * Called every frame to update the animations/poses smoothly
-     */
-    public updatePose(delta: number): void {
-
     }
 }

@@ -13,6 +13,7 @@ import BioshockEntity from "../BioshockEntity";
 import AbandonComponent from "./components/AbandonComponent";
 import {LineTrace} from "../../utils/Trace";
 import PlayerLookingComponent from "./components/PlayerLookingComponent";
+import {BioshockEntityComponentManager} from "../BioshockEntityComponent";
 
 export default class Elizabeth extends BioshockEntity {
 	private animController: LizAnimationController;
@@ -51,6 +52,13 @@ export default class Elizabeth extends BioshockEntity {
 		this.emotion = new EmotionComponent(this);
 		this.abandon = new AbandonComponent(this);
 
+		this.components.add(this.speech);
+		this.components.add(this.playerLooking);
+		this.components.add(this.floorSnap);
+		this.components.add(this.lookAt);
+		this.components.add(this.emotion);
+		this.components.add(this.abandon);
+
 		this.stateManager = new LizStateManager("Elizabeth");
 		this.stateManager.addState(new IdleState(this));
 		this.stateManager.addState(new ThrowingState(this));
@@ -68,10 +76,7 @@ export default class Elizabeth extends BioshockEntity {
 			return;
 		}
 
-		this.speech.update(delta);
-		this.playerLooking.update(delta);
-		this.floorSnap.update(delta);
-		this.abandon.update(delta);
+		this.components.update(delta);
 		this.stateManager.update(delta);
 
 		if (this.stateManager.getCurrentState()!.isCompleted()) {
@@ -128,8 +133,7 @@ export default class Elizabeth extends BioshockEntity {
 	}
 
 	public updatePose(delta: number) {
-		this.lookAt.updatePose(delta);
-		this.emotion.updatePose(delta);
+		this.components.updatePose(delta);
 	}
 
 	private getPlayerByUserID(userID: number): CBasePlayer | null {

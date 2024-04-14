@@ -2,9 +2,12 @@ import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LineTrace, TraceResult} from "../../../utils/Trace";
 
+/**
+ * Component that snaps Elizabeth's position to the floor so that she isn't floatin' around.
+ *
+ * Component order may matter for this since an entity's position can only be set once per tick.
+ */
 export default class FloorSnapComponent extends LizComponent {
-    private enabled: boolean;
-
     public constructor(liz: Elizabeth, enabled: boolean) {
         super(liz);
         this.enabled = enabled;
@@ -25,14 +28,6 @@ export default class FloorSnapComponent extends LizComponent {
         	lizEntity.SetAbsOrigin(Vector(lizPos.x, lizPos.y, floorPos.z));
             this.enabled = false; // Once snapped, turn off snapping until re-enabled externally
         }
-    }
-
-    public isEnabled(): boolean {
-        return this.enabled;
-    }
-
-    public setEnabled(enabled: boolean): void {
-        this.enabled = enabled;
     }
 
     private getFloorPosition(): TraceResult {
