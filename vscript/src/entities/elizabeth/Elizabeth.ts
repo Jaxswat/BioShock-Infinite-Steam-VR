@@ -11,6 +11,7 @@ import FloorSnapComponent from "./components/FloorSnapComponent";
 import SpeechComponent from "./components/SpeechComponent";
 import BioshockEntity from "../BioshockEntity";
 import AbandonComponent from "./components/AbandonComponent";
+import {LineTrace} from "../../utils/Trace";
 
 export default class Elizabeth extends BioshockEntity {
 	private animController: LizAnimationController;
@@ -125,27 +126,23 @@ export default class Elizabeth extends BioshockEntity {
 
 	private isLookingAtLiz(player: CBasePlayer): boolean {
 		const head = player.GetHMDAvatar()!;
-		const startVector = head.GetAbsOrigin();
-		const traceTable: TraceTable = {
-			startpos: startVector,
-			endpos: addVector(startVector, mulVector(head.GetForwardVector(), 1000 as Vector)),
-			ignore: head,
-			mask: 33636363 // TRACE_MASK_PLAYER_SOLID from L4D2 script API, may not be correct for Source 2.
-		};
+		const startPosition = head.GetAbsOrigin();
+		const endPosition = addVector(startPosition, mulVector(head.GetForwardVector(), 1000 as Vector));
+		const trace = new LineTrace(startPosition, endPosition);
+		trace.setIgnoreEntity(head);
 
-		TraceLine(traceTable)
-
-		const leftPos = RotatePosition(traceTable.startpos, QAngle(0, -45, 0), traceTable.endpos);
-		const rightPos = RotatePosition(traceTable.startpos, QAngle(0, 45, 0), traceTable.endpos);
-		DebugDrawLine(startVector, leftPos, 255, 0, 0, false, 4);
-		DebugDrawLine(startVector, rightPos, 255, 0, 0, false, 4);
+		const leftPos = RotatePosition(startPosition, QAngle(0, -45, 0), endPosition);
+		const rightPos = RotatePosition(startPosition, QAngle(0, 45, 0), endPosition);
+		DebugDrawLine(startPosition, leftPos, 255, 0, 0, false, 4);
+		DebugDrawLine(startPosition, rightPos, 255, 0, 0, false, 4);
 
 
-		if (!traceTable.hit) {
+		const traceResult = trace.run();
+		if (!traceResult.hasHit()) {
 			return false;
 		}
 
-		return traceTable.enthit !== null && traceTable.enthit!.HasAttribute("is_liz");
+		return traceResult.hasEntityHit() && traceResult.getEntityHit()!.HasAttribute("is_liz");
 	}
 
 	private onPlayerReady(event: PlayerReadyEvent) {

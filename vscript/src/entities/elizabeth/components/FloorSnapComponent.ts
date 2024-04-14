@@ -1,5 +1,6 @@
 import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
+import {LineTrace, TraceResult} from "../../../utils/Trace";
 
 export default class FloorSnapComponent extends LizComponent {
     private enabled: boolean;
@@ -14,7 +15,10 @@ export default class FloorSnapComponent extends LizComponent {
             return;
         }
 
-        const [floorPos, floorHit] = this.getFloorPosition();
+        const traceResult = this.getFloorPosition();
+        const floorHit = traceResult.hasHit()
+        const floorPos = traceResult.getHitPosition();
+
         if (floorHit) {
             const lizEntity = this.liz.getEntity();
             const lizPos = lizEntity.GetAbsOrigin();
@@ -30,22 +34,12 @@ export default class FloorSnapComponent extends LizComponent {
         this.enabled = enabled;
     }
 
-    private getFloorPosition(): LuaMultiReturn<[pos: Vector, hit: boolean]> {
+    private getFloorPosition(): TraceResult {
         const lizEntity = this.liz.getEntity();
-        let startVector = lizEntity.GetCenter();
-        let traceTable: TraceTable = {
-            startpos: startVector,
-            endpos: addVector(startVector, Vector(0, 0, -1000)),
-            ignore: lizEntity,
-            mask: 33636363 // TRACE_MASK_PLAYER_SOLID from L4D2 script API, may not be correct for Source 2.
-        };
+        const startVector = lizEntity.GetCenter();
+        const trace = new LineTrace(startVector, addVector(startVector, Vector(0, 0, -1000)));
+        trace.setIgnoreEntity(lizEntity);
 
-        TraceLine(traceTable)
-
-        if (!traceTable.hit) {
-            return $multi(Vector(), false);
-        }
-
-        return $multi(traceTable.pos!, traceTable.hit);
+        return trace.run();
     }
 }
