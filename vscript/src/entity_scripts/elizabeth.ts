@@ -3,8 +3,8 @@ import TickDelta from "../utils/TickDelta";
 
 export const __BundleAsGameScript = null;
 
-const logicUpdateRate = 60 / 1000; // Regular think logic can be slower
-const poseUpdateRate = 100 / 1000; // Higher because pose updates need to be smooth
+const logicUpdateRate = 1 / 15; // 15 tps. Regular think logic can be slower.
+const poseUpdateRate = 1 / 100; // 100 tps. Higher because pose updates need to be smooth.
 
 let liz: Elizabeth;
 let tickDelta: TickDelta;

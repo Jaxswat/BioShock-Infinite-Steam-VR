@@ -25,7 +25,7 @@ export default class Skyhook extends Tool {
 	private isSpinning = false;
 
 	private tickDelta: TickDelta;
-	private hookUpdateRate = 0.015;
+	private hookUpdateRate = 1 / 30 // 30 tps;
 
 	/**
 	 * Prevent spinning when picked up
