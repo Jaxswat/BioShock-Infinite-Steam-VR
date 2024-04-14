@@ -108,7 +108,7 @@ class ThrowWaitingState extends ThrowBaseState {
             return;
         }
 
-        this.throwReady = true;
+        this.throwReady = this.liz.isPlayerLooking();
     }
 }
 

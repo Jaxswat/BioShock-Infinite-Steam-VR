@@ -21,6 +21,12 @@ export default class Elizabeth extends BioshockEntity {
 	private currentSpeed = 0;
 
 	private player: CBasePlayer;
+	private readonly playerFovDegrees = 120;
+	private readonly playerMaxDistanceLineOfSight = 1500;
+	private playerLooking: boolean;
+	private playerLookingCalculated: boolean;
+
+	private headOffset: number;
 
 	private speech: SpeechComponent;
 	private floorSnap: FloorSnapComponent;
@@ -34,9 +40,13 @@ export default class Elizabeth extends BioshockEntity {
 		super(entity);
 		this.getEntity().Attribute_SetIntValue("is_liz", 1);
 
+		this.headOffset = this.getEntity().GetAttachmentOrigin(this.getEntity().ScriptLookupAttachment("head")).z - this.getEntity().GetAbsOrigin().z;
+
 		this.animController = new LizAnimationController(entity);
 
 		this.player = Entities.GetLocalPlayer();
+		this.playerLooking = false;
+		this.playerLookingCalculated = false;
 
 		this.speech = new SpeechComponent(this);
 		this.floorSnap = new FloorSnapComponent(this, true);
@@ -60,6 +70,7 @@ export default class Elizabeth extends BioshockEntity {
 			this.player = Entities.GetLocalPlayer();
 		}
 
+		this.playerLookingCalculated = false;
 		this.speech.update(delta);
 		this.floorSnap.update(delta);
 		this.abandon.update(delta);
@@ -128,34 +139,11 @@ export default class Elizabeth extends BioshockEntity {
 		return allPlayerEntities.find(p => p.GetUserID() === userID) || null;
 	}
 
-	private isLookingAtLiz(player: CBasePlayer): boolean {
-		const head = player.GetHMDAvatar()!;
-		const startPosition = head.GetAbsOrigin();
-		const endPosition = addVector(startPosition, mulVector(head.GetForwardVector(), 1000 as Vector));
-		const trace = new LineTrace(startPosition, endPosition);
-		trace.setIgnoreEntity(head);
-
-		const leftPos = RotatePosition(startPosition, QAngle(0, -45, 0), endPosition);
-		const rightPos = RotatePosition(startPosition, QAngle(0, 45, 0), endPosition);
-		DebugDrawLine(startPosition, leftPos, 255, 0, 0, false, 4);
-		DebugDrawLine(startPosition, rightPos, 255, 0, 0, false, 4);
-
-
-		const traceResult = trace.run();
-		if (!traceResult.hasHit()) {
-			return false;
-		}
-
-		return traceResult.hasEntityHit() && traceResult.getEntityHit()!.HasAttribute("is_liz");
-	}
-
 	private onPlayerReady(event: PlayerReadyEvent) {
 		const player = this.getPlayerByUserID(event.userID);
 		if (!player) {
 			return;
 		}
-
-		this.isLookingAtLiz(player);
 
 		event.player = player;
 		this.stateManager.onPlayerReady(event);
@@ -198,5 +186,67 @@ export default class Elizabeth extends BioshockEntity {
 
 	public getEmotion(): EmotionComponent {
 		return this.emotion;
+	}
+
+	public getPosition(): Vector {
+		return this.entity.GetAbsOrigin();
+	}
+
+	public getHeadPosition(): Vector {
+		const pos = this.getPosition();
+		return Vector(pos.x, pos.y, pos.z + this.headOffset);
+	}
+
+	/**
+	 * Calculates if the player is looking at Elizabeth.
+	 * Computed in order of the least complexity: distance, fov, line of sight trace.
+	 */
+	private calculatePlayerLooking(): boolean {
+		const hmd = this.player.GetHMDAvatar()!;
+		const playerPos = hmd.GetAbsOrigin();
+		const playerForward = hmd.GetForwardVector();
+
+		const lizPos = this.getHeadPosition();
+		const lizDirection = subVector(lizPos, playerPos);
+		const lizDistance = lizDirection.Length();
+
+		// LOS distance check
+		if (lizDistance > this.playerMaxDistanceLineOfSight) {
+			return false;
+		}
+
+		const lizDirectionNormalized = lizDirection.Normalized();
+
+		const dotProduct = playerForward.Dot(lizDirectionNormalized);
+		const angleInRadians = Math.acos(dotProduct);
+		const angleInDegrees = (angleInRadians * 180) / Math.PI;
+
+		// FOV check
+		if (angleInDegrees > this.playerFovDegrees / 2) {
+			return false;
+		}
+
+		const trace = new LineTrace(playerPos, lizPos);
+		trace.setIgnoreEntity(this.player);
+
+		// Trace check
+		const traceResult = trace.run();
+		const hasObstacle = traceResult.getFraction() < 0.9;
+		return !hasObstacle;
+	}
+
+	/**
+	 * Returns true if the player is looking at Elizabeth.
+	 * Result is cached per tick.
+	 */
+	public isPlayerLooking(): boolean {
+		if (!this.playerLookingCalculated) {
+			this.playerLooking = this.calculatePlayerLooking();
+			this.playerLookingCalculated = true;
+		}
+
+
+		// DebugDrawLine(this.player.GetHMDAvatar()!.GetAbsOrigin(), this.getHeadPosition(), this.playerLooking ? 0 : 255, this.playerLooking ? 255 : 0, 0, false, 0.1);
+		return this.playerLooking;
 	}
 }

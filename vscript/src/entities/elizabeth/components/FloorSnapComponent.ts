@@ -23,6 +23,7 @@ export default class FloorSnapComponent extends LizComponent {
             const lizEntity = this.liz.getEntity();
             const lizPos = lizEntity.GetAbsOrigin();
         	lizEntity.SetAbsOrigin(Vector(lizPos.x, lizPos.y, floorPos.z));
+            this.enabled = false; // Once snapped, turn off snapping until re-enabled externally
         }
     }
 
