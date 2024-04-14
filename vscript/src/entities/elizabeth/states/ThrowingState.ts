@@ -247,7 +247,6 @@ class ThrowCatchingState extends ThrowBaseState {
             return;
         }
 
-        // TODO: queue the sound in the future
         if (this.catchWaitTime > this.catchMockTimeoutSeconds) {
             const clip = getClipByName("liz_clip_chirps_well_the_mans_got_an_ego");
             this.liz.getSpeech().queueClip(clip!);

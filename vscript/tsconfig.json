@@ -20,6 +20,7 @@
 		"noHeader": true,
 		"luaPlugins": [
 			{ "name": "./postprocessLua.ts" }
-		]
+		],
+		"sourceMapTraceback": false
 	}
 }

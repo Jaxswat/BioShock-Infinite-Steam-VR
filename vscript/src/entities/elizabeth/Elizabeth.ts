@@ -56,6 +56,10 @@ export default class Elizabeth extends BioshockEntity {
 	}
 
 	public update(delta: number) {
+		if (this.player === null) {
+			this.player = Entities.GetLocalPlayer();
+		}
+
 		this.speech.update(delta);
 		this.floorSnap.update(delta);
 		this.abandon.update(delta);
