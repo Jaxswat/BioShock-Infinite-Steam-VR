@@ -11,11 +11,6 @@ This repository contains the code and other custom tools I wrote to make it.
 
 For an overview on how I made the map and extracted assets, read my [Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2953264938).
 
-Note: `asset_tools/animations/bsi_anim.exe` is a C# program written by a mysterious character named [ID-Dameon](https://www.gildor.org/smf/index.php?topic=2478.0).
-It extracts animations from the game's morpheme animation files.
-The original Zenhax thread seems to be gone, but I've preserved the tool in this repo.
-I have verified that the source code is harmless via ILSpy, it's just a quickly hacked together binary format decoder.
-
 ## Code
 
 SteamVR allows you to write scripts in Lua. I don't like Lua.
