@@ -4,7 +4,8 @@ import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
 export enum LizStateName {
     Idle = 'idle',
     Throwing = 'throwing',
-    Dancing = 'dancing',
+    Following = 'following',
+    Choreo = 'choreo',
 }
 
 /**

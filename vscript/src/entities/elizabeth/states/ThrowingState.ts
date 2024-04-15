@@ -65,6 +65,8 @@ class ThrowWaitingState extends ThrowBaseState {
 
         const clip = getSpeechClip(LizSpeechTag.FoundMoney, null, null);
         this.liz.getSpeech().queueClip(clip!);
+
+        this.liz.facePlayer();
     }
 
     public update(delta: number): void {
@@ -130,6 +132,8 @@ class ThrowThrowingState extends ThrowBaseState {
         this.throwTime = 0;
         this.throwReleased = false;
         this.liz.getEntity().ResetSequence("standing_toss");
+
+        this.liz.facePlayer();
     }
 
     public update(delta: number): void {

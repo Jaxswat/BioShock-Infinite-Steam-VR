@@ -14,13 +14,15 @@ import AbandonComponent from "./components/AbandonComponent";
 import {LineTrace} from "../../utils/Trace";
 import PlayerLookingComponent from "./components/PlayerLookingComponent";
 import {BioshockEntityComponentManager} from "../BioshockEntityComponent";
+import MoveComponent from "./components/MoveComponent";
+import FollowingState from "./states/FollowingState";
+import ChoreoState from "./states/ChoreoState";
+import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
 
 export default class Elizabeth extends BioshockEntity {
 	private animController: LizAnimationController;
 
-	private slowSpeed = 20;
-	private fullSpeed = 70;
-	private currentSpeed = 0;
+	private choreoPoints: LizChoreoPoint[];
 
 	private player: CBasePlayer;
 
@@ -32,6 +34,7 @@ export default class Elizabeth extends BioshockEntity {
 	private lookAt: LookAtComponent;
 	private emotion: EmotionComponent;
 	private abandon: AbandonComponent;
+	private move: MoveComponent;
 
 	private stateManager: LizStateManager;
 
@@ -43,6 +46,8 @@ export default class Elizabeth extends BioshockEntity {
 
 		this.animController = new LizAnimationController(entity);
 
+		this.choreoPoints = LizChoreoUtils.findAllChoreoPoints();
+
 		this.player = Entities.GetLocalPlayer();
 
 		this.speech = new SpeechComponent(this);
@@ -51,6 +56,7 @@ export default class Elizabeth extends BioshockEntity {
 		this.lookAt = new LookAtComponent(this);
 		this.emotion = new EmotionComponent(this);
 		this.abandon = new AbandonComponent(this);
+		this.move = new MoveComponent(this);
 
 		this.components.add(this.speech);
 		this.components.add(this.playerLooking);
@@ -58,10 +64,13 @@ export default class Elizabeth extends BioshockEntity {
 		this.components.add(this.lookAt);
 		this.components.add(this.emotion);
 		this.components.add(this.abandon);
+		this.components.add(this.move);
 
 		this.stateManager = new LizStateManager("Elizabeth");
 		this.stateManager.addState(new IdleState(this));
 		this.stateManager.addState(new ThrowingState(this));
+		this.stateManager.addState(new FollowingState(this));
+		this.stateManager.addState(new ChoreoState(this));
 		this.stateManager.begin(LizStateName.Idle);
 
 		LizEventManager.on(LizEvent.PlayerReady, this.onPlayerReady, this);
@@ -80,56 +89,20 @@ export default class Elizabeth extends BioshockEntity {
 		this.stateManager.update(delta);
 
 		if (this.stateManager.getCurrentState()!.isCompleted()) {
-			if (this.stateManager.isCurrentState(LizStateName.Idle)) {
+			const playerDistance = VectorDistance(this.player.GetAbsOrigin(), this.getPosition());
+			const nearestChoreoPoint = LizChoreoUtils.getNearestChoreoPoint(this.getPosition(), this.choreoPoints);
+			if ((this.stateManager.isCurrentState(LizStateName.Idle) || this.stateManager.isCurrentState(LizStateName.Following)) && playerDistance > 150) {
+				this.stateManager.setState(LizStateName.Following);
+			} else if (nearestChoreoPoint && VectorDistance(nearestChoreoPoint.position, this.getPosition()) < nearestChoreoPoint.activateDistance) {
+				this.stateManager.setState(LizStateName.Choreo);
+			} else if (this.stateManager.isCurrentState(LizStateName.Idle)) {
 				this.stateManager.setState(LizStateName.Throwing);
+			} else if (this.stateManager.isCurrentState(LizStateName.Choreo)) {
+				this.stateManager.setState(LizStateName.Idle);
 			} else {
 				this.stateManager.setState(LizStateName.Idle);
 			}
 		}
-
-		// let lizPos = this.entity.GetAbsOrigin();
-		// let lizFwd = this.entity.GetForwardVector();
-		// let lizRight = this.entity.GetRightVector();
-		// let lizUp = this.entity.GetUpVector();
-		// const direction = subVector(this.goalPos, lizPos).Normalized();
-		// const distance = VectorDistance(Vector(lizPos.x, lizPos.y, 0), Vector(this.goalPos.x, this.goalPos.y, 0));
-		//
-		// const acceleration = 20;
-		// const deceleration = 20;
-		//
-		// if (distance > 50) {
-		// 	const desiredSpeed = Math.min(distance / delta, this.fullSpeed);
-		// 	const desiredVelocity = mulVector(direction, desiredSpeed as Vector);
-		//
-		// 	const accelerationVector = mulVector(subVector(desiredVelocity, this.entity.GetVelocity()).Normalized(), acceleration as Vector);
-		// 	this.entity.SetVelocity(addVector(this.entity.GetVelocity(), (mulVector(accelerationVector, delta as Vector))));
-		//
-		// 	if (this.entity.GetVelocity().Length() > desiredSpeed) {
-		// 		this.entity.SetVelocity(mulVector(this.entity.GetVelocity().Normalized(), desiredSpeed as Vector));
-		// 	}
-		// } else {
-		// 	// The NPC has reached or is very close to the target position, so it should stop
-		// 	const decelerationVector = mulVector(this.entity.GetVelocity().Normalized(), -deceleration as Vector);
-		// 	this.entity.SetVelocity(addVector(this.entity.GetVelocity(), mulVector(decelerationVector, delta as Vector)));
-		//
-		// 	if (this.entity.GetVelocity().Length() < 1) {
-		// 		// Stop the NPC completely
-		// 		this.entity.SetVelocity(Vector(0, 0, 0))
-		// 	}
-		//
-		// 	// commented out for curiousity points
-		// 	// const goal = getGoalPointAtIndex(this.goalIndex);
-		// 	// this.goalPos = goal.position;
-		// 	// this.goalIndex++;
-		// }
-		//
-		// // DebugDrawLine(this.goalPos, addVector(this.goalPos, Vector(0, 0, 100)), 255, 0, 0, false, delta);
-		//
-		// let targetYaw = Rad2Deg(Math.atan2(direction.x, direction.y));
-		// this.entity.SetAbsAngles(0, -targetYaw+90, 0);
-		//
-		// this.currentSpeed = this.entity.GetVelocity().Length();
-		// this.animController.updateAnimation(this.currentSpeed > 0, this.currentSpeed > (this.fullSpeed * 0.7), this.currentSpeed < (this.fullSpeed * 0.05));
 	}
 
 	public updatePose(delta: number) {
@@ -141,6 +114,13 @@ export default class Elizabeth extends BioshockEntity {
 		return allPlayerEntities.find(p => p.GetUserID() === userID) || null;
 	}
 
+	/**
+	 * Called when liz gets teleported back to the player
+	 */
+	public onAbandon() {
+		this.stateManager.setState(LizStateName.Idle);
+	}
+
 	private onPlayerReady(event: PlayerReadyEvent) {
 		const player = this.getPlayerByUserID(event.userID);
 		if (!player) {
@@ -150,6 +130,7 @@ export default class Elizabeth extends BioshockEntity {
 		event.player = player;
 		this.stateManager.onPlayerReady(event);
 	}
+
 	private onObjectCaught(event: ObjectCaughtEvent) {
 		const player = this.getPlayerByUserID(event.userID);
 		if (!player) {
@@ -190,6 +171,10 @@ export default class Elizabeth extends BioshockEntity {
 		return this.emotion;
 	}
 
+	public getMove(): MoveComponent {
+		return this.move;
+	}
+
 	public getPosition(): Vector {
 		return this.entity.GetAbsOrigin();
 	}
@@ -199,13 +184,24 @@ export default class Elizabeth extends BioshockEntity {
 		return Vector(pos.x, pos.y, pos.z + this.headOffset);
 	}
 
-
-
 	/**
 	 * Returns true if the player is looking at Elizabeth.
 	 */
 	public isPlayerLooking(): boolean {
 		// DebugDrawLine(this.player.GetHMDAvatar()!.GetAbsOrigin(), this.getHeadPosition(), this.playerLooking ? 0 : 255, this.playerLooking ? 255 : 0, 0, false, 0.1);
 		return this.playerLooking.isLooking();
+	}
+
+	/**
+	 * Faces liz towards player. Temporary method until I decide where to put this.
+	 */
+	public facePlayer() {
+		const direction = subVector(this.player.GetAbsOrigin(), this.getPosition()).Normalized();
+		const targetYaw = Rad2Deg(Math.atan2(direction.x, direction.y));
+		this.entity.SetAbsAngles(0, -targetYaw+90, 0);
+	}
+
+	public getChoreoPoints(): LizChoreoPoint[] {
+		return this.choreoPoints;
 	}
 }

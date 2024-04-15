@@ -1,6 +1,7 @@
 declare interface EHandle {}
 
 declare abstract class CBaseEntity {
+	GetName(): string;
 	GetClassname(): string;
 
 	EyePosition(): Vector;

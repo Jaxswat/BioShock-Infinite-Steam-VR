@@ -26,7 +26,9 @@ export default class AbandonComponent extends LizComponent {
 
         if (this.abandonTimer.isDone()) {
             this.abandonTimer.reset();
+            this.liz.getMove().stop();
             this.liz.getEntity().SetAbsOrigin(this.getTeleportPosition());
+            this.liz.onAbandon();
         }
     }
 
