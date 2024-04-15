@@ -82,7 +82,13 @@ export default class Elizabeth extends BioshockEntity {
 	public update(delta: number) {
 		if (this.player === null) {
 			this.player = Entities.GetLocalPlayer();
-			return;
+
+			if (this.player === null) {
+				return;
+			} else {
+				// Player found, begin Liz'ing
+				this.stateManager.begin(LizStateName.Idle);
+			}
 		}
 
 		this.components.update(delta);

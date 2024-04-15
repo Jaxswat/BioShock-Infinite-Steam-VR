@@ -265,11 +265,11 @@ export function getSpeechClip(tag: LizSpeechTag, sentiment: LizSpeechSentiment |
 	let clipIDs = [];
 	for (let clip of lizSpeechClips) {
 		if (clip.tag === tag) {
-			// const matchSentiment = sentiment && clip.sentiment === sentiment;
-			// const matchIntensity = intensity && clip.intensity === intensity;
-			// if (matchSentiment || matchIntensity) {
-			// 	return clip;
-			// }
+			const matchSentiment = sentiment && clip.sentiment === sentiment;
+			const matchIntensity = intensity && clip.intensity === intensity;
+			if (matchSentiment || matchIntensity) {
+				return clip;
+			}
 			clipIDs.push(clip.id);
 		}
 	}

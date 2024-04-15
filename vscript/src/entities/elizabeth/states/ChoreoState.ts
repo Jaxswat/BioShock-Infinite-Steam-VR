@@ -16,7 +16,7 @@ export default class ChoreoState extends LizState {
         super(LizStateName.Choreo, liz);
         this.choreoPoint = null;
         this.choreoTimer = new Timer(0);
-        this.moveTimer = new Timer(5);
+        this.moveTimer = new Timer(15);
         this.hasReachedPoint = false;
         this.hasStartedChoreo = false;
         this.canceled = false;
