@@ -2,8 +2,9 @@ import {PlayerConnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
 import {LizEvent, LizEventManager} from "./elizabeth/lizEvents";
 import BioshockEntity from "./BioshockEntity";
+import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
 
-export default class BioshockPlayer extends BioshockEntity {
+export default class BioshockPlayer extends BioshockEntity implements VTunnelSerializable {
     private connectEvent: PlayerConnectEvent;
     private steamID: number;
     private name: string;
@@ -117,6 +118,8 @@ export default class BioshockPlayer extends BioshockEntity {
                 DebugDrawLine(origin, rightEndPoint, 0, 255, 0, false, 0.2);
             }
         }
+
+        VTunnel.send(this.serialize());
     }
 
     private getToolInHand(handID: number): CDestinationsPropTool | null {
@@ -126,5 +129,15 @@ export default class BioshockPlayer extends BioshockEntity {
         }
 
         return hand.GetChildren()?.find(e => e.GetClassname() === "steamTours_item_tool") as CDestinationsPropTool || null;
+    }
+
+    public serialize(): VTunnelMessage {
+        const msg = new VTunnelMessage("player_state");
+        msg.writeString(this.steamID.toString());
+        msg.writeString(this.name);
+        const hmd = (this.entity! as CBasePlayer).GetHMDAvatar()!;
+        msg.writeVector(hmd.GetAbsOrigin());
+        msg.writeVector(hmd.GetAnglesAsVector());
+        return msg;
     }
 }

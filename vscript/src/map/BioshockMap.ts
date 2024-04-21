@@ -2,8 +2,9 @@ import { Skyline } from '../entities/skyline/skyline';
 import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
+import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
 
-export abstract class BioshockMap {
+export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
 	protected players: BioshockPlayer[];
 	private playerCheckTimer: Timer;
@@ -12,6 +13,9 @@ export abstract class BioshockMap {
 		this.skylines = [];
 		this.players = [];
 		this.playerCheckTimer = new Timer(1);
+
+		ListenToGameEvent(DefaultEvents.PlayerConnect, this.onPlayerConnect, this);
+		ListenToGameEvent(DefaultEvents.PlayerDisconnect, this.onPlayerDisconnect, this);
 	}
 
 	public addSkyline(skyline: Skyline) {
@@ -19,18 +23,9 @@ export abstract class BioshockMap {
 	}
 
 	/**
-	 * Called when the script system loads
-	 */
-	public onInit() {
-		ListenToGameEvent(DefaultEvents.PlayerConnect, this.onPlayerConnect, this);
-		ListenToGameEvent(DefaultEvents.PlayerDisconnect, this.onPlayerDisconnect, this);
-	}
-
-	/**
 	 * Called when assets are precached
 	 */
 	public onPrecache(context: any) {}
-
 
 	/**
 	 * Called when the map is activated
@@ -57,6 +52,8 @@ export abstract class BioshockMap {
 				player.update(delta);
 			}
 		}
+
+		VTunnel.send(this.serialize());
 	}
 
 	/**
@@ -76,5 +73,11 @@ export abstract class BioshockMap {
 		if (index !== -1) {
 			this.players.splice(index, 1);
 		}
+	}
+
+	public serialize(): VTunnelMessage {
+		const msg = new VTunnelMessage("world_state");
+		msg.writeFloat(Time());
+		return msg;
 	}
 }

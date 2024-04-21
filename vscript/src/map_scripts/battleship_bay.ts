@@ -1,15 +1,15 @@
 import BattleshipBayMap from "../map/BattleshipBayMap";
 export const __BundleAsGameScript = null;
 
-const map = new BattleshipBayMap();
+let map: BattleshipBayMap;
+
+export function OnInit(): void {
+	map = new BattleshipBayMap();
+	ScriptSystem_AddPerFrameUpdateFunction(onFrame);
+}
 
 export function OnPrecache(context: any) {
 	map.onPrecache(context);
-}
-
-export function OnInit(): void {
-	map.onInit();
-	ScriptSystem_AddPerFrameUpdateFunction(onFrame);
 }
 
 function onFrame() {

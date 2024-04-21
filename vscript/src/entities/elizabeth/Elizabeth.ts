@@ -18,8 +18,9 @@ import MoveComponent from "./components/MoveComponent";
 import FollowingState from "./states/FollowingState";
 import ChoreoState from "./states/ChoreoState";
 import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
+import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../../vconsole_tunnel/VTunnel";
 
-export default class Elizabeth extends BioshockEntity {
+export default class Elizabeth extends BioshockEntity implements VTunnelSerializable {
 	private animController: LizAnimationController;
 
 	private choreoPoints: LizChoreoPoint[];
@@ -109,6 +110,7 @@ export default class Elizabeth extends BioshockEntity {
 				this.stateManager.setState(LizStateName.Idle);
 			}
 		}
+		VTunnel.send(this.serialize());
 	}
 
 	public updatePose(delta: number) {
@@ -209,5 +211,13 @@ export default class Elizabeth extends BioshockEntity {
 
 	public getChoreoPoints(): LizChoreoPoint[] {
 		return this.choreoPoints;
+	}
+
+	public serialize(): VTunnelMessage {
+		const msg = new VTunnelMessage("liz_state");
+		msg.writeVector(this.getPosition());
+		msg.writeVector(this.entity.GetAnglesAsVector());
+		msg.writeString(this.stateManager.getCurrentState()?.getStateName() || "");
+		return msg;
 	}
 }

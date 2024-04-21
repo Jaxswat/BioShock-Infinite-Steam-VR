@@ -10,6 +10,7 @@ declare abstract class CBaseEntity {
 	GetAbsOrigin(): Vector;
 	GetAbsScale(): number;
 	GetAngles(): QAngle;
+	GetAnglesAsVector(): Vector;
 
 	GetAnglesAsVector(): Vector;
 	GetAngularVelocity(): Vector;
