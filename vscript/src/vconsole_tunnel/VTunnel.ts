@@ -88,6 +88,12 @@ export class VTunnelMessage {
         this.partData.push(data);
         return this;
     }
+
+    public writeUInt64(data: UInt64): VTunnelMessage {
+        this.partTypes.push(VTunnelDataType.Int);
+        this.partData.push(data.toString());
+        return this;
+    }
 }
 
 export abstract class VTunnel {
@@ -99,7 +105,7 @@ export abstract class VTunnel {
     }
 
     public static send(message: VTunnelMessage): void {
-        if (message.getName() != "") {
+        if (message.getName() != "player_input") {
             return;
         }
 

@@ -134,6 +134,7 @@ export default class BioshockPlayer extends BioshockEntity implements VTunnelSer
     public serialize(): VTunnelMessage {
         const msg = new VTunnelMessage("player_state");
         msg.writeString(this.steamID.toString());
+        msg.writeInt(this.userID);
         msg.writeString(this.name);
         const hmd = (this.entity! as CBasePlayer).GetHMDAvatar()!;
         msg.writeVector(hmd.GetAbsOrigin());

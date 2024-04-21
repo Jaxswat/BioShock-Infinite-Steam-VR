@@ -3,39 +3,54 @@ mod math;
 mod vtunnel;
 mod game;
 
+use std::sync::{Arc};
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed};
 use crate::game::elizabeth::Elizabeth;
-use crate::game::player::Player;
-use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage};
+use crate::game::player::{Player, PlayerInput};
+use crate::vtunnel::{encode_vtunnel_message, VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
 use futures::SinkExt;
+use tokio::sync::{mpsc, Mutex};
+use crate::game::commands::DrawDebugSphere;
 use crate::math::Vector3;
+use crate::vconsole::{Packet, PacketCodec};
 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let stream = TcpStream::connect("127.0.0.1:29009").await?;
-    let mut framed = Framed::new(stream, vconsole::PacketCodec);
+    let framed = Framed::new(stream, vconsole::PacketCodec);
+    let (mut sender, mut receiver) = mpsc::channel(100);
 
-    let mut state = ServerState::new();
-    while let Some(packet) = framed.next().await {
+    let sender_clone = sender.clone();
+    let framed_arc = Arc::new(Mutex::new(framed));
+    let framed_clone = Arc::clone(&framed_arc);
+
+    let mut state = ServerState::new(sender_clone);
+
+    tokio::spawn(async move {
+        while let Some(packet) = receiver.recv().await {
+            let mut framed = framed_clone.lock().await;
+            framed.send(packet).await.unwrap();
+        }
+    });
+
+    loop {
+        let mut framed = framed_arc.lock().await;
+        let packet = framed.next().await;
+
         match packet {
-            Ok(packet) => {
-                state.handle_packet(packet);
-                if state.packets_received == 4001 {
-                    let mut vmsg = VTunnelMessage::new("test".to_string());
-                    vmsg.add_string("hello".to_string());
-                    vmsg.add_float(std::f64::consts::PI);
-                    vmsg.add_int(8192);
-                    vmsg.add_vector3(Vector3::new(3.14, 5.92, 0.314));
-                    framed.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await?;
-                    println!("Sent vmsg command");
-                }
+            Some(Ok(packet)) => {
+                state.handle_packet(packet).await;
             }
-            Err(err) => {
+            Some(Err(err)) => {
                 eprintln!("Error decoding packet: {:?}", err);
+                break;
+            }
+            None => {
+                println!("Connection closed by the server");
                 break;
             }
         }
@@ -45,6 +60,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 struct ServerState {
+    sender: mpsc::Sender<Packet>,
+
     program_args: String,
     addon_name: String,
     channels: Vec<String>,
@@ -60,8 +77,10 @@ struct ServerState {
 }
 
 impl ServerState {
-    pub fn new() -> ServerState {
+    pub fn new(sender: mpsc::Sender<Packet>) -> ServerState {
         ServerState {
+            sender,
+
             program_args: String::new(),
             addon_name: String::new(),
             channels: vec![],
@@ -92,18 +111,19 @@ impl ServerState {
         println!("Player: {:?}", self.player);
     }
 
-    pub fn handle_packet(&mut self, packet: vconsole::Packet) {
+    pub async fn handle_packet(&mut self, packet: vconsole::Packet) {
         if self.packets_received == 4000 {
+            self.buffer_skipped = true;
             self.print_initial_state();
         }
 
         match packet.packet_type {
             vconsole::PacketType::PRINT => {
                 let print_data = packet.get_print_data();
-                if print_data.contains("End VConsole Buffered Messages") {
-                    self.buffer_skipped = true;
-                    self.last_server_time = 0.0; // reset on game reload
-                }
+                // if print_data.contains("End VConsole Buffered Messages") {
+                //     self.buffer_skipped = true;
+                //     self.last_server_time = 0.0; // reset on game reload
+                // }
 
                 if self.buffer_skipped {
                     let msg = vtunnel::parse_vtunnel_message(&print_data);
@@ -113,6 +133,38 @@ impl ServerState {
                         match msg.name.as_str() {
                             "liz_state" => self.liz.apply_vtunnel_message(&msg),
                             "player_state" => self.player.apply_vtunnel_message(&msg),
+                            "player_input" => {
+                                let mut input = PlayerInput::new();
+                                input.apply_vtunnel_message(&msg);
+
+                                let current_trigger = input.trigger == 1.0;
+                                if current_trigger != self.player.last_trigger && current_trigger && input.trace_hit {
+                                    let is_floor = input.trace_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
+                                    let color = if is_floor {
+                                        Vector3::new(0.0, 255.0, 0.0)
+                                    } else {
+                                        Vector3::new(255.0, 0.0, 0.0)
+                                    };
+
+                                    let vmsg = DrawDebugSphere {
+                                        position: input.trace_position.clone(),
+                                        color,
+                                        color_alpha: 1.0,
+                                        radius: 5.0,
+                                        z_test: false,
+                                        duration_seconds: 5.0,
+                                    }.serialize();
+
+                                    self.sender.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await.unwrap();
+                                }
+                                self.player.last_trigger = current_trigger;
+
+                                if input.hand == 0 {
+                                    self.player.input_left_hand = input;
+                                } else {
+                                    self.player.input_right_hand = input;
+                                }
+                            }
                             "world_state" => self.server_time = msg.data[0].get_float().unwrap_or_default(),
                             _ => {}
                         }

@@ -10,6 +10,10 @@ pub trait VTunnelDeserializable {
     fn apply_vtunnel_message(&mut self, msg: &VTunnelMessage);
 }
 
+pub trait VTunnelSerializable {
+    fn serialize(&self) -> VTunnelMessage;
+}
+
 #[derive(Debug)]
 pub enum VTunnelDataPart {
     String(String),

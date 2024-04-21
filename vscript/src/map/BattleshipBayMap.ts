@@ -43,7 +43,7 @@ export default class BattleshipBayMap extends BioshockMap {
     public update(delta: number) {
         super.update(delta);
 
-        this.navGen.tickGeneration(delta);
+        // this.navGen.tickGeneration(delta);
         this.testSkyline.DebugDrawSkylineSpline();
 
         let speed = this.percentSpeed * delta;
