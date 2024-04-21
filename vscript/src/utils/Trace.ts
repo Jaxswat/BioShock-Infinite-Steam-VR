@@ -165,3 +165,42 @@ export class LineTrace extends Trace {
         return new TraceResult(traceTable);
     }
 }
+
+/**
+ * Traces an axis aligned bounding box along a line.
+ * Also called Hull trace.
+ */
+export class BoxTrace extends Trace {
+    private min: Vector;
+    private max: Vector;
+
+    public constructor(startPosition: Vector, endPosition: Vector, min: Vector, max: Vector) {
+        super(startPosition, endPosition);
+        this.min = min;
+        this.max = max;
+    }
+
+    /**
+     * Runs the trace and returns the result.
+     */
+    public run(): TraceResult {
+        const traceTable: TraceTable = {
+            startpos: this.startPosition,
+            endpos: this.endPosition,
+            mask: this.mask,
+            ignore: this.ignoreEntity,
+            min: this.min,
+            max: this.max,
+            pos: null,
+            fraction: null,
+            hit: null,
+            enthit: null,
+            startsolid: null,
+            normal: null
+        };
+
+        TraceHull(traceTable);
+
+        return new TraceResult(traceTable);
+    }
+}

@@ -7,6 +7,10 @@ declare interface TraceTable {
 	mask: number | null;
 	ignore: CBaseEntity | null;
 
+	// Hull
+	min?: Vector;
+	max?: Vector;
+
 	// Output
 	pos: Vector | null;
 	fraction: number | null;
@@ -17,3 +21,4 @@ declare interface TraceTable {
 }
 
 declare function TraceLine(this: void, traceTable: TraceTable): void;
+declare function TraceHull(this: void, traceTable: TraceTable): void;
