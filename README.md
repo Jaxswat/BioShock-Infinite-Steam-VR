@@ -96,6 +96,18 @@ Point it to a `.MorphemeAnimSequence` file and it will output a `.smd` file in t
 It does require the `MorphemeAnimSet` file to be in the parent directory, but it will find it automatically.
 If you've used the UModel exporter, they should already be unpacked in this folder structure.
 
+### VConsole Tunnel (VTunnel)
+
+VTunnel is a rust program that listens to the VConsole output of SteamVR Home (which runs on `localhost:29009`).
+It is able to read some of the VConsole protocol, most importantly the print statements.
+
+Print statements can be sent from the Lua scripts.
+I wanted to be able to extract game data in an external program, so to do this I wrote a very basic text-based protocol for sending string/number/vector data.
+I intend on using this for debugging, and perhaps some other tools.
+
+I would like to try using it to help me draw a navigation mesh with my VR controllers.
+I would have done this in the game scripts, but I needed to persist the data.
+
 # Questions / Suggestions
 
 Scripting in Source 2 can be very hard due to the sparse documentation. If you have any questions, ideas, or suggestions let me know.
