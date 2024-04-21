@@ -1,9 +1,11 @@
+import {ConVarFlags} from "../utils/ConVars";
 
 enum VTunnelDataType {
     String = "s",
     Float = "f",
     Int = "i",
     Vector = "v3",
+    Boolean = "b"
 }
 
 export interface VTunnelSerializable {
@@ -37,6 +39,26 @@ export class VTunnelMessage {
         return this.partData[i];
     }
 
+    public indexPartDataAsString(i: number): string {
+        return this.partData[i] as string;
+    }
+
+    public indexPartDataAsInt(i: number): number {
+        return this.partData[i] as number;
+    }
+
+    public indexPartDataAsFloat(i: number): number {
+        return this.partData[i] as number;
+    }
+
+    public indexPartDataAsVector(i: number): Vector {
+        return this.partData[i] as Vector;
+    }
+
+    public indexPartDataAsBoolean(i: number): boolean {
+        return this.partData[i] as boolean;
+    }
+
     public writeString(data: string): VTunnelMessage {
         this.partTypes.push(VTunnelDataType.String);
         this.partData.push(data);
@@ -60,6 +82,12 @@ export class VTunnelMessage {
         this.partData.push(data);
         return this;
     }
+
+    public writeBoolean(data: boolean): VTunnelMessage {
+        this.partTypes.push(VTunnelDataType.Boolean);
+        this.partData.push(data);
+        return this;
+    }
 }
 
 export abstract class VTunnel {
@@ -71,6 +99,10 @@ export abstract class VTunnel {
     }
 
     public static send(message: VTunnelMessage): void {
+        if (message.getName() != "") {
+            return;
+        }
+
         const payloadParts = [VTunnel.VTUNNEL_PREFIX, message.getName(), VTunnel.VTUNNEL_TYPE_SUFFIX];
 
         const partCount = message.getPartCount();
@@ -103,10 +135,103 @@ export abstract class VTunnel {
                     payloadParts.push(',');
                     payloadParts.push(partData.z);
                     break;
+                case VTunnelDataType.Boolean:
+                    payloadParts.push(partData ? '1' : '0');
+                    break;
             }
             payloadParts.push(VTunnel.VTUNNEL_TYPE_SUFFIX);
         }
 
         print(payloadParts.join(''));
+    }
+
+    public static receive(rawData: string): VTunnelMessage | null {
+        if (!rawData.startsWith(VTunnel.VTUNNEL_PREFIX)) {
+            return null;
+        }
+
+        let index = VTunnel.VTUNNEL_PREFIX.length;
+        const nameIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+        let vmsg = new VTunnelMessage(rawData.substring(index, nameIndex));
+        index = nameIndex + 1;
+
+        let stringLength = 0;
+        let dataType = "";
+        let data = "";
+        while (index < rawData.length) {
+            const c = rawData[index];
+
+            if (dataType == "") {
+                if (c == VTunnel.VTUNNEL_TYPE_PREFIX) {
+                    dataType = data;
+                    if (dataType.startsWith("s(") && dataType.endsWith(")")) {
+                        stringLength = parseInt(dataType.substring(2, dataType.length - 1));
+                        dataType = VTunnelDataType.String;
+                    }
+
+                    data = "";
+                    index++;
+                    continue;
+                }
+
+                data += c;
+                index++;
+                continue;
+            }
+
+            let endIndex = 0;
+            switch (dataType) {
+                case VTunnelDataType.String:
+                    vmsg.writeString(rawData.substring(index, index + stringLength));
+                    index += stringLength;
+                    break;
+                case VTunnelDataType.Float:
+                    endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+                    data = rawData.substring(index, endIndex);
+                    vmsg.writeFloat(parseFloat(data));
+                    index = endIndex;
+                    break;
+                case VTunnelDataType.Int:
+                    endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+                    data = rawData.substring(index, endIndex);
+                    vmsg.writeFloat(parseInt(data));
+                    index = endIndex;
+                    break;
+                case VTunnelDataType.Vector:
+                    endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+                    data = rawData.substring(index, endIndex);
+                    const xyz = data.split(',');
+                    vmsg.writeVector(Vector(parseFloat(xyz[0]), parseFloat(xyz[1]), parseFloat(xyz[2])));
+                    index = endIndex;
+                    break;
+                case VTunnelDataType.Boolean:
+                    endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+                    data = rawData.substring(index, endIndex);
+                    vmsg.writeBoolean(data == "1");
+                    index = endIndex;
+                    break;
+            }
+
+            dataType = "";
+            data = "";
+            index++;
+        }
+
+        return vmsg;
+    }
+}
+
+export class VTunnelReceiver {
+    public constructor(onMessageReceived: (message: VTunnelMessage) => void) {
+        Convars.RegisterCommand("vtunnel_receive", (_: string, ...args: string[]) => {
+            if (args.length != 1) {
+                return;
+            }
+
+            const vmsg = VTunnel.receive(args[0]);
+            if (vmsg) {
+                onMessageReceived(vmsg);
+            }
+        }, "Receives a VTunnel message", ConVarFlags.FCVAR_HIDDEN_AND_UNLOGGED);
     }
 }

@@ -1,26 +1,38 @@
 mod vconsole;
 mod math;
 mod vtunnel;
-mod game_entities;
+mod game;
 
+use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 use tokio_stream::StreamExt;
-use tokio_util::codec::{FramedRead};
-use crate::game_entities::elizabeth::Elizabeth;
-use crate::game_entities::player::Player;
-use crate::vtunnel::VTunnelDeserializable;
+use tokio_util::codec::{Framed};
+use crate::game::elizabeth::Elizabeth;
+use crate::game::player::Player;
+use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage};
+use futures::SinkExt;
+use crate::math::Vector3;
 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let stream = TcpStream::connect("127.0.0.1:29009").await?;
-    let mut framed = FramedRead::new(stream, vconsole::PacketCodec);
+    let mut framed = Framed::new(stream, vconsole::PacketCodec);
 
     let mut state = ServerState::new();
     while let Some(packet) = framed.next().await {
         match packet {
             Ok(packet) => {
                 state.handle_packet(packet);
+                if state.packets_received == 4001 {
+                    let mut vmsg = VTunnelMessage::new("test".to_string());
+                    vmsg.add_string("hello".to_string());
+                    vmsg.add_float(std::f64::consts::PI);
+                    vmsg.add_int(8192);
+                    vmsg.add_vector3(Vector3::new(3.14, 5.92, 0.314));
+                    framed.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await?;
+                    println!("Sent vmsg command");
+                }
             }
             Err(err) => {
                 eprintln!("Error decoding packet: {:?}", err);

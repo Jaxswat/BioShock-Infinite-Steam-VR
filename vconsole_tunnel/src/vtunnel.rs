@@ -1,3 +1,4 @@
+use std::fmt::Write;
 use crate::math::Vector3;
 
 const VTUNNEL_PREFIX: &'static str = "$vt!";
@@ -15,6 +16,7 @@ pub enum VTunnelDataPart {
     Float(f64),
     Int(i64),
     Vector3(Vector3),
+    Bool(bool),
 }
 
 impl VTunnelDataPart {
@@ -50,6 +52,14 @@ impl VTunnelDataPart {
             None
         }
     }
+
+    pub fn get_bool(&self) -> Option<bool> {
+        if let VTunnelDataPart::Bool(val) = self {
+            Some(*val)
+        } else {
+            None
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -59,12 +69,84 @@ pub struct VTunnelMessage {
 }
 
 impl VTunnelMessage {
-    pub fn new() -> VTunnelMessage {
+    pub fn new(name: String) -> VTunnelMessage {
         VTunnelMessage {
-            name: String::new(),
+            name,
             data: Vec::new(),
         }
     }
+}
+
+impl VTunnelMessage {
+    pub fn add_string(&mut self, data: String) {
+        self.data.push(VTunnelDataPart::String(data));
+    }
+
+    pub fn add_float(&mut self, data: f64) {
+        self.data.push(VTunnelDataPart::Float(data));
+    }
+
+    pub fn add_int(&mut self, data: i64) {
+        self.data.push(VTunnelDataPart::Int(data));
+    }
+
+    pub fn add_vector3(&mut self, data: Vector3) {
+        self.data.push(VTunnelDataPart::Vector3(data));
+    }
+
+    pub fn add_bool(&mut self, data: bool) {
+        self.data.push(VTunnelDataPart::Bool(data));
+    }
+}
+
+pub fn encode_vtunnel_message(vmsg: &VTunnelMessage) -> String {
+    let mut data = String::new();
+    data.write_str(VTUNNEL_PREFIX).unwrap();
+    data.write_str(&vmsg.name).unwrap();
+    data.push(VTUNNEL_TYPE_SUFFIX);
+
+    for part in &vmsg.data {
+        match part {
+            VTunnelDataPart::String(val) => {
+                data.write_str("s(").unwrap();
+                data.write_str(&val.len().to_string()).unwrap();
+                data.write_str(")").unwrap();
+                data.write_str(&VTUNNEL_TYPE_PREFIX.to_string()).unwrap();
+                data.write_str(&val).unwrap();
+            }
+            VTunnelDataPart::Float(val) => {
+                data.write_str("f").unwrap();
+                data.write_str(&VTUNNEL_TYPE_PREFIX.to_string()).unwrap();
+                data.write_str(&val.to_string()).unwrap();
+            }
+            VTunnelDataPart::Int(val) => {
+                data.write_str("i").unwrap();
+                data.write_str(&VTUNNEL_TYPE_PREFIX.to_string()).unwrap();
+                data.write_str(&val.to_string()).unwrap();
+            }
+            VTunnelDataPart::Vector3(val) => {
+                data.write_str("v3").unwrap();
+                data.write_str(&VTUNNEL_TYPE_PREFIX.to_string()).unwrap();
+                data.write_str(&val.x.to_string()).unwrap();
+                data.push(',');
+                data.write_str(&val.y.to_string()).unwrap();
+                data.push(',');
+                data.write_str(&val.z.to_string()).unwrap();
+            }
+            VTunnelDataPart::Bool(val) => {
+                data.write_str("b").unwrap();
+                data.write_str(&VTUNNEL_TYPE_PREFIX.to_string()).unwrap();
+                if *val {
+                    data.write_char('1').unwrap();
+                } else {
+                    data.write_char('0').unwrap();
+                }
+            }
+        }
+        data.push(VTUNNEL_TYPE_SUFFIX);
+    }
+
+    data
 }
 
 pub fn parse_vtunnel_message(raw_msg: &String) -> Option<VTunnelMessage> {
@@ -73,12 +155,11 @@ pub fn parse_vtunnel_message(raw_msg: &String) -> Option<VTunnelMessage> {
     }
 
     let raw_msg_chars: Vec<_> = raw_msg.chars().collect();
-    let mut vmsg = VTunnelMessage::new();
-
     let mut index = VTUNNEL_PREFIX.len(); // trim prefix
 
     let name_index = raw_msg_chars[index..].iter().position(|c| *c == VTUNNEL_TYPE_SUFFIX).unwrap_or_default(); // name
-    vmsg.name = raw_msg_chars[index..index+name_index].iter().collect();
+    let msg_name = raw_msg_chars[index..index + name_index].iter().collect();
+    let mut vmsg = VTunnelMessage::new(msg_name);
     index += name_index + 1; // trim the delimiter after name
 
     let mut str_len = 0;
@@ -133,6 +214,12 @@ pub fn parse_vtunnel_message(raw_msg: &String) -> Option<VTunnelMessage> {
                 vmsg.data.push(VTunnelDataPart::Vector3(Vector3::new(x, y, z)));
                 index += end_index;
             }
+            "b" => {
+                let end_index = raw_msg_chars[index..].iter().position(|&b| b == VTUNNEL_TYPE_SUFFIX).unwrap_or_default();
+                data = raw_msg[index..index + end_index].to_string();
+                vmsg.data.push(VTunnelDataPart::Bool(data.parse::<u8>().unwrap() == 1));
+                index += end_index;
+            }
             _ => {
                 eprintln!("Unknown VTunnel data type: {}", data_type);
             }
@@ -148,7 +235,7 @@ pub fn parse_vtunnel_message(raw_msg: &String) -> Option<VTunnelMessage> {
 
 #[cfg(test)]
 mod tests {
-    use crate::vtunnel::parse_vtunnel_message;
+    use crate::vtunnel::{encode_vtunnel_message, parse_vtunnel_message};
 
     fn float_equal(a: f64, b: f64) -> bool {
         (a - b).abs() < 1e-6
@@ -156,13 +243,13 @@ mod tests {
 
     #[test]
     fn test_parse_vtunnel_message_everything() {
-        let test_payload = "$vt!test!s(5):hello!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!".to_string();
+        let test_payload = "$vt!test!s(5):hello!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!b:1!b:0!".to_string();
         let output = parse_vtunnel_message(&test_payload);
 
         assert!(output.is_some());
         let output = output.unwrap();
         assert_eq!(output.name, "test");
-        assert_eq!(output.data.len(), 7);
+        assert_eq!(output.data.len(), 9);
 
         assert_eq!(output.data[0].get_string().unwrap(), "hello");
         assert!(float_equal(output.data[1].get_float().unwrap(), std::f64::consts::PI));
@@ -174,7 +261,10 @@ mod tests {
         assert_eq!(output.data[4].get_string().unwrap(), "");
         assert!(float_equal(output.data[5].get_float().unwrap(), -3.14));
         assert_eq!(output.data[6].get_int().unwrap(), -69);
+        assert_eq!(output.data[7].get_bool().unwrap(), true);
+        assert_eq!(output.data[8].get_bool().unwrap(), false);
     }
+
     #[test]
     fn test_parse_vtunnel_message_empty() {
         let test_payload = "$vt!test!".to_string();
@@ -184,5 +274,15 @@ mod tests {
         let output = output.unwrap();
         assert_eq!(output.name, "test");
         assert_eq!(output.data.len(), 0);
+    }
+
+    #[test]
+    fn test_decode_encode_vtunnel_message() {
+        let input = "$vt!test!s(5):hello!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!b:1!b:0!".to_string();
+        let decoded = parse_vtunnel_message(&input);
+        assert!(decoded.is_some());
+        let encoded = encode_vtunnel_message(&decoded.unwrap());
+        assert_eq!(input, encoded);
+        println!("Matched: \n{}\n==\n{}", input, encoded);
     }
 }

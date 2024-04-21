@@ -2,7 +2,7 @@ import { Skyline } from '../entities/skyline/skyline';
 import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
-import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
+import {VTunnel, VTunnelMessage, VTunnelReceiver, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
 
 export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
@@ -16,6 +16,11 @@ export abstract class BioshockMap implements VTunnelSerializable {
 
 		ListenToGameEvent(DefaultEvents.PlayerConnect, this.onPlayerConnect, this);
 		ListenToGameEvent(DefaultEvents.PlayerDisconnect, this.onPlayerDisconnect, this);
+
+		new VTunnelReceiver((msg: VTunnelMessage) => {
+			print("Received VTunnel message:");
+			DeepPrintTable(msg);
+		});
 	}
 
 	public addSkyline(skyline: Skyline) {

@@ -1,7 +1,12 @@
 use std::fmt;
-use bytes::{Buf, BytesMut};
+use std::fmt::Write;
+use bytes::{Buf, BufMut, BytesMut};
 use tokio::io;
-use tokio_util::codec::Decoder;
+use tokio_util::codec::{Decoder, Encoder};
+use crate::vtunnel::{encode_vtunnel_message, VTunnelMessage};
+
+// This thing is included with all messages, no idea why. Probably a version number or something.
+pub const VCONSOLE_BYTE: u8 = 0xD3;
 
 #[derive(PartialEq, Eq)]
 pub struct PacketType(u32);
@@ -18,8 +23,6 @@ impl PacketType {
     // First 6 bytes are unknown, but byte 4 seems to be a boolean set to true.
     // After this it's just the addon name string + NUL.
     pub const ADDON: PacketType = PacketType(u32::from_be_bytes(*b"ADON"));
-    // Console command?
-    pub const _COMMAND: PacketType = PacketType(u32::from_be_bytes(*b"CMND"));
     // Contains channel info. First 28 bytes are unknown, and then every 58 bytes is channel names/data like "VScript" and "RenderSystem"
     // Channel names seem to have a fixed size with a max length of 32 bytes + NUL (though most channels don't use this length).
     pub const CHANNEL: PacketType = PacketType(u32::from_be_bytes(*b"CHAN"));
@@ -32,6 +35,24 @@ impl PacketType {
     // Config variable/value. Similar to CONVAR, this seems to have a fixed size of 81 bytes.
     // First 2 bytes are empty. Contains a lot of junk.
     pub const CONFIG_VAR: PacketType = PacketType(u32::from_be_bytes(*b"CFGV"));
+
+
+    // PPCR is some kind of connection test? Pipe created?
+    // Packet seems to have fixed size of 49 bytes.
+    // First 6 bytes are always 0, 1, 1, 0, 1, 0.
+    // Next 9 bytes are "PipeTest" + NUL (string)
+    // Next 23 bytes are "From 'Localhost:29009'" + NUL (string)
+    // I also tried connecting with 127.0.0.1 and this section changed to garbage. As if it only writes when connecting to localhost.
+    // Last byte is garbage.
+    pub const PPCR: PacketType = PacketType(u32::from_be_bytes(*b"PPCR"));
+
+    // VConsole Focus? Looks like it contains 2 empty bytes and a boolean.
+    // Whenever I focus the window it's true, whenever I unfocus it's false.
+    // The VConsole client seems to send this frequently when focused to keep the game from pausing.
+    pub const FOCUSED: PacketType = PacketType(u32::from_be_bytes(*b"VFCS"));
+
+    // Console command. First 2 bytes are empty. Contains the command string + NUL.
+    pub const COMMAND: PacketType = PacketType(u32::from_be_bytes(*b"CMND"));
 
     pub fn from_bytes(bytes: [u8; 4]) -> PacketType {
         PacketType(u32::from_be_bytes(bytes))
@@ -115,6 +136,27 @@ impl Packet {
 
 pub struct PacketCodec;
 
+impl Encoder<Packet> for PacketCodec {
+    type Error = io::Error;
+
+    fn encode(&mut self, item: Packet, dst: &mut BytesMut) -> Result<(), Self::Error> {
+        if item.packet_type == PacketType::COMMAND {
+            let packet_size = Packet::MIN_HEADER_SIZE + item.data.len();
+            if dst.remaining_mut() < packet_size {
+                dst.reserve(packet_size);
+            }
+
+            dst.put_u32(item.packet_type.0);
+            dst.put_u8(0); // NUL
+            dst.put_u8(VCONSOLE_BYTE);
+            dst.put_u32(packet_size as u32);
+            dst.put_slice(&item.data);
+        }
+
+        Ok(())
+    }
+}
+
 impl Decoder for PacketCodec {
     type Item = Packet;
     type Error = io::Error;
@@ -142,5 +184,62 @@ impl Decoder for PacketCodec {
             _unknown: unknown,
             data: payload,
         }))
+    }
+}
+
+pub struct CommandPacket {
+    command: String,
+}
+
+impl CommandPacket {
+
+    pub fn new(command: String) -> CommandPacket {
+        CommandPacket { command }
+    }
+
+    pub fn to_packet(&self) -> Packet {
+        let mut packet = Packet {
+            packet_type: PacketType::COMMAND,
+            _unknown: VCONSOLE_BYTE,
+            data: vec![],
+        };
+
+        packet.data.push(0); // 2 empty bytes
+        packet.data.push(0);
+        packet.data.extend_from_slice(self.command.as_bytes());
+        packet.data.push(0); // NUL
+
+        packet
+    }
+}
+
+pub struct VTunnelMessagePacket {
+    vmsg: VTunnelMessage,
+}
+
+impl VTunnelMessagePacket {
+    pub fn new(vmsg: VTunnelMessage) -> VTunnelMessagePacket {
+        VTunnelMessagePacket { vmsg }
+    }
+
+    pub fn to_packet(&self) -> Packet {
+        let mut packet = Packet {
+            packet_type: PacketType::COMMAND,
+            _unknown: VCONSOLE_BYTE,
+            data: vec![],
+        };
+
+        let encoded_msg = encode_vtunnel_message(&self.vmsg);
+        let mut command = String::new();
+        command.write_str("vtunnel_receive \"").unwrap();
+        command.write_str(encoded_msg.as_str()).unwrap();
+        command.write_str("\"").unwrap();
+
+        packet.data.push(0); // 2 empty bytes
+        packet.data.push(0);
+        packet.data.extend_from_slice(command.as_bytes());
+        packet.data.push(0); // NUL
+
+        packet
     }
 }

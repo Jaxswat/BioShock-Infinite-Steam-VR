@@ -93,15 +93,23 @@ If you've used the UModel exporter, they should already be unpacked in this fold
 
 ### VConsole Tunnel (VTunnel)
 
-VTunnel is a rust program that listens to the VConsole output of SteamVR Home (which runs on `localhost:29009`).
-It is able to read some of the VConsole protocol, most importantly the print statements.
+VTunnel is a rust program that enables bidirectional communication with the game's Lua scripts using the VConsole server.
+Data is encoded and sent from the game in `print()` statements, while the server sends them back through a custom `vtunnel_receive` command.
+VTunnel is also able to read/write some other parts of the VConsole protocol.
 
-Print statements can be sent from the Lua scripts.
-I wanted to be able to extract game data in an external program, so to do this I wrote a very basic text-based protocol for sending string/number/vector data.
-I intend on using this for debugging, and perhaps some other tools.
+The goal of this tool is to enhance the speed of developing complex features with debugging and data extraction.
 
-I would like to try using it to help me draw a navigation mesh with my VR controllers.
-I would have done this in the game scripts, but I needed to persist the data.
+The message protocol looks something like this:
+`$vt!my_message_name!s(5):example string!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!b:1!b:0!`
+It is able to send strings, floats, integers, 3D vectors, and booleans.
+
+
+An example of a feature I would use this for is building a navigation mesh by hand.
+I could build a set of events that help me draw walkable areas with my VR controller.
+I would have done this in the game scripts, but I needed to persist the data (which isn't possible in-game).
+The navmesh would be built in an external program and then baked into the Lua scripts for distribution.
+
+Right now the program just emits the server time along with the player and Elizabeth's state.
 
 # Questions / Suggestions
 
