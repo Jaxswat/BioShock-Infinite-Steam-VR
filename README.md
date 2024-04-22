@@ -116,6 +116,17 @@ I have also added an interactable tool that lets me control the program from wit
 
 It is incredibly convenient to be able to interact with the game from an external program.
 
+<img src="https://github.com/Jaxswat/BioShock-Infinite-Steam-VR/assets/8656187/4b9653ce-7d86-40c7-8152-b84f3e5d8e5b" alt="nav generation using VTunnel demo" width="400">
+
+> In this demo screenshot, navigation points are being generated on the VTunnel application.
+> When the VTunnel Tool is fired it triggers the server to run a line trace to find the floor and a box trace to see if Elizabeth fits.
+> Red spheres are unwalkable, while green spheres are walkable.
+> The logic is processed in VTunnel while the visualization is rendered in-game.
+> This allows designing a custom navigation mesh and persisting it to disk externally.
+> The nav mesh can then be baked into the Lua and distributed on in the workshop addon.
+
+
+
 # Questions / Suggestions
 
 Scripting in Source 2 can be very hard due to the sparse documentation. If you have any questions, ideas, or suggestions let me know.
