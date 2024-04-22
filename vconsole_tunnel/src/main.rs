@@ -13,6 +13,7 @@ use crate::game::player::{Player, PlayerInput};
 use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
+use crate::game::commands::DrawDebugSphere;
 use crate::game::trace::LineTrace;
 use crate::math::Vector3;
 use crate::vconsole::{Packet};
@@ -208,28 +209,29 @@ impl GameState {
                     } else {
                         eprintln!("Error running trace: {:?}", trace_result.err());
                     }
-                    // let is_floor = input.trace_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
-                    // let color = if is_floor {
-                    //     Vector3::new(0.0, 255.0, 0.0)
-                    // } else {
-                    //     Vector3::new(255.0, 0.0, 0.0)
-                    // };
 
-                    // let offset = 50.0;
-                    // for x in 0..10 {
-                    //     for y in 0..10 {
-                    //         let draw_sphere = DrawDebugSphere {
-                    //             position: Vector3::new(input.trace_position.x + (x as f64 * offset), input.trace_position.y + (y as f64 * offset), input.trace_position.z),
-                    //             color: color.clone(),
-                    //             color_alpha: 1.0,
-                    //             radius: 5.0,
-                    //             z_test: false,
-                    //             duration_seconds: 5.0,
-                    //         };
-                    //
-                    //         self.emitter.send::<DrawDebugSphere>(&draw_sphere).await;
-                    //     }
-                    // }
+                    let is_floor = input.trace_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
+                    let color = if is_floor {
+                        Vector3::new(0.0, 255.0, 0.0)
+                    } else {
+                        Vector3::new(255.0, 0.0, 0.0)
+                    };
+
+                    let offset = 50.0;
+                    for x in 0..10 {
+                        for y in 0..10 {
+                            let draw_sphere = DrawDebugSphere {
+                                position: Vector3::new(input.trace_position.x + (x as f64 * offset), input.trace_position.y + (y as f64 * offset), input.trace_position.z),
+                                color: color.clone(),
+                                color_alpha: 1.0,
+                                radius: 5.0,
+                                z_test: false,
+                                duration_seconds: 5.0,
+                            };
+
+                            emitter.send::<DrawDebugSphere>(&draw_sphere).await;
+                        }
+                    }
                 }
                 self.player.last_trigger = current_trigger;
 
