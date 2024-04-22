@@ -9,6 +9,9 @@ pub struct Elizabeth {
 }
 
 impl Elizabeth {
+    pub const MINS: Vector3 = Vector3{ x: -9.998732, y: -18.859135, z: -0.057327 };
+    pub const MAXS: Vector3 = Vector3{ x: 9.537852, y: 18.859135, z: 66.952141 };
+
     pub fn new() -> Elizabeth {
         Elizabeth {
             position: Vector3::new(0.0, 0.0, 0.0),

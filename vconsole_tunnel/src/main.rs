@@ -14,7 +14,7 @@ use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelMessageBatch,
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
 use crate::game::commands::DrawDebugSphere;
-use crate::game::trace::LineTrace;
+use crate::game::trace::{BoxTrace, LineTrace};
 use crate::math::Vector3;
 use crate::vconsole::{Packet};
 use crate::vtunnel_emitter::VTunnelEmitter;
@@ -91,7 +91,7 @@ struct ConsoleState {
 }
 
 impl ConsoleState {
-    pub fn new(inbox_sender: mpsc::Sender<VTunnelMessage>, inbox_reply_sender: mpsc::Sender<VTunnelMessage>,) -> ConsoleState {
+    pub fn new(inbox_sender: mpsc::Sender<VTunnelMessage>, inbox_reply_sender: mpsc::Sender<VTunnelMessage>) -> ConsoleState {
         ConsoleState {
             inbox_sender,
             inbox_reply_sender,
@@ -203,26 +203,55 @@ impl GameState {
                     let mut trace = LineTrace::new(input.hand_position.clone(), input.trace_position.clone());
                     trace.ignore_entity_id = self.player.user_id;
                     let trace_result = trace.run(emitter).await;
-                    if trace_result.is_ok() {
-                        let trace_result = trace_result.unwrap();
-                        println!("Trace result: {:?}", trace_result);
-                    } else {
-                        eprintln!("Error running trace: {:?}", trace_result.err());
+                    if trace_result.is_err() {
+                        return;
                     }
+                    let trace_result = trace_result.unwrap();
 
-                    let is_floor = input.trace_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
-                    let color = if is_floor {
-                        Vector3::new(0.0, 255.0, 0.0)
-                    } else {
-                        Vector3::new(255.0, 0.0, 0.0)
+                    let draw_initial_sphere = DrawDebugSphere {
+                        position: trace_result.hit_position,
+                        color: Vector3::new(0.0, 0.0, 255.0),
+                        color_alpha: 1.0,
+                        radius: 5.0,
+                        z_test: false,
+                        duration_seconds: 1.4,
                     };
+                    emitter.send::<DrawDebugSphere>(&draw_initial_sphere).await;
 
                     let mut vmsg_batch = VTunnelMessageBatch::new();
                     let offset = 50.0;
                     for x in 0..10 {
                         for y in 0..10 {
+                            let position = Vector3::new(input.trace_position.x.floor() + (x as f64 * offset), input.trace_position.y.floor() + (y as f64 * offset), input.trace_position.z);
+                            let floor_trace = LineTrace::new(position.add(&Vector3::new(0.0, 0.0, 10.0)), position.sub(&Vector3::new(0.0, 0.0, 1000.0)));
+                            let floor_trace_result = floor_trace.run(emitter).await;
+                            if floor_trace_result.is_err() {
+                                continue;
+                            }
+                            let floor_trace_result = floor_trace_result.unwrap();
+
+                            let space_trace = BoxTrace::new(
+                                floor_trace_result.hit_position.add(&Vector3::new(0.0, 0.0, 10.0)),
+                                floor_trace_result.hit_position.add(&Vector3::new(0.0, 0.0, 66.0)),
+                                Elizabeth::MINS,
+                                Elizabeth::MAXS,
+                            );
+                            let space_trace_result = space_trace.run(emitter).await;
+                            if space_trace_result.is_err() {
+                                continue;
+                            }
+                            let space_trace_result = space_trace_result.unwrap();
+
+                            let is_floor = floor_trace_result.hit && floor_trace_result.hit_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
+                            let has_space = !space_trace_result.hit;
+                            let color = if is_floor && has_space {
+                                Vector3::new(0.0, 255.0, 0.0)
+                            } else {
+                                Vector3::new(255.0, 0.0, 0.0)
+                            };
+
                             let draw_sphere = DrawDebugSphere {
-                                position: Vector3::new(input.trace_position.x.floor() + (x as f64 * offset), input.trace_position.y.floor() + (y as f64 * offset), input.trace_position.z),
+                                position: floor_trace_result.hit_position,
                                 color: color.clone(),
                                 color_alpha: 1.0,
                                 radius: 5.0,

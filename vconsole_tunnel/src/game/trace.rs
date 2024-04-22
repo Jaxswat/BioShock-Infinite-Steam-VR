@@ -18,12 +18,12 @@ pub enum TraceMask {
  */
 #[derive(Debug)]
 pub struct TraceResult {
-    hit: bool,
-    hit_position: Vector3,
-    hit_normal: Vector3,
-    hit_entity_id: u64,
-    start_in_solid: bool,
-    fraction: f64,
+    pub hit: bool,
+    pub hit_position: Vector3,
+    pub hit_normal: Vector3,
+    pub hit_entity_id: u64,
+    pub start_in_solid: bool,
+    pub fraction: f64,
 }
 
 impl TraceResult {
@@ -59,6 +59,7 @@ pub struct LineTrace {
     pub end_position: Vector3,
     pub mask: TraceMask,
     pub ignore_entity_id: u64,
+    pub draw_debug: bool,
 }
 
 impl VTunnelSerializable for LineTrace {
@@ -68,6 +69,7 @@ impl VTunnelSerializable for LineTrace {
         vmsg.add_vector3(self.end_position.clone());
         vmsg.add_int(self.mask as i64);
         vmsg.add_int(self.ignore_entity_id as i64);
+        vmsg.add_bool(self.draw_debug);
         vmsg
     }
 }
@@ -79,6 +81,7 @@ impl LineTrace {
             end_position,
             mask: TraceMask::TraceMaskPlayerSolid,
             ignore_entity_id: 0,
+            draw_debug: false,
         }
     }
 
@@ -87,6 +90,59 @@ impl LineTrace {
      */
     pub async fn run(self, emitter: &VTunnelEmitter) -> Result<TraceResult, std::io::Error> {
         let vmsg = emitter.send_request::<LineTrace>(self).await?;
+        let mut result = TraceResult::new();
+        result.apply_vtunnel_message(&vmsg);
+        Ok(result)
+    }
+}
+
+
+/**
+ * Performs a box/hull trace between two points.
+ */
+#[derive(Debug)]
+pub struct BoxTrace {
+    pub start_position: Vector3,
+    pub end_position: Vector3,
+    pub mins: Vector3,
+    pub maxs: Vector3,
+    pub mask: TraceMask,
+    pub ignore_entity_id: u64,
+    pub draw_debug: bool,
+}
+
+impl VTunnelSerializable for crate::game::trace::BoxTrace {
+    fn serialize(&self) -> VTunnelMessage {
+        let mut vmsg = VTunnelMessage::new("box_trace".to_string());
+        vmsg.add_vector3(self.start_position.clone());
+        vmsg.add_vector3(self.end_position.clone());
+        vmsg.add_vector3(self.mins.clone());
+        vmsg.add_vector3(self.maxs.clone());
+        vmsg.add_int(self.mask as i64);
+        vmsg.add_int(self.ignore_entity_id as i64);
+        vmsg.add_bool(self.draw_debug);
+        vmsg
+    }
+}
+
+impl BoxTrace {
+    pub fn new(start_position: Vector3, end_position: Vector3, mins: Vector3, maxs: Vector3) -> Self {
+        BoxTrace {
+            start_position,
+            end_position,
+            mins,
+            maxs,
+            mask: TraceMask::TraceMaskPlayerSolid,
+            ignore_entity_id: 0,
+            draw_debug: false,
+        }
+    }
+
+    /**
+     * Runs the trace and returns the result.
+     */
+    pub async fn run(self, emitter: &VTunnelEmitter) -> Result<TraceResult, std::io::Error> {
+        let vmsg = emitter.send_request::<BoxTrace>(self).await?;
         let mut result = TraceResult::new();
         result.apply_vtunnel_message(&vmsg);
         Ok(result)

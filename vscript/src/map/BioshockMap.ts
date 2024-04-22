@@ -3,7 +3,7 @@ import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
 import {VTunnel, VTunnelMessage, VTunnelReceiver, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
-import {handleDrawDebugSphere, handleLineTrace} from "../vconsole_tunnel/Messages";
+import {handleBoxTrace, handleDrawDebugSphere, handleLineTrace} from "../vconsole_tunnel/Messages";
 
 export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
@@ -24,6 +24,9 @@ export abstract class BioshockMap implements VTunnelSerializable {
 				return;
 			} else if (msg.getName() === "line_trace") {
 				handleLineTrace(msg);
+				return;
+			} else if (msg.getName() === "box_trace") {
+				handleBoxTrace(msg);
 				return;
 			}
 
