@@ -44,12 +44,12 @@ impl PacketType {
     // Next 23 bytes are "From 'Localhost:29009'" + NUL (string)
     // I also tried connecting with 127.0.0.1 and this section changed to garbage. As if it only writes when connecting to localhost.
     // Last byte is garbage.
-    pub const PPCR: PacketType = PacketType(u32::from_be_bytes(*b"PPCR"));
+    pub const _PPCR: PacketType = PacketType(u32::from_be_bytes(*b"PPCR"));
 
     // VConsole Focus? Looks like it contains 2 empty bytes and a boolean.
     // Whenever I focus the window it's true, whenever I unfocus it's false.
     // The VConsole client seems to send this frequently when focused to keep the game from pausing.
-    pub const FOCUSED: PacketType = PacketType(u32::from_be_bytes(*b"VFCS"));
+    pub const _FOCUSED: PacketType = PacketType(u32::from_be_bytes(*b"VFCS"));
 
     // Console command. First 2 bytes are empty. Contains the command string + NUL.
     pub const COMMAND: PacketType = PacketType(u32::from_be_bytes(*b"CMND"));

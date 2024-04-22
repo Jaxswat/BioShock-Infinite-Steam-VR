@@ -132,7 +132,7 @@ export default class BioshockPlayer extends BioshockEntity implements VTunnelSer
     }
 
     public serialize(): VTunnelMessage {
-        const msg = new VTunnelMessage("player_state");
+        const msg = new VTunnelMessage(VTunnelMessage.NO_ID, "player_state");
         msg.writeString(this.steamID.toString());
         msg.writeInt(this.userID);
         msg.writeString(this.name);

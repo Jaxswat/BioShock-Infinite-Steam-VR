@@ -13,14 +13,22 @@ export interface VTunnelSerializable {
 }
 
 export class VTunnelMessage {
-    private name: string = "";
-    private partTypes: VTunnelDataType[] = [];
-    private partData: any[] = [];
+    public static readonly NO_ID = 0;
 
-    public constructor(name: string) {
+    private id = 0;
+    private name: string;
+    private partTypes: VTunnelDataType[];
+    private partData: any[];
+
+    public constructor(id: number, name: string) {
+        this.id = id;
         this.name = name;
         this.partTypes = [];
         this.partData = [];
+    }
+
+    public getID(): number {
+        return this.id;
     }
 
     public getName(): string {
@@ -105,11 +113,11 @@ export abstract class VTunnel {
     }
 
     public static send(message: VTunnelMessage): void {
-        if (message.getName() != "player_input") {
-            return;
-        }
-
-        const payloadParts = [VTunnel.VTUNNEL_PREFIX, message.getName(), VTunnel.VTUNNEL_TYPE_SUFFIX];
+        const payloadParts = [
+            VTunnel.VTUNNEL_PREFIX,
+            message.getID(), VTunnel.VTUNNEL_TYPE_SUFFIX,
+            message.getName(), VTunnel.VTUNNEL_TYPE_SUFFIX
+        ];
 
         const partCount = message.getPartCount();
         for (let i = 0; i < partCount; i++) {
@@ -157,9 +165,14 @@ export abstract class VTunnel {
         }
 
         let index = VTunnel.VTUNNEL_PREFIX.length;
+        const idIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
+        const msgID = parseInt(rawData.substring(index, idIndex), 10);
+        index = idIndex + 1;
         const nameIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
-        let vmsg = new VTunnelMessage(rawData.substring(index, nameIndex));
+        const msgName = rawData.substring(index, nameIndex);
         index = nameIndex + 1;
+
+        const vmsg = new VTunnelMessage(msgID, msgName);
 
         let stringLength = 0;
         let dataType = "";
@@ -171,7 +184,7 @@ export abstract class VTunnel {
                 if (c == VTunnel.VTUNNEL_TYPE_PREFIX) {
                     dataType = data;
                     if (dataType.startsWith("s(") && dataType.endsWith(")")) {
-                        stringLength = parseInt(dataType.substring(2, dataType.length - 1));
+                        stringLength = parseInt(dataType.substring(2, dataType.length - 1), 10);
                         dataType = VTunnelDataType.String;
                     }
 
@@ -200,7 +213,7 @@ export abstract class VTunnel {
                 case VTunnelDataType.Int:
                     endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
                     data = rawData.substring(index, endIndex);
-                    vmsg.writeFloat(parseInt(data));
+                    vmsg.writeFloat(parseInt(data, 10));
                     index = endIndex;
                     break;
                 case VTunnelDataType.Vector:

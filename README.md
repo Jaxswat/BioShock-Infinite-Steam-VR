@@ -100,16 +100,21 @@ VTunnel is also able to read/write some other parts of the VConsole protocol.
 The goal of this tool is to enhance the speed of developing complex features with debugging and data extraction.
 
 The message protocol looks something like this:
-`$vt!my_message_name!s(5):example string!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!b:1!b:0!`
+`$vt!69!my_message_name!s(5):example string!f:3.141592!i:8192!v3:3.14,5.92,0.314!s(0):!f:-3.14!i:-69!b:1!b:0!`
 It is able to send strings, floats, integers, 3D vectors, and booleans.
+It is also operates as an RPC with request/reply functionality.
+It can draw debug spheres, run ray-traces, and pretty much anything else that can be done in the Lua code.
 
-
-An example of a feature I would use this for is building a navigation mesh by hand.
+An example of a feature I would use this for is building a navigation mesh.
 I could build a set of events that help me draw walkable areas with my VR controller.
 I would have done this in the game scripts, but I needed to persist the data (which isn't possible in-game).
 The navmesh would be built in an external program and then baked into the Lua scripts for distribution.
 
-Right now the program just emits the server time along with the player and Elizabeth's state.
+Right now the program captures some game state (server time, Elizabeth state, player state).
+As a proof of concept, I have also implemented some basic RPC functionality for remotely running ray-traces.
+I have also added an interactable tool that lets me control the program from within the game with my controller.
+
+It is incredibly convenient to be able to interact with the game from an external program.
 
 # Questions / Suggestions
 

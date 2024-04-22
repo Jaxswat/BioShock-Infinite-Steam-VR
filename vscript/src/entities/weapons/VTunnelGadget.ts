@@ -65,7 +65,7 @@ export default class VTunnelGadget extends Tool {
             DebugDrawLine(toolPos, traceResult.getHitPosition(), 255, 255, 255, false, 0);
         }
 
-        const vmsg = new VTunnelMessage("player_input");
+        const vmsg = new VTunnelMessage(VTunnelMessage.NO_ID, "player_input");
         vmsg.writeInt(this.player!.GetUserID());
         vmsg.writeInt(this.handID);
         vmsg.writeVector(this.hand!.GetAbsOrigin());

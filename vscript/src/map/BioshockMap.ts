@@ -3,7 +3,7 @@ import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
 import {VTunnel, VTunnelMessage, VTunnelReceiver, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
-import {handleDrawDebugSphere} from "../vconsole_tunnel/Messages";
+import {handleDrawDebugSphere, handleLineTrace} from "../vconsole_tunnel/Messages";
 
 export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
@@ -21,6 +21,9 @@ export abstract class BioshockMap implements VTunnelSerializable {
 		new VTunnelReceiver((msg: VTunnelMessage) => {
 			if (msg.getName() === "draw_debug_sphere") {
 				handleDrawDebugSphere(msg);
+				return;
+			} else if (msg.getName() === "line_trace") {
+				handleLineTrace(msg);
 				return;
 			}
 
@@ -87,7 +90,7 @@ export abstract class BioshockMap implements VTunnelSerializable {
 	}
 
 	public serialize(): VTunnelMessage {
-		const msg = new VTunnelMessage("world_state");
+		const msg = new VTunnelMessage(VTunnelMessage.NO_ID, "world_state");
 		msg.writeFloat(Time());
 		return msg;
 	}
