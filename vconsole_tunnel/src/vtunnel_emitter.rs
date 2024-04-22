@@ -5,7 +5,7 @@ use tokio::sync::{mpsc, Mutex, oneshot, RwLock};
 use tokio::time::timeout;
 use crate::vconsole;
 use crate::vconsole::Packet;
-use crate::vtunnel::{VTunnelMessage, VTunnelSerializable};
+use crate::vtunnel::{VTunnelMessage, VTunnelMessageBatch, VTunnelSerializable};
 
 pub struct VTunnelEmitter {
     sender: mpsc::Sender<Packet>,
@@ -27,6 +27,20 @@ impl VTunnelEmitter {
     pub async fn send<T: VTunnelSerializable + Send + 'static>(&self, msg: &T) {
         let vmsg = msg.serialize();
         self.sender.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await.unwrap();
+    }
+
+    pub async fn send_batch(&self, batch: VTunnelMessageBatch) {
+        let chunk_size = 5; // Command length limit seems to be 512, this might not always work depending on the payload size.
+        let chunked_messages: Vec<Vec<VTunnelMessage>> = batch
+            .messages
+            .chunks(chunk_size)
+            .map(|chunk| chunk.to_vec())
+            .collect();
+
+        for (_, messages) in chunked_messages.iter().enumerate() {
+            let chunked_batch = VTunnelMessageBatch::new_from_vec(messages.to_vec());
+            self.sender.send(vconsole::VTunnelMessageBatchPacket::new(chunked_batch).to_packet()).await.unwrap();
+        }
     }
 
     pub async fn send_request<T: VTunnelSerializable + Send + 'static>(&self, msg: T) -> Result<VTunnelMessage, std::io::Error> {
@@ -60,4 +74,3 @@ impl VTunnelEmitter {
         }
     }
 }
-

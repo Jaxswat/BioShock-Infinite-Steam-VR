@@ -3,7 +3,7 @@ use std::fmt::Write;
 use bytes::{Buf, BufMut, BytesMut};
 use tokio::io;
 use tokio_util::codec::{Decoder, Encoder};
-use crate::vtunnel::{encode_vtunnel_message, VTunnelMessage};
+use crate::vtunnel::{encode_vtunnel_message, VTunnelMessage, VTunnelMessageBatch};
 
 // This thing is included with all messages, no idea why. Probably a version number or something.
 pub const VCONSOLE_BYTE: u8 = 0xD3;
@@ -52,6 +52,7 @@ impl PacketType {
     pub const _FOCUSED: PacketType = PacketType(u32::from_be_bytes(*b"VFCS"));
 
     // Console command. First 2 bytes are empty. Contains the command string + NUL.
+    // Length limit for actual command seems to be around 512 bytes.
     pub const COMMAND: PacketType = PacketType(u32::from_be_bytes(*b"CMND"));
 
     pub fn from_bytes(bytes: [u8; 4]) -> PacketType {
@@ -234,6 +235,43 @@ impl VTunnelMessagePacket {
         command.write_str("vtunnel_receive \"").unwrap();
         command.write_str(encoded_msg.as_str()).unwrap();
         command.write_str("\"").unwrap();
+
+        packet.data.push(0); // 2 empty bytes
+        packet.data.push(0);
+        packet.data.extend_from_slice(command.as_bytes());
+        packet.data.push(0); // NUL
+
+        packet
+    }
+}
+
+pub struct VTunnelMessageBatchPacket {
+    batch: VTunnelMessageBatch
+}
+
+impl VTunnelMessageBatchPacket {
+    pub fn new(batch: VTunnelMessageBatch) -> VTunnelMessageBatchPacket {
+        VTunnelMessageBatchPacket { batch }
+    }
+
+    pub fn to_packet(&self) -> Packet {
+        let mut packet = Packet {
+            packet_type: PacketType::COMMAND,
+            _unknown: VCONSOLE_BYTE,
+            data: vec![],
+        };
+
+
+        let mut command = String::new();
+        command.write_str("vtunnel_receive").unwrap();
+
+        for vmsg in self.batch.messages.iter() {
+            command.write_str(" \"").unwrap();
+            let encoded_msg = encode_vtunnel_message(vmsg);
+            command.write_str(encoded_msg.as_str()).unwrap();
+            command.write_str("\"").unwrap();
+        }
+
 
         packet.data.push(0); // 2 empty bytes
         packet.data.push(0);

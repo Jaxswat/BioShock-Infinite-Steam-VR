@@ -14,7 +14,7 @@ pub trait VTunnelSerializable {
     fn serialize(&self) -> VTunnelMessage;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum VTunnelDataPart {
     String(String),
     Float(f64),
@@ -66,7 +66,7 @@ impl VTunnelDataPart {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct VTunnelMessage {
     pub id: u64,
     pub name: String,
@@ -105,6 +105,27 @@ impl VTunnelMessage {
 
     pub fn add_bool(&mut self, data: bool) {
         self.data.push(VTunnelDataPart::Bool(data));
+    }
+}
+
+#[derive(Debug)]
+pub struct VTunnelMessageBatch {
+    pub messages: Vec<VTunnelMessage>,
+}
+
+impl VTunnelMessageBatch {
+    pub fn new() -> VTunnelMessageBatch {
+        VTunnelMessageBatch {
+            messages: Vec::new(),
+        }
+    }
+
+    pub fn new_from_vec(messages: Vec<VTunnelMessage>) -> VTunnelMessageBatch {
+        VTunnelMessageBatch { messages }
+    }
+
+    pub fn add_message(&mut self, msg: VTunnelMessage) {
+        self.messages.push(msg);
     }
 }
 

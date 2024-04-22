@@ -1,5 +1,5 @@
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Vector3 {
     pub x: f64,
     pub y: f64,
@@ -20,16 +20,6 @@ impl Vector3 {
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
-        }
-    }
-}
-
-impl Clone for Vector3 {
-    fn clone(&self) -> Vector3 {
-        Vector3 {
-            x: self.x,
-            y: self.y,
-            z: self.z,
         }
     }
 }

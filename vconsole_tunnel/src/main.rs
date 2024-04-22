@@ -10,7 +10,7 @@ use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed};
 use crate::game::elizabeth::Elizabeth;
 use crate::game::player::{Player, PlayerInput};
-use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
+use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelMessageBatch, VTunnelSerializable};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
 use crate::game::commands::DrawDebugSphere;
@@ -217,11 +217,12 @@ impl GameState {
                         Vector3::new(255.0, 0.0, 0.0)
                     };
 
+                    let mut vmsg_batch = VTunnelMessageBatch::new();
                     let offset = 50.0;
                     for x in 0..10 {
                         for y in 0..10 {
                             let draw_sphere = DrawDebugSphere {
-                                position: Vector3::new(input.trace_position.x + (x as f64 * offset), input.trace_position.y + (y as f64 * offset), input.trace_position.z),
+                                position: Vector3::new(input.trace_position.x.floor() + (x as f64 * offset), input.trace_position.y.floor() + (y as f64 * offset), input.trace_position.z),
                                 color: color.clone(),
                                 color_alpha: 1.0,
                                 radius: 5.0,
@@ -229,9 +230,11 @@ impl GameState {
                                 duration_seconds: 5.0,
                             };
 
-                            emitter.send::<DrawDebugSphere>(&draw_sphere).await;
+                            vmsg_batch.add_message(draw_sphere.serialize());
                         }
                     }
+
+                    emitter.send_batch(vmsg_batch).await;
                 }
                 self.player.last_trigger = current_trigger;
 

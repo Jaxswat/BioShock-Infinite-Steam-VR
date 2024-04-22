@@ -243,13 +243,19 @@ export abstract class VTunnel {
 export class VTunnelReceiver {
     public constructor(onMessageReceived: (message: VTunnelMessage) => void) {
         Convars.RegisterCommand("vtunnel_receive", (_: string, ...args: string[]) => {
-            if (args.length != 1) {
+            if (args.length < 1) {
                 return;
             }
 
-            const vmsg = VTunnel.receive(args[0]);
-            if (vmsg) {
-                onMessageReceived(vmsg);
+            for (let arg of args) {
+                const vmsg = VTunnel.receive(arg);
+                if (vmsg) {
+                    try {
+                        onMessageReceived(vmsg);
+                    } catch (err) {
+                        print("Error handling VTunnel message (id:", vmsg.getID(), ", name:", vmsg.getName(),")", ":", err);
+                    }
+                }
             }
         }, "Receives a VTunnel message", ConVarFlags.FCVAR_HIDDEN_AND_UNLOGGED);
     }
