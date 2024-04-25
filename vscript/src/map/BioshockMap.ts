@@ -2,8 +2,8 @@ import { Skyline } from '../entities/skyline/skyline';
 import BioshockPlayer from "../entities/BioshockPlayer";
 import {DefaultEvents, PlayerConnectEvent, PlayerDisconnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
-import {VTunnel, VTunnelMessage, VTunnelReceiver, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
-import {handleBoxTrace, handleDrawDebugSphere, handleLineTrace} from "../vconsole_tunnel/Messages";
+import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
+import {handleBoxTrace, handleDrawDebugSphere, handleLineTrace} from "../vconsole_tunnel/MessageHandlers";
 
 export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
@@ -18,21 +18,13 @@ export abstract class BioshockMap implements VTunnelSerializable {
 		ListenToGameEvent(DefaultEvents.PlayerConnect, this.onPlayerConnect, this);
 		ListenToGameEvent(DefaultEvents.PlayerDisconnect, this.onPlayerDisconnect, this);
 
-		new VTunnelReceiver((msg: VTunnelMessage) => {
-			if (msg.getName() === "draw_debug_sphere") {
-				handleDrawDebugSphere(msg);
-				return;
-			} else if (msg.getName() === "line_trace") {
-				handleLineTrace(msg);
-				return;
-			} else if (msg.getName() === "box_trace") {
-				handleBoxTrace(msg);
-				return;
-			}
-
-			print("Received unhandled VTunnel message:");
-			DeepPrintTable(msg);
+		VTunnel.setup();
+		VTunnel.onMessage("vtunnel_connected", () => {
+			print("VTunnel connected!");
 		});
+		VTunnel.onMessage("draw_debug_sphere", handleDrawDebugSphere);
+		VTunnel.onMessage("line_trace", handleLineTrace);
+		VTunnel.onMessage("box_trace", handleBoxTrace);
 	}
 
 	public addSkyline(skyline: Skyline) {

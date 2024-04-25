@@ -37,6 +37,10 @@ declare abstract class CBaseEntity {
 	GetOwner(): CBaseEntity;
 	GetOwnerEntity(): CBaseEntity;
 
+	GetRenderColor(): Vector;
+	SetRenderColor(r: number, g: number, b: number): void;
+	SetRenderAlpha(alpha: number): void;
+
 	PrecacheScriptSound(soundName: string): void;
 
 	GetChildren(): CBaseEntity[];

@@ -19,6 +19,7 @@
 //   eventid	: holds the event ID
 
 
+// Game must be restarted when edited.
 // This file SHOULD be in custom_events.txt but that doesn't work in SteamVR apparently.
 // Scroll down to "SteamVR Events" for more details.
 
@@ -27,6 +28,12 @@
 	//////////////////
 	// BSI Events
 	//////////////////
+
+    // Forwards VTunnel messages to game event handlers
+	"vtunnel_receive"
+    {
+        "payload" "local"
+    }
 
 	//////////////////
 	// Liz Events

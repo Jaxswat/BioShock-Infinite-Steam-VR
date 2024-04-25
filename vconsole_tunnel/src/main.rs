@@ -3,6 +3,7 @@ mod math;
 mod vtunnel;
 mod game;
 mod vtunnel_emitter;
+mod nav_builder;
 
 use std::sync::{Arc};
 use tokio::net::TcpStream;
@@ -10,12 +11,11 @@ use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed};
 use crate::game::elizabeth::Elizabeth;
 use crate::game::player::{Player, PlayerInput};
-use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelMessageBatch, VTunnelSerializable};
+use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
-use crate::game::commands::DrawDebugSphere;
-use crate::game::trace::{BoxTrace, LineTrace};
-use crate::math::Vector3;
+use crate::game::gadget::{GadgetProgram, GadgetTool};
+use crate::nav_builder::nav_builder::NavBuilderProgram;
 use crate::vconsole::{Packet};
 use crate::vtunnel_emitter::VTunnelEmitter;
 
@@ -31,10 +31,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let framed_sender = Arc::new(Mutex::new(framed));
     let framed_receiver = Arc::clone(&framed_sender);
 
+    outbox_sender.send(vconsole::VTunnelMessagePacket::new(VTunnelMessage::new("vtunnel_connected".to_string())).to_packet()).await.unwrap();
+
     let emitter = Arc::new(VTunnelEmitter::new(outbox_sender));
     let emitter_receiver = Arc::clone(&emitter);
     let mut console_state = ConsoleState::new(inbox_sender, inbox_reply_sender);
-    let mut game_state = GameState::new();
+    let emitter_static: &'static VTunnelEmitter = unsafe { // No no no no no no no no no no no no no
+        &*Arc::into_raw(emitter.clone())
+    };
+    let mut game_state = GameState::new(emitter_static).await;
 
     tokio::spawn(async move {
         while let Some(packet) = outbox_receiver.recv().await {
@@ -45,7 +50,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     tokio::spawn(async move {
         while let Some(vmsg) = inbox_receiver.recv().await {
-            game_state.handle_vmsg(&emitter, vmsg).await;
+            game_state.handle_vmsg(vmsg).await;
         }
     });
 
@@ -172,15 +177,19 @@ struct GameState {
     server_time: f64,
     liz: Elizabeth,
     player: Player,
+    gadget_tool: GadgetTool,
 }
 
 impl GameState {
-    pub fn new() -> GameState {
+    pub async fn new(emitter: &'static VTunnelEmitter) -> GameState {
+        let mut gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter));
+
         GameState {
             last_server_time: 0.0,
             server_time: 0.0,
             liz: Elizabeth::new(),
             player: Player::new(),
+            gadget_tool,
         }
     }
 
@@ -190,88 +199,20 @@ impl GameState {
         println!("Player: {:?}", self.player);
     }
 
-    pub async fn handle_vmsg(&mut self, emitter: &VTunnelEmitter, vmsg: VTunnelMessage) {
+    pub async fn handle_vmsg(&mut self, vmsg: VTunnelMessage) {
         match vmsg.name.as_str() {
             "liz_state" => self.liz.apply_vtunnel_message(&vmsg),
             "player_state" => self.player.apply_vtunnel_message(&vmsg),
             "player_input" => {
                 let mut input = PlayerInput::new();
                 input.apply_vtunnel_message(&vmsg);
-
-                let current_trigger = input.trigger == 1.0;
-                if current_trigger != self.player.last_trigger && current_trigger && input.trace_hit {
-                    let mut trace = LineTrace::new(input.hand_position.clone(), input.trace_position.clone());
-                    trace.ignore_entity_id = self.player.user_id;
-                    let trace_result = trace.run(emitter).await;
-                    if trace_result.is_err() {
-                        return;
-                    }
-                    let trace_result = trace_result.unwrap();
-
-                    let draw_initial_sphere = DrawDebugSphere {
-                        position: trace_result.hit_position,
-                        color: Vector3::new(0.0, 0.0, 255.0),
-                        color_alpha: 1.0,
-                        radius: 5.0,
-                        z_test: false,
-                        duration_seconds: 1.4,
-                    };
-                    emitter.send::<DrawDebugSphere>(&draw_initial_sphere).await;
-
-                    let mut vmsg_batch = VTunnelMessageBatch::new();
-                    let offset = 50.0;
-                    for x in 0..10 {
-                        for y in 0..10 {
-                            let position = Vector3::new(input.trace_position.x.floor() + (x as f64 * offset), input.trace_position.y.floor() + (y as f64 * offset), input.trace_position.z);
-                            let floor_trace = LineTrace::new(position.add(&Vector3::new(0.0, 0.0, 10.0)), position.sub(&Vector3::new(0.0, 0.0, 1000.0)));
-                            let floor_trace_result = floor_trace.run(emitter).await;
-                            if floor_trace_result.is_err() {
-                                continue;
-                            }
-                            let floor_trace_result = floor_trace_result.unwrap();
-
-                            let space_trace = BoxTrace::new(
-                                floor_trace_result.hit_position.add(&Vector3::new(0.0, 0.0, 10.0)),
-                                floor_trace_result.hit_position.add(&Vector3::new(0.0, 0.0, 66.0)),
-                                Elizabeth::MINS,
-                                Elizabeth::MAXS,
-                            );
-                            let space_trace_result = space_trace.run(emitter).await;
-                            if space_trace_result.is_err() {
-                                continue;
-                            }
-                            let space_trace_result = space_trace_result.unwrap();
-
-                            let is_floor = floor_trace_result.hit && floor_trace_result.hit_normal.dot(&Vector3::new(0.0, 0.0, 1.0)) > 0.5;
-                            let has_space = !space_trace_result.hit;
-                            let color = if is_floor && has_space {
-                                Vector3::new(0.0, 255.0, 0.0)
-                            } else {
-                                Vector3::new(255.0, 0.0, 0.0)
-                            };
-
-                            let draw_sphere = DrawDebugSphere {
-                                position: floor_trace_result.hit_position,
-                                color: color.clone(),
-                                color_alpha: 1.0,
-                                radius: 5.0,
-                                z_test: false,
-                                duration_seconds: 5.0,
-                            };
-
-                            vmsg_batch.add_message(draw_sphere.serialize());
-                        }
-                    }
-
-                    emitter.send_batch(vmsg_batch).await;
-                }
-                self.player.last_trigger = current_trigger;
-
-                if input.hand == 0 {
-                    self.player.input_left_hand = input;
-                } else {
-                    self.player.input_right_hand = input;
-                }
+                self.gadget_tool.input(input).await;
+            }
+            "gadget_activated" => {
+                self.gadget_tool.activate().await;
+            }
+            "gadget_deactivated" => {
+                self.gadget_tool.deactivate().await;
             }
             "world_state" => self.server_time = vmsg.data[0].get_float().unwrap_or_default(),
             _ => {}

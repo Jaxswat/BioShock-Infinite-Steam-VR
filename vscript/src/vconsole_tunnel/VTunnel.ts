@@ -1,4 +1,5 @@
 import {ConVarFlags} from "../utils/ConVars";
+import {LizEvent} from "../entities/elizabeth/lizEvents";
 
 enum VTunnelDataType {
     String = "s",
@@ -105,6 +106,10 @@ export class VTunnelMessage {
 }
 
 export abstract class VTunnel {
+    public static readonly VTUNNEL_ENABLED_CONVAR = "vtunnel_enabled";
+    public static readonly VTUNNEL_RECEIVE_COMMAND = "vtunnel_receive";
+    public static readonly VTUNNEL_GAME_EVENT_NAME = "vtunnel_receive";
+
     public static readonly VTUNNEL_PREFIX = "$vt!";
     public static readonly VTUNNEL_TYPE_PREFIX = ":";
     public static readonly VTUNNEL_TYPE_SUFFIX = "!";
@@ -112,7 +117,25 @@ export abstract class VTunnel {
     private constructor() {
     }
 
+    public static setup() {
+        Convars.RegisterConvar(VTunnel.VTUNNEL_ENABLED_CONVAR, "1", "Enable VTunnel message emitter", ConVarFlags.FCVAR_NONE);
+
+        Convars.RegisterCommand(VTunnel.VTUNNEL_RECEIVE_COMMAND, (_: string, ...args: string[]) => {
+            if (args.length < 1) {
+                return;
+            }
+
+            for (let arg of args) {
+                FireGameEvent(VTunnel.VTUNNEL_GAME_EVENT_NAME, { payload: arg });
+            }
+        }, "Receives a VTunnel message and forwards it to a game event", ConVarFlags.FCVAR_HIDDEN_AND_UNLOGGED);
+    }
+
     public static send(message: VTunnelMessage): void {
+        if (!Convars.GetBool(VTunnel.VTUNNEL_ENABLED_CONVAR)) {
+            return;
+        }
+
         const payloadParts = [
             VTunnel.VTUNNEL_PREFIX,
             message.getID(), VTunnel.VTUNNEL_TYPE_SUFFIX,
@@ -159,7 +182,7 @@ export abstract class VTunnel {
         print(payloadParts.join(''));
     }
 
-    public static receive(rawData: string): VTunnelMessage | null {
+    private static receive(rawData: string): VTunnelMessage | null {
         if (!rawData.startsWith(VTunnel.VTUNNEL_PREFIX)) {
             return null;
         }
@@ -213,7 +236,7 @@ export abstract class VTunnel {
                 case VTunnelDataType.Int:
                     endIndex = rawData.indexOf(VTunnel.VTUNNEL_TYPE_SUFFIX, index);
                     data = rawData.substring(index, endIndex);
-                    vmsg.writeFloat(parseInt(data, 10));
+                    vmsg.writeInt(parseInt(data, 10));
                     index = endIndex;
                     break;
                 case VTunnelDataType.Vector:
@@ -238,25 +261,24 @@ export abstract class VTunnel {
 
         return vmsg;
     }
-}
 
-export class VTunnelReceiver {
-    public constructor(onMessageReceived: (message: VTunnelMessage) => void) {
-        Convars.RegisterCommand("vtunnel_receive", (_: string, ...args: string[]) => {
-            if (args.length < 1) {
+    public static onMessage(vmsgName: string, callback: (vmsg: VTunnelMessage) => void): number {
+        function handler({ payload: encodedVmsg }: { payload: string }) {
+            const vmsg = VTunnel.receive(encodedVmsg);
+            if (!vmsg) {
+                print("Error processing vmsg:", encodedVmsg);
+                return;
+            } else if (vmsg.getName() !== vmsgName) {
                 return;
             }
 
-            for (let arg of args) {
-                const vmsg = VTunnel.receive(arg);
-                if (vmsg) {
-                    try {
-                        onMessageReceived(vmsg);
-                    } catch (err) {
-                        print("Error handling VTunnel message (id:", vmsg.getID(), ", name:", vmsg.getName(),")", ":", err);
-                    }
-                }
+            try {
+                callback(vmsg);
+            } catch (err) {
+                print("Error handling VTunnel message (id:", vmsg.getID(), ", name:", vmsg.getName(),")", ":", err);
             }
-        }, "Receives a VTunnel message", ConVarFlags.FCVAR_HIDDEN_AND_UNLOGGED);
+        }
+
+        return ListenToGameEvent(VTunnel.VTUNNEL_GAME_EVENT_NAME, handler, null);
     }
 }

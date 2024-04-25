@@ -8,9 +8,6 @@ pub struct Player {
     pub name: String,
     pub position: Vector3,
     pub rotation: Vector3,
-    pub input_left_hand: PlayerInput,
-    pub input_right_hand: PlayerInput,
-    pub last_trigger: bool,
 }
 
 impl Player {
@@ -21,9 +18,6 @@ impl Player {
             name: String::new(),
             position: Vector3::new(0.0, 0.0, 0.0),
             rotation: Vector3::new(0.0, 0.0, 0.0),
-            input_left_hand: PlayerInput::new(),
-            input_right_hand: PlayerInput::new(),
-            last_trigger: false,
         }
     }
 }
@@ -36,6 +30,29 @@ impl VTunnelDeserializable for Player {
         self.position = msg.data[3].get_vector3().unwrap();
         self.rotation = msg.data[4].get_vector3().unwrap();
     }
+}
+
+pub mod input_button {
+    pub const IN_USE_HAND0: u64 = 24;
+    pub const IN_USE_HAND1: u64 = 25;
+    pub const IN_PAD_LEFT_HAND0: u64 = 26;
+    pub const IN_PAD_RIGHT_HAND0: u64 = 27;
+    pub const IN_PAD_UP_HAND0: u64 = 28;
+    pub const IN_PAD_DOWN_HAND0: u64 = 29;
+    pub const IN_PAD_LEFT_HAND1: u64 = 30;
+    pub const IN_PAD_RIGHT_HAND1: u64 = 31;
+    pub const IN_PAD_UP_HAND1: u64 = 32;
+    pub const IN_PAD_DOWN_HAND1: u64 = 33;
+    pub const IN_MENU_HAND0: u64 = 34;
+    pub const IN_MENU_HAND1: u64 = 35;
+    pub const IN_GRIP_HAND0: u64 = 36;
+    pub const IN_GRIP_HAND1: u64 = 37;
+    pub const IN_PAD_HAND0: u64 = 38;
+    pub const IN_PAD_HAND1: u64 = 39;
+    pub const IN_PAD_TOUCH_HAND0: u64 = 40;
+    pub const IN_PAD_TOUCH_HAND1: u64 = 41;
+    pub const THUMBSTICK_TOUCH_HAND0: u64 = 42;
+    pub const THUMBSTICK_TOUCH_HAND1: u64 = 43;
 }
 
 #[derive(Debug)]
@@ -80,6 +97,18 @@ impl PlayerInput {
             trackpad_y: 0.0,
             trigger: 0.0,
         }
+    }
+
+    pub fn is_pressed(&self, button: u64) -> bool {
+        self.buttons_pressed & (1 << button) != 0
+    }
+
+    pub fn is_down(&self, button: u64) -> bool {
+        self.buttons_down & (1 << button) != 0
+    }
+
+    pub fn is_released(&self, button: u64) -> bool {
+        self.buttons_released & (1 << button) != 0
     }
 }
 
