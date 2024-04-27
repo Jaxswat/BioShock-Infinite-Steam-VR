@@ -1,11 +1,37 @@
 import {VTunnel, VTunnelMessage} from "./VTunnel";
 import {BoxTrace, LineTrace} from "../utils/Trace";
 
+export function regigerDefaultVTunnelMessageHandlers() {
+    VTunnel.onMessage("vtunnel_request_handshake", handleVTunnelRequestHandshake);
+    VTunnel.onMessage("vtunnel_handshake", handleVTunnelHandshake);
+    VTunnel.onMessage("vtunnel_connected", handleVTunnelConnected);
+    VTunnel.onMessage("draw_debug_sphere", handleDrawDebugSphere);
+    VTunnel.onMessage("line_trace", handleLineTrace);
+    VTunnel.onMessage("box_trace", handleBoxTrace);
+}
+
+/**
+ * Handles a VTunnel handshake request.
+ * The server will emit this on start.
+ * The client (should) also send this on start.
+ */
+export function handleVTunnelRequestHandshake(vmsg: VTunnelMessage) {
+    VTunnel.send(new VTunnelMessage(VTunnelMessage.NO_ID, "vtunnel_request_handshake"));
+}
+
+/**
+ * Handles a VTunnel handshake.
+ * The server will emit this after the client requests a handshake.
+ * The client here echos the session ID back to the server.
+ */
 export function handleVTunnelHandshake(vmsg: VTunnelMessage) {
-    VTunnel.setEnabled(true);
     VTunnel.send(new VTunnelMessage(vmsg.getID(), "vtunnel_handshake"));
 }
 
+/**
+ * Handles a VTunnel connected message.
+ * The server will emit this after the handshake is complete and the connection is ready.
+ */
 export function handleVTunnelConnected(vmsg: VTunnelMessage) {
     print("VTunnel connected!");
 }

@@ -48,10 +48,13 @@ impl VTunnelEmitter {
     }
 
     pub async fn send_request<T: VTunnelSerializable + Send + 'static>(&self, msg: T) -> Result<VTunnelMessage, std::io::Error> {
-        let request_id = {
+        let mut vmsg = msg.serialize();
+        let mut request_id = vmsg.id;
+        if request_id == 0 {
             let mut request_id_sequence = self.request_id_sequence.lock().await;
             *request_id_sequence += 1;
-            *request_id_sequence
+            request_id = *request_id_sequence;
+            vmsg.set_id(request_id);
         };
 
         let (sender, receiver) = oneshot::channel();
@@ -60,8 +63,6 @@ impl VTunnelEmitter {
             pending_requests.insert(request_id, sender);
         }
 
-        let mut vmsg = msg.serialize();
-        vmsg.set_id(request_id);
         self.sender.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await.unwrap();
 
         match timeout(self.default_timeout, receiver).await {

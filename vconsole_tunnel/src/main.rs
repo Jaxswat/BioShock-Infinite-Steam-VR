@@ -15,6 +15,8 @@ use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable}
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
 use crate::game::gadget::{GadgetProgram, GadgetTool};
+use crate::game::trace::{LineTrace, TraceMask};
+use crate::math::Vector3;
 use crate::nav_builder::nav_builder::NavBuilderProgram;
 use crate::vconsole::{Packet};
 use crate::vtunnel_emitter::VTunnelEmitter;
@@ -31,10 +33,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let framed_sender = Arc::new(Mutex::new(framed));
     let framed_receiver = Arc::clone(&framed_sender);
 
-    let session_id = rand::random::<u32>();
-    let mut handshake_vmsg = VTunnelMessage::new("vtunnel_handshake".to_string());
-    handshake_vmsg.set_id(session_id as u64);
+    // Request the client to request a handshake on connect (for when server starts after client is running)
+    let handshake_vmsg = VTunnelMessage::new("vtunnel_request_handshake".to_string());
     outbox_sender.send(vconsole::VTunnelMessagePacket::new(handshake_vmsg).to_packet()).await.unwrap();
+
 
     let emitter = Arc::new(VTunnelEmitter::new(outbox_sender));
     let emitter_receiver = Arc::clone(&emitter);
@@ -42,7 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let emitter_static: &'static VTunnelEmitter = unsafe { // No no no no no no no no no no no no no
         &*Arc::into_raw(emitter.clone())
     };
-    let mut game_state = GameState::new(session_id, emitter_static).await;
+    let mut game_state = GameState::new(emitter_static).await;
 
     tokio::spawn(async move {
         while let Some(packet) = outbox_receiver.recv().await {
@@ -178,11 +180,11 @@ struct GameState {
 }
 
 impl GameState {
-    pub async fn new(session_id: u32, emitter: &'static VTunnelEmitter) -> GameState {
-        let mut gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter));
+    pub async fn new(emitter: &'static VTunnelEmitter) -> GameState {
+        let mut gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter).await);
 
         GameState {
-            session_id,
+            session_id: 0,
             session_ready: false,
 
             emitter,
@@ -203,15 +205,28 @@ impl GameState {
     pub async fn handle_vmsg(&mut self, vmsg: VTunnelMessage) {
         let msg_name = vmsg.name.as_str();
 
-        // Block all messages until client is ready
-        if !self.session_ready && msg_name == "vtunnel_handshake" && vmsg.id as u32 == self.session_id {
-            self.session_ready = true;
+        // Handle when client requests handshake (for when client starts after server is running)
+        if msg_name == "vtunnel_request_handshake" {
+            self.session_ready = false;
+            self.session_id = rand::random::<u32>();
 
-            let mut connected_vmsg = VTunnelMessage::new("vtunnel_connected".to_string());
-            connected_vmsg.set_id(self.session_id as u64);
-            self.emitter.send_vmsg(connected_vmsg).await;
+            let handshake_response = self.emitter.send_request::<VTunnelHandshake>(VTunnelHandshake::new(self.session_id)).await;
+            match handshake_response {
+                Ok(_) => {
+                    self.session_ready = true;
+                    let mut connected_vmsg = VTunnelMessage::new("vtunnel_connected".to_string());
+                    connected_vmsg.set_id(self.session_id as u64);
+                    self.emitter.send_vmsg(connected_vmsg).await;
+                }
+                Err(err) => {
+                    println!("VTunnel handshake failed... {} {:?}", self.session_id, err);
+                }
+            }
             return;
-        } else if !self.session_ready {
+        }
+
+        // Block all messages until client is ready
+        if (!self.session_ready) {
             return;
         }
 
@@ -237,5 +252,26 @@ impl GameState {
             // self.print_state();
             self.last_server_time = self.server_time;
         }
+    }
+}
+
+#[derive(Debug)]
+pub struct VTunnelHandshake {
+    pub session_id: u32,
+}
+
+impl VTunnelHandshake {
+    pub fn new(session_id: u32) -> VTunnelHandshake {
+        VTunnelHandshake {
+            session_id,
+        }
+    }
+}
+
+impl VTunnelSerializable for VTunnelHandshake {
+    fn serialize(&self) -> VTunnelMessage {
+        let mut vmsg = VTunnelMessage::new("vtunnel_handshake".to_string());
+        vmsg.set_id(self.session_id as u64);
+        vmsg
     }
 }

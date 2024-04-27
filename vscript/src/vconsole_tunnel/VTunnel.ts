@@ -1,11 +1,4 @@
 import {ConVarFlags} from "../utils/ConVars";
-import {
-    handleBoxTrace,
-    handleDrawDebugSphere,
-    handleLineTrace,
-    handleVTunnelConnected,
-    handleVTunnelHandshake
-} from "./MessageHandlers";
 
 enum VTunnelDataType {
     String = "s",
@@ -120,13 +113,7 @@ export abstract class VTunnel {
     public static readonly VTUNNEL_TYPE_PREFIX = ":";
     public static readonly VTUNNEL_TYPE_SUFFIX = "!";
 
-    private static enabled: boolean = false;
-
     private constructor() {
-    }
-
-    public static setEnabled(enabled: boolean) {
-        this.enabled = enabled;
     }
 
     public static setup() {
@@ -141,17 +128,17 @@ export abstract class VTunnel {
                 FireGameEvent(VTunnel.VTUNNEL_GAME_EVENT_NAME, { payload: arg });
             }
         }, "Receives a VTunnel message and forwards it to a game event", ConVarFlags.FCVAR_HIDDEN_AND_UNLOGGED);
+    }
 
-        // Preset messages
-        VTunnel.onMessage("vtunnel_handshake", handleVTunnelHandshake);
-        VTunnel.onMessage("vtunnel_connected", handleVTunnelConnected);
-        VTunnel.onMessage("draw_debug_sphere", handleDrawDebugSphere);
-        VTunnel.onMessage("line_trace", handleLineTrace);
-        VTunnel.onMessage("box_trace", handleBoxTrace);
+    /**
+     * If the VTunnel server is already running, we need to request a new handshake.
+     */
+    public static requestHandshake(): void {
+        VTunnel.send(new VTunnelMessage(VTunnelMessage.NO_ID, "vtunnel_request_handshake"));
     }
 
     public static send(message: VTunnelMessage): void {
-        if (!VTunnel.enabled || !Convars.GetBool(VTunnel.VTUNNEL_ENABLED_CONVAR)) {
+        if (!Convars.GetBool(VTunnel.VTUNNEL_ENABLED_CONVAR)) {
             return;
         }
 

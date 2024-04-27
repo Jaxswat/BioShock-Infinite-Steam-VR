@@ -74,7 +74,6 @@ pub struct VTunnelMessage {
 }
 
 impl VTunnelMessage {
-
     pub fn new(name: String) -> VTunnelMessage {
         VTunnelMessage {
             id: 0,
@@ -111,17 +110,29 @@ impl VTunnelMessage {
 #[derive(Debug)]
 pub struct VTunnelMessageBatch {
     pub messages: Vec<VTunnelMessage>,
+
+    /**
+     * The number of messages to batch together when sending.
+     */
+    pub batch_size: usize,
 }
 
 impl VTunnelMessageBatch {
+    pub const DEFAULT_BATCH_SIZE: usize = 5;
+
     pub fn new() -> VTunnelMessageBatch {
         VTunnelMessageBatch {
             messages: Vec::new(),
+            batch_size: VTunnelMessageBatch::DEFAULT_BATCH_SIZE,
         }
     }
 
     pub fn new_from_vec(messages: Vec<VTunnelMessage>) -> VTunnelMessageBatch {
-        VTunnelMessageBatch { messages }
+        VTunnelMessageBatch { messages, batch_size: VTunnelMessageBatch::DEFAULT_BATCH_SIZE }
+    }
+
+    pub fn set_batch_size(&mut self, size: usize) {
+        self.batch_size = size;
     }
 
     pub fn add_message(&mut self, msg: VTunnelMessage) {

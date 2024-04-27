@@ -36,6 +36,23 @@ export default class VTunnelGadget extends Tool {
             // const state = msg.indexPartDataAsInt(0);
             this.gadgetColor = msg.indexPartDataAsVector(1);
         });
+
+        VTunnel.onMessage('draw_nav_point',(msg: VTunnelMessage) => {
+            // const id = msg.indexPartDataAsInt(0);
+            const position = msg.indexPartDataAsVector(1);
+            const navType = msg.indexPartDataAsInt(2);
+
+            let color: Vector;
+            if (navType === 0) {
+                color = Vector(0, 255, 0);
+            } else if (navType === 1) {
+                color = Vector(255, 0, 0);
+            } else {
+                color = Vector(0, 0, 0);
+            }
+
+            DebugDrawSphere(position, color, 1, 5, false, 10);
+        });
     }
 
     public equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean {

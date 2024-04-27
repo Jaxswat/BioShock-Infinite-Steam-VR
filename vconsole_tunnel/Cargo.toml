@@ -12,3 +12,4 @@ bytes = "1.6.0"
 tokio-util = { version = "0.7.10", features = ["codec"] }
 futures = "0.3.30"
 rand = "0.9.0-alpha.1"
+rusqlite = { version = "0.31.0", features = ["bundled"] }
