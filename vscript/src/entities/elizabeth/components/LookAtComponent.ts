@@ -3,12 +3,16 @@ import LizComponent from "./LizComponent";
 
 export default class LookAtComponent extends LizComponent {
     private target: Vector;
+    private lastHeadPitch: number;
+    private lastHeadYaw: number;
 
     public constructor(liz: Elizabeth) {
         super(liz);
 
         this.enabled = false;
         this.target = Vector();
+        this.lastHeadYaw = 0;
+        this.lastHeadPitch = 0;
     }
 
     public updatePose(delta: number) {
@@ -16,7 +20,6 @@ export default class LookAtComponent extends LizComponent {
         const lizPos = lizEntity.GetAbsOrigin();
         const lizFwd = lizEntity.GetForwardVector();
         const lizRight = lizEntity.GetRightVector();
-        const lizUp = lizEntity.GetUpVector();
 
         const adjustedLizPos = lizPos;
         adjustedLizPos.z = this.target.z;
@@ -56,8 +59,14 @@ export default class LookAtComponent extends LizComponent {
             headPitch = 25;
         }
 
-        lizEntity.SetPoseParameter("head_pitch", headPitch);
-        lizEntity.SetPoseParameter("head_yaw", -headYaw);
+        const headTurnSpeed = 45;
+        const targetHeadPitch = Lerp(headTurnSpeed * delta, this.lastHeadYaw, headYaw);
+        const targetHeadYaw = Lerp(headTurnSpeed * delta, this.lastHeadYaw, headYaw);
+        this.lastHeadPitch = targetHeadPitch;
+        this.lastHeadYaw = targetHeadYaw;
+
+        lizEntity.SetPoseParameter("head_pitch", targetHeadPitch);
+        lizEntity.SetPoseParameter("head_yaw", -targetHeadYaw);
 
         lizEntity.SetPoseParameter("eyes_pitch", headPitch/2);
         lizEntity.SetPoseParameter("eyes_yaw", -headYaw/2);
