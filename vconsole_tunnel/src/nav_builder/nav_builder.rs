@@ -41,6 +41,14 @@ pub struct NavPoint {
 }
 
 impl NavPoint {
+    fn to_add_vmsg(&self) -> VTunnelMessage {
+        let mut vmsg = VTunnelMessage::new("add_nav_point".to_string());
+        vmsg.add_int(self.id as i64);
+        vmsg.add_vector3(self.position.clone());
+        vmsg.add_int(self.nav_type.to_int() as i64);
+        vmsg
+    }
+
     /**
      * Returns a VTunnelMessage to draw the nav point.
      * Smaller than calling the debug draws directly.
@@ -128,7 +136,9 @@ impl NavBuilderProgram {
 
         for nav_point in nav_point_iter {
             if let Ok(np) = nav_point {
-                self.nav_points_set.insert(np.position.clone());
+                let mut unique_position = self.round_to_grid(&np.position);
+                unique_position.z = unique_position.z.ceil();
+                self.nav_points_set.insert(unique_position);
                 self.nav_points.push(np);
             }
         }
@@ -152,6 +162,20 @@ impl NavBuilderProgram {
         }
 
         nearest_nav_point
+    }
+
+    async fn upload_nav_points(&self) {
+        let mut vmsg_batch = VTunnelMessageBatch::new();
+        vmsg_batch.set_batch_size(15);
+
+        let clear_vmsg = VTunnelMessage::new("clear_nav_points".to_string());
+        vmsg_batch.add_message(clear_vmsg);
+
+        for nav_point in &self.nav_points {
+            vmsg_batch.add_message(nav_point.to_add_vmsg());
+        }
+
+        self.emitter.send_batch(vmsg_batch).await;
     }
 
     async fn add_nav_point(&mut self, position: &Vector3, nav_type: NavType) -> Option<NavPoint> {
@@ -332,15 +356,9 @@ impl NavBuilderProgram {
                 self.emitter.send::<DrawDebugSphere>(&draw_sphere).await;
             }
             NavEditorMode::Toggle => {
-                let draw_initial_sphere = DrawDebugSphere {
-                    position: input.trace_position.clone(),
-                    color: Vector3::new(0.0, 0.0, 255.0),
-                    color_alpha: 1.0,
-                    radius: 5.0,
-                    z_test: false,
-                    duration_seconds: 1.4,
-                };
-                self.emitter.send::<DrawDebugSphere>(&draw_initial_sphere).await;
+                let mut move_to_vmsg = VTunnelMessage::new("liz_move_to".to_string());
+                move_to_vmsg.add_vector3(input.trace_position.clone());
+                self.emitter.send_vmsg(move_to_vmsg).await;
             }
         }
     }
@@ -379,7 +397,8 @@ impl GadgetProgram for NavBuilderProgram {
         }
 
         if input.is_pressed(input_button::IN_MENU_HAND1) {
-            self.render_nearby_nav_points(input.hand_position.clone()).await;
+            self.upload_nav_points().await;
+            // self.render_nearby_nav_points(input.hand_position.clone()).await;
         }
     }
 }

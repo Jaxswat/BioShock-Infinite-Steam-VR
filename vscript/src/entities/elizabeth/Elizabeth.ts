@@ -72,7 +72,6 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 		this.stateManager.addState(new ThrowingState(this));
 		this.stateManager.addState(new FollowingState(this));
 		this.stateManager.addState(new ChoreoState(this));
-		this.stateManager.begin(LizStateName.Idle);
 
 		LizEventManager.on(LizEvent.PlayerReady, this.onPlayerReady, this);
 		LizEventManager.on(LizEvent.ObjectCaught, this.onObjectCaught, this);
@@ -89,28 +88,32 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 			} else {
 				// Player found, begin Liz'ing
 				this.stateManager.begin(LizStateName.Idle);
+
+				// Test nav
+				this.abandon.setEnabled(false);
 			}
 		}
 
 		this.components.update(delta);
 		this.stateManager.update(delta);
 
-		if (this.stateManager.getCurrentState()!.isCompleted()) {
-			const playerDistance = VectorDistance(this.player.GetAbsOrigin(), this.getPosition());
-			const nearestChoreoPoint = LizChoreoUtils.getNearestChoreoPoint(this.getPosition(), this.choreoPoints);
-			if ((this.stateManager.isCurrentState(LizStateName.Idle) || this.stateManager.isCurrentState(LizStateName.Following)) && playerDistance > 150) {
-				this.stateManager.setState(LizStateName.Following);
-			} else if (nearestChoreoPoint && VectorDistance(nearestChoreoPoint.position, this.getPosition()) < nearestChoreoPoint.activateDistance) {
-				this.stateManager.setState(LizStateName.Choreo);
-			} else if (this.stateManager.isCurrentState(LizStateName.Idle)) {
-				this.stateManager.setState(LizStateName.Throwing);
-			} else if (this.stateManager.isCurrentState(LizStateName.Choreo)) {
-				this.stateManager.setState(LizStateName.Idle);
-			} else {
-				this.stateManager.setState(LizStateName.Idle);
-			}
-		}
-		VTunnel.send(this.serialize());
+		// if (this.stateManager.getCurrentState()!.isCompleted()) {
+		// 	const playerDistance = VectorDistance(this.player.GetAbsOrigin(), this.getPosition());
+		// 	const nearestChoreoPoint = LizChoreoUtils.getNearestChoreoPoint(this.getPosition(), this.choreoPoints);
+		// 	if ((this.stateManager.isCurrentState(LizStateName.Idle) || this.stateManager.isCurrentState(LizStateName.Following)) && playerDistance > 150) {
+		// 		this.stateManager.setState(LizStateName.Following);
+		// 	} else if (nearestChoreoPoint && VectorDistance(nearestChoreoPoint.position, this.getPosition()) < nearestChoreoPoint.activateDistance) {
+		// 		this.stateManager.setState(LizStateName.Choreo);
+		// 	} else if (this.stateManager.isCurrentState(LizStateName.Idle)) {
+		// 		this.stateManager.setState(LizStateName.Throwing);
+		// 	} else if (this.stateManager.isCurrentState(LizStateName.Choreo)) {
+		// 		this.stateManager.setState(LizStateName.Idle);
+		// 	} else {
+		// 		this.stateManager.setState(LizStateName.Idle);
+		// 	}
+		// }
+
+		// VTunnel.send(this.serialize());
 	}
 
 	public updatePose(delta: number) {
@@ -214,7 +217,7 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 	}
 
 	public serialize(): VTunnelMessage {
-		const msg = new VTunnelMessage("liz_state");
+		const msg = new VTunnelMessage(VTunnelMessage.NO_ID, "liz_state");
 		msg.writeVector(this.getPosition());
 		msg.writeVector(this.entity.GetAnglesAsVector());
 		msg.writeString(this.stateManager.getCurrentState()?.getStateName() || "");

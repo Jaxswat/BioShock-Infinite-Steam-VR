@@ -58,7 +58,7 @@ export abstract class BioshockMap implements VTunnelSerializable {
 			}
 		}
 
-		VTunnel.send(this.serialize());
+		// VTunnel.send(this.serialize());
 	}
 
 	/**

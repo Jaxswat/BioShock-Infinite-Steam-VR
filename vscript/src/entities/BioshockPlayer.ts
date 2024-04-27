@@ -119,7 +119,7 @@ export default class BioshockPlayer extends BioshockEntity implements VTunnelSer
             }
         }
 
-        VTunnel.send(this.serialize());
+        // VTunnel.send(this.serialize());
     }
 
     private getToolInHand(handID: number): CDestinationsPropTool | null {
