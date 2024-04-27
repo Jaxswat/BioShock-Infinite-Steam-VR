@@ -1,6 +1,15 @@
 import {VTunnel, VTunnelMessage} from "./VTunnel";
 import {BoxTrace, LineTrace} from "../utils/Trace";
 
+export function handleVTunnelHandshake(vmsg: VTunnelMessage) {
+    VTunnel.setEnabled(true);
+    VTunnel.send(new VTunnelMessage(vmsg.getID(), "vtunnel_handshake"));
+}
+
+export function handleVTunnelConnected(vmsg: VTunnelMessage) {
+    print("VTunnel connected!");
+}
+
 export function handleDrawDebugSphere(vmsg: VTunnelMessage){
     const position = vmsg.indexPartDataAsVector(0);
     const color= vmsg.indexPartDataAsVector(1);

@@ -24,6 +24,10 @@ impl VTunnelEmitter {
         }
     }
 
+    pub async fn send_vmsg(&self, vmsg: VTunnelMessage) {
+        self.sender.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await.unwrap();
+    }
+
     pub async fn send<T: VTunnelSerializable + Send + 'static>(&self, msg: &T) {
         let vmsg = msg.serialize();
         self.sender.send(vconsole::VTunnelMessagePacket::new(vmsg).to_packet()).await.unwrap();

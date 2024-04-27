@@ -31,7 +31,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let framed_sender = Arc::new(Mutex::new(framed));
     let framed_receiver = Arc::clone(&framed_sender);
 
-    outbox_sender.send(vconsole::VTunnelMessagePacket::new(VTunnelMessage::new("vtunnel_connected".to_string())).to_packet()).await.unwrap();
+    let session_id = rand::random::<u32>();
+    let mut handshake_vmsg = VTunnelMessage::new("vtunnel_handshake".to_string());
+    handshake_vmsg.set_id(session_id as u64);
+    outbox_sender.send(vconsole::VTunnelMessagePacket::new(handshake_vmsg).to_packet()).await.unwrap();
 
     let emitter = Arc::new(VTunnelEmitter::new(outbox_sender));
     let emitter_receiver = Arc::clone(&emitter);
@@ -39,7 +42,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let emitter_static: &'static VTunnelEmitter = unsafe { // No no no no no no no no no no no no no
         &*Arc::into_raw(emitter.clone())
     };
-    let mut game_state = GameState::new(emitter_static).await;
+    let mut game_state = GameState::new(session_id, emitter_static).await;
 
     tokio::spawn(async move {
         while let Some(packet) = outbox_receiver.recv().await {
@@ -91,7 +94,6 @@ struct ConsoleState {
     channels: Vec<String>,
     convars: Vec<String>,
     config_vars: Vec<String>,
-    buffer_skipped: bool,
     packets_received: usize,
 }
 
@@ -106,7 +108,6 @@ impl ConsoleState {
             channels: vec![],
             convars: vec![],
             config_vars: vec![],
-            buffer_skipped: false,
             packets_received: 0,
         }
     }
@@ -122,30 +123,22 @@ impl ConsoleState {
 
     pub async fn handle_packet(&mut self, packet: Packet) {
         if self.packets_received == 4000 {
-            self.buffer_skipped = true;
             self.print_state();
         }
 
         match packet.packet_type {
             vconsole::PacketType::PRINT => {
                 let print_data = packet.get_print_data();
-                // if print_data.contains("End VConsole Buffered Messages") {
-                //     self.buffer_skipped = true;
-                //     self.last_server_time = 0.0; // reset on game reload
-                // }
-
-                if self.buffer_skipped {
-                    let vmsg = vtunnel::parse_vtunnel_message(&print_data);
-                    if vmsg.is_some() {
-                        let vmsg = vmsg.unwrap();
-                        if vmsg.id == 0 {
-                            self.inbox_sender.send(vmsg).await.unwrap();
-                        } else {
-                            self.inbox_reply_sender.send(vmsg).await.unwrap();
-                        }
+                let vmsg = vtunnel::parse_vtunnel_message(&print_data);
+                if vmsg.is_some() {
+                    let vmsg = vmsg.unwrap();
+                    if vmsg.id == 0 {
+                        self.inbox_sender.send(vmsg).await.unwrap();
                     } else {
-                        println!("{}", print_data);
+                        self.inbox_reply_sender.send(vmsg).await.unwrap();
                     }
+                } else {
+                    println!("{}", print_data);
                 }
             }
             vconsole::PacketType::APP_INFO => {
@@ -173,6 +166,10 @@ impl ConsoleState {
 }
 
 struct GameState {
+    session_id: u32,
+    session_ready: bool,
+
+    emitter: &'static VTunnelEmitter,
     last_server_time: f64,
     server_time: f64,
     liz: Elizabeth,
@@ -181,10 +178,14 @@ struct GameState {
 }
 
 impl GameState {
-    pub async fn new(emitter: &'static VTunnelEmitter) -> GameState {
+    pub async fn new(session_id: u32, emitter: &'static VTunnelEmitter) -> GameState {
         let mut gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter));
 
         GameState {
+            session_id,
+            session_ready: false,
+
+            emitter,
             last_server_time: 0.0,
             server_time: 0.0,
             liz: Elizabeth::new(),
@@ -200,7 +201,21 @@ impl GameState {
     }
 
     pub async fn handle_vmsg(&mut self, vmsg: VTunnelMessage) {
-        match vmsg.name.as_str() {
+        let msg_name = vmsg.name.as_str();
+
+        // Block all messages until client is ready
+        if !self.session_ready && msg_name == "vtunnel_handshake" && vmsg.id as u32 == self.session_id {
+            self.session_ready = true;
+
+            let mut connected_vmsg = VTunnelMessage::new("vtunnel_connected".to_string());
+            connected_vmsg.set_id(self.session_id as u64);
+            self.emitter.send_vmsg(connected_vmsg).await;
+            return;
+        } else if !self.session_ready {
+            return;
+        }
+
+        match msg_name {
             "liz_state" => self.liz.apply_vtunnel_message(&vmsg),
             "player_state" => self.player.apply_vtunnel_message(&vmsg),
             "player_input" => {
