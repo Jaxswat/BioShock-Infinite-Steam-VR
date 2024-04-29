@@ -1,24 +1,17 @@
-mod vconsole;
-mod math;
-mod vtunnel;
-mod game;
-mod vtunnel_emitter;
-mod nav_builder;
-mod nav_parser;
-
 use std::sync::{Arc};
 use tokio::net::TcpStream;
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed};
-use crate::game::elizabeth::Elizabeth;
-use crate::game::player::{Player, PlayerInput};
-use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
-use crate::game::gadget::{GadgetTool};
-use crate::nav_builder::nav_builder::NavBuilderProgram;
-use crate::vconsole::{Packet};
-use crate::vtunnel_emitter::VTunnelEmitter;
+use vconsole_tunnel::{vconsole, vtunnel};
+use vconsole_tunnel::game::elizabeth::Elizabeth;
+use vconsole_tunnel::game::gadget::GadgetTool;
+use vconsole_tunnel::game::player::{Player, PlayerInput};
+use vconsole_tunnel::nav_builder::nav_builder::NavBuilderProgram;
+use vconsole_tunnel::vconsole::Packet;
+use vconsole_tunnel::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
+use vconsole_tunnel::vtunnel_emitter::VTunnelEmitter;
 
 
 #[tokio::main]
