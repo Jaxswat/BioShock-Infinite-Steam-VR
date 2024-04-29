@@ -4,6 +4,7 @@ use crate::nav_parser::nav::NavData;
 pub fn bake_nav_data_for_typescript(nav_data: NavData) -> String {
     let mut output = String::new();
     output.push_str("// CODE GENERATED NAV MESH DATA. DO NOT EDIT.\n\n");
+    output.push_str("import {NavArea} from \"./NavData\";\n");
     output.push_str("export const NAV_MESH: NavArea[] = [\n");
 
     for nav_area in nav_data.nav_areas.iter() {
