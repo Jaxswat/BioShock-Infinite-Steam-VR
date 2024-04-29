@@ -2,13 +2,13 @@ import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LineTrace} from "../../../utils/Trace";
 import {VTunnel, VTunnelMessage} from "../../../vconsole_tunnel/VTunnel";
+import NAV_MESH from "../../../navigation/battleship_bay_nav";
 
 export default class MoveComponent extends LizComponent {
     private readonly stepSpeed: number = 5;
     private readonly walkSpeed: number = 20;
-    // private readonly runSpeed: number = 70;
-    private readonly runSpeed: number = 140;
-    private readonly speedLerpFactor: number = 0.1;
+    private readonly runSpeed: number = 140; // 70
+    private readonly speedLerpFactor: number = 50;
 
     private targetPosition: Vector;
     private currentSpeed: number;
@@ -16,7 +16,7 @@ export default class MoveComponent extends LizComponent {
 
     private navPoints: NavPoint[];
     private path: NavPoint[];
-    private currentNavPointIndex: number;
+    private currentPathIndex: number;
 
     public constructor(liz: Elizabeth) {
         super(liz);
@@ -26,36 +26,8 @@ export default class MoveComponent extends LizComponent {
 
         this.navPoints = [];
         this.path = [];
-        this.currentNavPointIndex = 0;
+        this.currentPathIndex = 0;
 
-        VTunnel.onMessage('clear_nav_points', () => {
-            this.navPoints = [];
-        });
-        VTunnel.onMessage('add_nav_point', (msg: VTunnelMessage) => {
-            const id = msg.indexPartDataAsInt(0);
-            const position = msg.indexPartDataAsVector(1);
-            const navType = msg.indexPartDataAsInt(2);
-            this.navPoints.push({
-                id,
-                position,
-                navType: navType === 0 ? NavType.Walkable : NavType.Obstacle,
-                gCost: 0,
-                hCost: 0,
-                fCost: 0,
-                parent: null
-            });
-
-            let color: Vector;
-            if (navType === 0) {
-                color = Vector(0, 255, 0);
-            } else if (navType === 1) {
-                color = Vector(255, 0, 0);
-            } else {
-                color = Vector(0, 0, 0);
-            }
-
-            DebugDrawSphere(position, color, 1, 5, false, 10);
-        });
         VTunnel.onMessage('liz_move_to', (msg: VTunnelMessage) => {
             const position = msg.indexPartDataAsVector(0);
             DebugDrawSphere(position, Vector(0, 0, 255), 1, 5, false, 1.4);
@@ -67,8 +39,8 @@ export default class MoveComponent extends LizComponent {
         const entity = this.liz.getEntity();
         const currentPos = this.liz.getPosition();
 
-        if (this.currentNavPointIndex < this.path.length) {
-            const targetNavPoint = this.path[this.currentNavPointIndex];
+        if (this.currentPathIndex < this.path.length) {
+            const targetNavPoint = this.path[this.currentPathIndex];
             const posSub = subVector(targetNavPoint.position, currentPos);
             const direction = posSub.Normalized();
             direction.z = 0; // no flying bruv.
@@ -93,9 +65,9 @@ export default class MoveComponent extends LizComponent {
             entity.SetAbsOrigin(nextPos);
 
             if (distance < 10) {
-                this.currentNavPointIndex++;
-                if (this.currentNavPointIndex < this.path.length) {
-                    this.targetPosition = this.path[this.currentNavPointIndex].position;
+                this.currentPathIndex++;
+                if (this.currentPathIndex < this.path.length) {
+                    this.targetPosition = this.path[this.currentPathIndex].position;
                 } else {
                     this.stop();
                 }
@@ -116,9 +88,9 @@ export default class MoveComponent extends LizComponent {
 
         if (path.length > 0) {
             this.path = path;
-            this.currentNavPointIndex = 0;
+            this.currentPathIndex = 0;
             this.targetPosition = path[0].position;
-            this.currentSpeed = this.runSpeed;
+            this.targetSpeed = this.runSpeed;
         } else {
             print("No valid path found.");
         }
