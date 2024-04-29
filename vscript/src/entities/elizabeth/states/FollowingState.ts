@@ -1,8 +1,10 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
+import {PlayerReadyEvent} from "../lizEvents";
 
 export default class FollowingState extends LizState {
     private lastPlayerPosition: Vector;
+    private readonly minDistanceToMove = 10;
 
     public constructor(liz: Elizabeth) {
         super(LizStateName.Following, liz);
@@ -10,7 +12,7 @@ export default class FollowingState extends LizState {
     }
 
     public enter(): void {
-        this.lastPlayerPosition = this.liz.getPlayer().GetAbsOrigin();
+        this.goToPlayer();
     }
 
     public exit(): void {
@@ -19,12 +21,21 @@ export default class FollowingState extends LizState {
 
     public update(delta: number): void {
         const playerPos = this.liz.getPlayer().GetAbsOrigin();
-        if (this.lastPlayerPosition === playerPos) {
+        if (VectorDistance(playerPos, this.lastPlayerPosition) < this.minDistanceToMove) {
             return;
         }
 
+        this.goToPlayer();
+    }
+
+    private goToPlayer(): void {
+        const playerPos = this.liz.getPlayer().GetAbsOrigin();
         this.liz.getMove().moveTo(playerPos);
         this.lastPlayerPosition = playerPos;
+    }
+
+    public onPlayerReady(event: PlayerReadyEvent) {
+        this.goToPlayer();
     }
 
     public isCompleted(): boolean {

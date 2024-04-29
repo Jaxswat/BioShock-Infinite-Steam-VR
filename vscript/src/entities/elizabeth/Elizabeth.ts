@@ -88,30 +88,27 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 			} else {
 				// Player found, begin Liz'ing
 				this.stateManager.begin(LizStateName.Idle);
-
-				// Test nav
-				this.abandon.setEnabled(false);
 			}
 		}
 
 		this.components.update(delta);
 		this.stateManager.update(delta);
 
-		// if (this.stateManager.getCurrentState()!.isCompleted()) {
-		// 	const playerDistance = VectorDistance(this.player.GetAbsOrigin(), this.getPosition());
-		// 	const nearestChoreoPoint = LizChoreoUtils.getNearestChoreoPoint(this.getPosition(), this.choreoPoints);
-		// 	if ((this.stateManager.isCurrentState(LizStateName.Idle) || this.stateManager.isCurrentState(LizStateName.Following)) && playerDistance > 150) {
-		// 		this.stateManager.setState(LizStateName.Following);
-		// 	} else if (nearestChoreoPoint && VectorDistance(nearestChoreoPoint.position, this.getPosition()) < nearestChoreoPoint.activateDistance) {
-		// 		this.stateManager.setState(LizStateName.Choreo);
-		// 	} else if (this.stateManager.isCurrentState(LizStateName.Idle)) {
-		// 		this.stateManager.setState(LizStateName.Throwing);
-		// 	} else if (this.stateManager.isCurrentState(LizStateName.Choreo)) {
-		// 		this.stateManager.setState(LizStateName.Idle);
-		// 	} else {
-		// 		this.stateManager.setState(LizStateName.Idle);
-		// 	}
-		// }
+		if (this.stateManager.getCurrentState()!.isCompleted()) {
+			const playerDistance = VectorDistance(this.player.GetAbsOrigin(), this.getPosition());
+			const nearestChoreoPoint = LizChoreoUtils.getNearestChoreoPoint(this.getPosition(), this.choreoPoints);
+			if ((this.stateManager.isCurrentState(LizStateName.Idle) || this.stateManager.isCurrentState(LizStateName.Following)) && playerDistance > 150) {
+				this.stateManager.setState(LizStateName.Following);
+			} else if (nearestChoreoPoint && VectorDistance(nearestChoreoPoint.position, this.getPosition()) < nearestChoreoPoint.activateDistance) {
+				this.stateManager.setState(LizStateName.Choreo);
+			} else if (this.stateManager.isCurrentState(LizStateName.Idle)) {
+				this.stateManager.setState(LizStateName.Throwing);
+			} else if (this.stateManager.isCurrentState(LizStateName.Choreo)) {
+				this.stateManager.setState(LizStateName.Idle);
+			} else {
+				this.stateManager.setState(LizStateName.Idle);
+			}
+		}
 
 		// VTunnel.send(this.serialize());
 	}

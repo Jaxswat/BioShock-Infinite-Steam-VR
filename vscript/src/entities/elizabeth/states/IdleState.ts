@@ -44,7 +44,7 @@ export default class IdleState extends LizState {
 
             if (this.greetingTimer.isDone()) {
                 this.playedGretting = true;
-                const clip = getSpeechClip(LizSpeechTag.Greeting, LizSpeechSentiment.StrongLike, null);
+                const clip = getSpeechClip(LizSpeechTag.Greeting, null, null);
                 this.liz.getSpeech().queueClip(clip!);
             }
         }

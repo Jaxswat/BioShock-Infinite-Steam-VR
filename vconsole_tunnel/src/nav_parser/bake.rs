@@ -5,7 +5,7 @@ pub fn bake_nav_data_for_typescript(nav_data: NavData) -> String {
     let mut output = String::new();
     output.push_str("// CODE GENERATED NAV MESH DATA. DO NOT EDIT.\n\n");
     output.push_str("import {NavArea} from \"./NavData\";\n");
-    output.push_str("export const NAV_MESH: NavArea[] = [\n");
+    output.push_str("const NAV_MESH: NavArea[] = [\n");
 
     for nav_area in nav_data.nav_areas.iter() {
         output.push_str("\t{\n");
@@ -31,7 +31,8 @@ pub fn bake_nav_data_for_typescript(nav_data: NavData) -> String {
         output.push_str("\t\t],\n");
         output.push_str("\t},\n");
     }
-    output.push_str("];\n");
+    output.push_str("];\n\n");
+    output.push_str("export default NAV_MESH;\n");
 
     output
 }

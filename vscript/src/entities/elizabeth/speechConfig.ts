@@ -265,8 +265,8 @@ export function getSpeechClip(tag: LizSpeechTag, sentiment: LizSpeechSentiment |
 	let clipIDs = [];
 	for (let clip of lizSpeechClips) {
 		if (clip.tag === tag) {
-			const matchSentiment = sentiment && clip.sentiment === sentiment;
-			const matchIntensity = intensity && clip.intensity === intensity;
+			const matchSentiment = sentiment && (sentiment >= LizSpeechSentiment.Neutral ? clip.sentiment >= sentiment : clip.sentiment <= sentiment);
+			const matchIntensity = intensity && (intensity <= LizSpeechIntensity.Neutral ? clip.intensity <= intensity : clip.intensity >= intensity);
 			if (matchSentiment || matchIntensity) {
 				return clip;
 			}

@@ -36,3 +36,14 @@ declare function DebugDrawSphere(center: Vector, color: Vector, alpha: number, r
  * @param durationSeconds The duration, in seconds, that the box should be visible.
  */
 declare function DebugDrawBox(origin: Vector, mins: Vector, maxs: Vector, r: number, g: number, b: number, a: number, durationSeconds: number): void;
+
+
+/**
+ * Draws a debug overlay text at a location.
+ *
+ * @param origin The location to draw the text.
+ * @param text The text to draw.
+ * @param zTest Determines whether depth testing should be performed.
+ * @param durationSeconds The duration, in seconds, that the text should be visible.
+ */
+declare function DebugDrawText(origin: Vector, text: string, zTest: boolean, durationSeconds: number): void;

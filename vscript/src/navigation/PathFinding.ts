@@ -1,16 +1,119 @@
-import { NavArea, NavAreaConnection } from "./NavData";
+import {NavArea, NavAreaConnection} from "./NavData";
 
-interface PathNode {
-    areaID: number;
+export function DebugDrawNavArea(area: NavArea, navMesh: NavArea[], durationSeconds: number): void {
+    for (let i = 0; i < area.polygons.length; i++) {
+        DebugDrawLine(area.polygons[i], area.polygons[(i + 1) % area.polygons.length], 0, 255, 0, false, durationSeconds);
+    }
+
+    for (let dir = 0; dir < area.connections.length; dir++) {
+        DebugDrawText(addVector(area.polygons[dir], Vector(0, 0, 15)), "" + dir, false, durationSeconds);
+
+        for (let i = 0; i < area.connections[dir].length; i++) {
+            const connection = area.connections[dir][i];
+            const neighbor = navMesh.find((area) => area.id === connection.areaID);
+            if (!neighbor) continue;
+
+            for (let i = 0; i < neighbor.polygons.length; i++) {
+                DebugDrawLine(neighbor.polygons[i], neighbor.polygons[(i + 1) % neighbor.polygons.length], 255, 0, 0, false, durationSeconds);
+            }
+            
+            const edgeIndex = connection.edgeIndex;
+            const areaEdge = [area.polygons[edgeIndex], area.polygons[(edgeIndex + 1) % area.polygons.length]];
+            const neighborEdge = [neighbor.polygons[edgeIndex], neighbor.polygons[(edgeIndex + 1) % neighbor.polygons.length]];
+            DebugDrawLine(neighbor.polygons[edgeIndex], addVector(neighbor.polygons[edgeIndex], Vector(0, 0, 5)), 255, 0, 0, false, durationSeconds);
+            DebugDrawText(addVector(neighbor.polygons[edgeIndex], Vector(0, 0, 5)), "" + edgeIndex, false, durationSeconds);
+        }
+
+    }
+}
+
+
+function isPointInPolygon(point: Vector, polygon: Vector[]): boolean {
+    const zToleranceLow = point.z - 30;
+    const zToleranceHigh = point.z + 100;
+
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i].x;
+        const yi = polygon[i].y;
+        const zi = polygon[i].z;
+
+        const xj = polygon[j].x;
+        const yj = polygon[j].y;
+        const zj = polygon[j].z;
+
+        const intersect =
+            ((yi > point.y) !== (yj > point.y)) &&
+            (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi) &&
+            (zi <= zToleranceHigh && zi >= zToleranceLow) &&
+            (zj <= zToleranceHigh && zj >= zToleranceLow);
+
+        if (intersect) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+export function findAreaForPosition(position: Vector, navMesh: NavArea[]): NavArea | undefined {
+    for (const area of navMesh) {
+        if (isPointInPolygon(position, area.polygons)) {
+            return area;
+        }
+    }
+    return undefined;
+}
+
+
+interface NavNode {
+    id: number;
     position: Vector;
-    parent: PathNode | null;
+    parent?: NavNode;
+    g: number;
+    h: number;
+    f: number;
 }
 
-function heuristic(a: Vector, b: Vector): number {
-    return VectorDistance(a, b);
+function getClosestPointOnEdge(edgeStart: Vector, edgeEnd: Vector, point: Vector): Vector {
+    const edgeDirection = subVector(edgeEnd, edgeStart).Normalized();
+    const edgeLength = VectorDistance(edgeStart, edgeEnd);
+    const dotProduct = subVector(point, edgeStart).Dot(edgeDirection);
+    const clampedDotProduct = Math.min(Math.max(dotProduct, 0), edgeLength);
+    return addVector(edgeStart, mulVector(edgeDirection, Vector(clampedDotProduct, clampedDotProduct, clampedDotProduct)));
 }
 
-export function findPath(startPos: Vector, endPos: Vector, navMesh: NavArea[]): PathNode[] {
+function getOptimalTransitionPoint(currentArea: NavArea, neighborArea: NavArea, direction: number, connection: NavAreaConnection, targetPosition: Vector): Vector {
+    const currentEdgeStart = currentArea.polygons[direction];
+    const currentEdgeEnd = currentArea.polygons[(direction + 1) % 4];
+
+    const neighborEdgeIndex = connection.edgeIndex;
+    const neighborEdgeStart = neighborArea.polygons[neighborEdgeIndex];
+    const neighborEdgeEnd = neighborArea.polygons[(neighborEdgeIndex + 1) % 4];
+
+    const currentEdgeMidpoint = addVector(currentEdgeStart, mulVector(subVector(currentEdgeEnd, currentEdgeStart), Vector(0.5, 0.5, 0.5)));
+    const neighborEdgeMidpoint = addVector(neighborEdgeStart, mulVector(subVector(neighborEdgeEnd, neighborEdgeStart), Vector(0.5, 0.5, 0.5)));
+
+    const pathDirection = subVector(targetPosition, currentEdgeMidpoint).Normalized();
+    const projectedPoint = addVector(currentEdgeMidpoint, mulVector(pathDirection, Vector(VectorDistance(currentEdgeMidpoint, neighborEdgeMidpoint), VectorDistance(currentEdgeMidpoint, neighborEdgeMidpoint), VectorDistance(currentEdgeMidpoint, neighborEdgeMidpoint))));
+
+    const transitionPoint = getClosestPointOnEdge(neighborEdgeStart, neighborEdgeEnd, projectedPoint);
+
+    return transitionPoint;
+}
+
+function reconstructPath(currentNode: NavNode): Vector[] {
+    const path: Vector[] = [];
+    let node: NavNode | undefined = currentNode;
+
+    while (node) {
+        path.unshift(node.position);
+        node = node.parent;
+    }
+
+    return path;
+}
+
+export function findPath(startPos: Vector, endPos: Vector, navMesh: NavArea[]): Vector[] {
     const startArea = findAreaForPosition(startPos, navMesh);
     const endArea = findAreaForPosition(endPos, navMesh);
 
@@ -19,59 +122,66 @@ export function findPath(startPos: Vector, endPos: Vector, navMesh: NavArea[]): 
     }
 
     if (startArea.id === endArea.id) {
-        return [
-            { areaID: startArea.id, position: startPos, parent: null },
-            { areaID: endArea.id, position: endPos, parent: null },
-        ];
+        return [startPos, endPos];
     }
 
-    const openSet: PathNode[] = [];
-    const closedSet: PathNode[] = [];
+    const openSet: NavNode[] = [];
+    const closedSet: NavNode[] = [];
 
-    const startNode: PathNode = {
-        areaID: startArea.id,
+    const startNode: NavNode = {
+        id: startArea.id,
         position: startPos,
-        parent: null,
+        g: 0,
+        h: VectorDistance(startPos, endPos),
+        f: VectorDistance(startPos, endPos),
     };
 
     openSet.push(startNode);
 
     while (openSet.length > 0) {
-        const currentNode = openSet.reduce((prev, current) => (heuristic(prev.position, endPos) < heuristic(current.position, endPos) ? prev : current));
-        const currentArea = navMesh.find((area) => area.id === currentNode.areaID);
+        openSet.sort((a, b) => a.f - b.f);
+        const currentNode = openSet.shift()!;
 
-        if (currentArea?.id === endArea.id) {
-            const path: PathNode[] = [];
-            let current: PathNode | null = currentNode;
-            while (current) {
-                path.unshift(current);
-                current = current.parent;
-            }
-            path.push({ areaID: endArea.id, position: endPos, parent: path[path.length - 1] });
-            return optimizePath(path, navMesh);
+        if (currentNode.id === endArea.id) {
+            const path = reconstructPath(currentNode);
+            path.push(endPos);
+            return path;
         }
 
-        openSet.splice(openSet.indexOf(currentNode), 1);
         closedSet.push(currentNode);
 
-        for (let i = 0; i < currentArea!.connections.length; i++) {
-            const connections = currentArea!.connections[i];
+        const currentArea = navMesh.find((area) => area.id === currentNode.id)!;
+        for (let i = 0; i < currentArea.connections.length; i++) {
+            const connections = currentArea.connections[i];
             for (const connection of connections) {
-                const neighborArea = navMesh.find((area) => area.id === connection.areaID);
-                if (!neighborArea) continue;
-
-                const entryPoint = findEntryPoint(currentNode.position, currentArea!, neighborArea, connection.edgeIndex);
-                const neighborNode: PathNode = {
-                    areaID: neighborArea.id,
-                    position: entryPoint,
-                    parent: currentNode,
-                };
-
-                if (closedSet.some((node) => node.areaID === neighborNode.areaID)) {
+                const neighborArea = navMesh.find((area) => area.id === connection.areaID)!;
+                if (closedSet.some((node) => node.id === neighborArea.id)) {
                     continue;
                 }
 
-                if (!openSet.some((node) => node.areaID === neighborNode.areaID)) {
+                const transitionPoint = getOptimalTransitionPoint(currentArea, neighborArea, i, connection, endPos);
+                const gScore = currentNode.g + VectorDistance(currentNode.position, transitionPoint);
+                const hScore = VectorDistance(transitionPoint, endPos);
+                const fScore = gScore + hScore;
+
+                const existingNode = openSet.find((node) => node.id === neighborArea.id);
+                if (existingNode) {
+                    if (gScore < existingNode.g) {
+                        existingNode.position = transitionPoint;
+                        existingNode.parent = currentNode;
+                        existingNode.g = gScore;
+                        existingNode.h = hScore;
+                        existingNode.f = fScore;
+                    }
+                } else {
+                    const neighborNode: NavNode = {
+                        id: neighborArea.id,
+                        position: transitionPoint,
+                        parent: currentNode,
+                        g: gScore,
+                        h: hScore,
+                        f: fScore,
+                    };
                     openSet.push(neighborNode);
                 }
             }
@@ -79,98 +189,4 @@ export function findPath(startPos: Vector, endPos: Vector, navMesh: NavArea[]): 
     }
 
     return [];
-}
-
-function findAreaForPosition(position: Vector, navMesh: NavArea[]): NavArea | undefined {
-    return navMesh.find((area) => isPointInPolygon(position, area.polygons));
-}
-
-function findEntryPoint(currentPosition: Vector, fromArea: NavArea, toArea: NavArea, edgeIndex: number): Vector {
-    const fromEdge = [fromArea.polygons[edgeIndex], fromArea.polygons[(edgeIndex + 1) % fromArea.polygons.length]];
-
-    let closestDistance = Infinity;
-    let closestPoint = Vector();
-
-    for (let i = 0; i < toArea.polygons.length; i++) {
-        const toEdge = [toArea.polygons[i], toArea.polygons[(i + 1) % toArea.polygons.length]];
-        const projectedPoint = projectPointOnLineSegment(currentPosition, fromEdge[0], fromEdge[1]);
-        const entryPoint = projectPointOnLineSegment(projectedPoint, toEdge[0], toEdge[1]);
-        const distance = VectorDistance(currentPosition, entryPoint);
-
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestPoint = entryPoint;
-        }
-    }
-
-    return closestPoint;
-}
-
-function projectPointOnLineSegment(point: Vector, lineStart: Vector, lineEnd: Vector): Vector {
-    const lineDirection = subVector(lineEnd, lineStart).Normalized();
-    const projectedDistance = subVector(point, lineStart).Dot(lineDirection);
-    const clampedDistance = Math.max(0, Math.min(projectedDistance, VectorDistance(lineStart, lineEnd)));
-    return addVector(lineStart, mulVector(lineDirection, clampedDistance as Vector));
-}
-
-function isPointInPolygon(point: Vector, polygon: Vector[]): boolean {
-    let inside = false;
-    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        const xi = polygon[i].x;
-        const yi = polygon[i].y;
-        const xj = polygon[j].x;
-        const yj = polygon[j].y;
-
-        const intersect = yi > point.y !== yj > point.y && point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
-        if (intersect) inside = !inside;
-    }
-    return inside;
-}
-
-function optimizePath(path: PathNode[], navMesh: NavArea[]): PathNode[] {
-    const optimizedPath: PathNode[] = [path[0]];
-
-    for (let i = 1; i < path.length - 1; i++) {
-        const currentNode = path[i];
-        const nextNode = path[i + 1];
-
-        if (currentNode.areaID === nextNode.areaID) {
-            continue;
-        }
-
-        const currentArea = navMesh.find((area) => area.id === currentNode.areaID);
-        const nextArea = navMesh.find((area) => area.id === nextNode.areaID);
-
-        if (currentArea && nextArea) {
-            const connection = currentArea.connections.flat().find((conn) => conn.areaID === nextArea.id);
-            if (connection) {
-                const entryPoint = findEntryPoint(currentNode.position, currentArea, nextArea, connection.edgeIndex);
-                const exitPoint = findExitPoint(entryPoint, nextArea, nextNode.position);
-                optimizedPath.push({ areaID: nextArea.id, position: entryPoint, parent: optimizedPath[optimizedPath.length - 1] });
-                optimizedPath.push({ areaID: nextArea.id, position: exitPoint, parent: optimizedPath[optimizedPath.length - 1] });
-            }
-        }
-    }
-
-    optimizedPath.push(path[path.length - 1]);
-
-    return optimizedPath;
-}
-
-function findExitPoint(entryPoint: Vector, area: NavArea, targetPosition: Vector): Vector {
-    let closestDistance = Infinity;
-    let closestPoint = Vector();
-
-    for (let i = 0; i < area.polygons.length; i++) {
-        const edge = [area.polygons[i], area.polygons[(i + 1) % area.polygons.length]];
-        const projectedPoint = projectPointOnLineSegment(targetPosition, edge[0], edge[1]);
-        const distance = VectorDistance(entryPoint, projectedPoint);
-
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestPoint = projectedPoint;
-        }
-    }
-
-    return closestPoint;
 }

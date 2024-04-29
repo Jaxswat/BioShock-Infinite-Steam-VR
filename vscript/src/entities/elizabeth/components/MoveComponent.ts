@@ -3,17 +3,18 @@ import Elizabeth from "../Elizabeth";
 import {LineTrace} from "../../../utils/Trace";
 import {VTunnel, VTunnelMessage} from "../../../vconsole_tunnel/VTunnel";
 import NAV_MESH from "../../../navigation/battleship_bay_nav";
-import {findPath} from "../../../navigation/PathFinding";
+import {DebugDrawNavArea, findAreaForPosition, findPath} from "../../../navigation/PathFinding";
 
 export default class MoveComponent extends LizComponent {
     private readonly stepSpeed: number = 5;
     private readonly walkSpeed: number = 20;
-    private readonly runSpeed: number = 140; // 70
-    private readonly speedLerpFactor: number = 50;
+    private readonly runSpeed: number = 70;
+    private readonly speedLerpFactor: number = 10;
 
     private targetPosition: Vector;
     private currentSpeed: number;
     private targetSpeed: number;
+    private lastYaw: number; // Yee haw?
 
     private path: Vector[];
     private currentPathIndex: number;
@@ -23,6 +24,7 @@ export default class MoveComponent extends LizComponent {
         this.targetPosition = this.liz.getPosition();
         this.currentSpeed = 0;
         this.targetSpeed = 0;
+        this.lastYaw = 0;
 
         this.path = [];
         this.currentPathIndex = 0;
@@ -30,6 +32,12 @@ export default class MoveComponent extends LizComponent {
         VTunnel.onMessage('liz_move_to', (msg: VTunnelMessage) => {
             const position = msg.indexPartDataAsVector(0);
             DebugDrawSphere(position, Vector(0, 0, 255), 1, 5, false, 1.4);
+
+            const startArea = findAreaForPosition(position, NAV_MESH);
+            if (startArea) {
+                DebugDrawNavArea(startArea, NAV_MESH, 5);
+            }
+
             this.moveTo(position);
         });
     }
@@ -71,8 +79,10 @@ export default class MoveComponent extends LizComponent {
                     this.stop();
                 }
             } else {
-                const targetYaw = Rad2Deg(Math.atan2(direction.x, direction.y));
-                entity.SetAbsAngles(0, -targetYaw+90, 0);
+                const targetYaw = -Rad2Deg(Math.atan2(direction.x, direction.y)) + 90;
+                const currentYaw = Lerp(10 * delta, entity.GetAngles().y, targetYaw);
+                entity.SetAbsAngles(0, currentYaw, 0);
+                this.lastYaw = currentYaw;
             }
         }
     }
@@ -81,14 +91,15 @@ export default class MoveComponent extends LizComponent {
         const startPos = this.liz.getPosition();
         const path = findPath(startPos, position, NAV_MESH);
 
-        for (let point of path) {
-            DebugDrawSphere(point.position, Vector(0, 255, 255), 1, 5, false, 5);
-        }
-
         if (path.length > 0) {
-            this.path = path.map((node) => node.position);
+            // for (let i = 1; i < path.length - 1 ; i++) {
+            //     const point = path[i];
+            //     DebugDrawSphere(point, Vector(0, 255, 255), 1, 5, false, 5);
+            // }
+
+            this.path = path;
             this.currentPathIndex = 0;
-            this.targetPosition = path[0].position;
+            this.targetPosition = path[0];
             this.targetSpeed = this.runSpeed;
         } else {
             print("No valid path found.");
