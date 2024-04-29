@@ -3,7 +3,7 @@ use rusqlite::Connection;
 use tokio::sync::Mutex;
 use crate::game::commands::DrawDebugSphere;
 use crate::game::elizabeth::Elizabeth;
-use crate::game::gadget::{GadgetProgram, GadgetTool};
+use crate::game::gadget::{GadgetProgram};
 use crate::game::player::{input_button, PlayerInput};
 use crate::game::trace::{BoxTrace, LineTrace};
 use crate::math::Vector3;
@@ -181,7 +181,7 @@ impl NavBuilderProgram {
     async fn add_nav_point(&mut self, position: &Vector3, nav_type: NavType) -> Option<NavPoint> {
         let position = self.round_to_grid(position);
 
-        let mut unique_position  = position.clone();
+        let mut unique_position = position.clone();
         unique_position.z = unique_position.z.ceil();
         if self.nav_points_set.contains(&unique_position) {
             return None;
@@ -217,7 +217,7 @@ impl NavBuilderProgram {
         let remove_index = remove_index.unwrap();
         let removed_nav_point = self.nav_points.remove(remove_index);
 
-        let mut unique_position  = self.round_to_grid(&removed_nav_point.position);
+        let mut unique_position = self.round_to_grid(&removed_nav_point.position);
         unique_position.z = unique_position.z.ceil();
         self.nav_points_set.remove(&unique_position);
 
@@ -316,11 +316,11 @@ impl NavBuilderProgram {
         match self.nav_editor_mode {
             NavEditorMode::Add => {
                 let (has_space, position) = self.position_has_space(&input.trace_position).await;
-                if (position.is_none()) {
+                if position.is_none() {
                     return;
                 }
 
-                let mut nav_point: Option<NavPoint> = None;
+                let nav_point: Option<NavPoint>;
                 if has_space {
                     nav_point = self.add_nav_point(&position.clone().unwrap(), NavType::Walkable).await;
                 } else {

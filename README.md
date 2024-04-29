@@ -125,7 +125,7 @@ It is incredibly convenient to be able to interact with the game from an externa
 > This allows designing a custom navigation mesh and persisting it to disk externally.
 > The nav mesh can then be baked into the Lua and distributed on in the workshop addon.
 
-
+Note: This program also contains a parser for Source 2 (SteamVR Home) `.NAV` files, which use polygon nav areas instead of the old plane-based ones.
 
 # Questions / Suggestions
 

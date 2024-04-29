@@ -4,6 +4,7 @@ mod vtunnel;
 mod game;
 mod vtunnel_emitter;
 mod nav_builder;
+mod nav_parser;
 
 use std::sync::{Arc};
 use tokio::net::TcpStream;
@@ -14,9 +15,7 @@ use crate::game::player::{Player, PlayerInput};
 use crate::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
-use crate::game::gadget::{GadgetProgram, GadgetTool};
-use crate::game::trace::{LineTrace, TraceMask};
-use crate::math::Vector3;
+use crate::game::gadget::{GadgetTool};
 use crate::nav_builder::nav_builder::NavBuilderProgram;
 use crate::vconsole::{Packet};
 use crate::vtunnel_emitter::VTunnelEmitter;
@@ -181,7 +180,7 @@ struct GameState {
 
 impl GameState {
     pub async fn new(emitter: &'static VTunnelEmitter) -> GameState {
-        let mut gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter).await);
+        let gadget_tool = GadgetTool::new(NavBuilderProgram::new(emitter).await);
 
         GameState {
             session_id: 0,
@@ -226,7 +225,7 @@ impl GameState {
         }
 
         // Block all messages until client is ready
-        if (!self.session_ready) {
+        if !self.session_ready {
             return;
         }
 
