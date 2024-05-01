@@ -1,7 +1,6 @@
 use crate::math::Vector3;
 
-/// Magic prefix for nav files.
-/// Edit: Had to swap endianness and just realized Valve was being goofy...Feed face!
+/// Magic prefix for nav files. Yum.
 pub const MAGIC_PREFIX: u32 = 0xFEEDFACE;
 
 /// Nav file version for SteamVR Home.
@@ -10,18 +9,22 @@ pub const STEAM_VR_HOME_NAV_VERSION: u32 = 30;
 /// Nav file subversion for SteamVR Home.
 pub const STEAM_VR_HOME_NAV_SUB_VERSION: u32 = 0;
 
-/// NavMesh has all the info about the nav file.
+/// Number of directions that a nav area can connect to.
+/// Clockwise: NORTH, EAST, SOUTH, WEST
+pub const NAV_DIRECTIONS: usize = 4;
+
+
+/// NavFile has all the info about the nav file.
 /// Valve docs were decent, but SteamVR Home uses a new version of the nav file (Version 30)
 /// Had to reverse engineer some of the new polygon based nav data.
 #[derive(Debug, Default)]
-pub struct NavData {
+pub struct NavFile {
     pub magic: u32,
     pub version: u32,
     pub sub_version: u32,
     pub is_analyzed: bool,
     pub place_count: u16,
     pub has_unnamed_areas: bool,
-    pub area_count: u32,
     pub nav_areas: Vec<NavArea>,
 }
 
@@ -36,21 +39,10 @@ pub struct NavArea {
     pub id: u32,
     /// Attributes of the area. Might be able to repurpose these for custom attributes.
     pub attributes: u32,
-    pub polygon_count: u32,
-    pub polygons: Vec<Vector3>,
+    pub polygon: Vec<Vector3>,
     /// Connections to other areas.
     /// Array index goes clockwise: NORTH, EAST, SOUTH, WEST
-    pub connections: [NavAreaConnection; NAV_CONNECTION_DIRECTIONS],
-}
-
-/// Number of directions that a nav area can connect to.
-/// Clockwise: NORTH, EAST, SOUTH, WEST
-pub const NAV_CONNECTION_DIRECTIONS: usize = 4;
-
-#[derive(Debug, Default)]
-pub struct NavAreaConnection {
-    pub connection_count: u32,
-    pub connections: Vec<NavAreaConnectionData>,
+    pub connections: [Vec<NavAreaConnectionData>; NAV_DIRECTIONS],
 }
 
 #[derive(Debug, Default)]
