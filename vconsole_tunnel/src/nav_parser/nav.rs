@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use crate::math::Vector3;
 
 /// Magic prefix for nav files. Yum.
@@ -26,6 +27,32 @@ pub struct NavFile {
     pub place_count: u16,
     pub has_unnamed_areas: bool,
     pub nav_areas: Vec<NavArea>,
+}
+
+impl NavFile {
+    /// Compresses the area IDs to be sequential, so they can be indexed in an array for quick lookup.
+    pub fn compress_area_ids(&mut self) {
+        let mut old_ids = HashMap::new();
+        let mut next_id = 0;
+
+        // update IDs
+        for nav_area in self.nav_areas.iter_mut() {
+            old_ids.insert(nav_area.id, next_id);
+            nav_area.id = next_id;
+            next_id += 1;
+        }
+
+        // update connections
+        for nav_area in self.nav_areas.iter_mut() {
+            for connections in nav_area.connections.iter_mut() {
+                for connection in connections.iter_mut() {
+                    if let Some(new_id) = old_ids.get(&connection.area_id) {
+                        connection.area_id = *new_id;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /// NavArea has all the info about the nav area.

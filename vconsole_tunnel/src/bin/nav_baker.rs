@@ -2,7 +2,8 @@ use vconsole_tunnel::nav_parser::{bake, parser};
 
 fn main() {
     println!("Reading nav data...");
-    let nav_file = parser::open("battleship_bay.nav").unwrap();
+    let mut nav_file = parser::open("battleship_bay.nav").unwrap();
+    nav_file.compress_area_ids();
 
     println!("Baking nav data for TypeScript...");
     let baked_data = bake::bake_nav_data_for_typescript(nav_file);
