@@ -1,13 +1,12 @@
 import {BioshockMap} from "./BioshockMap";
 import {Skyline} from "../entities/skyline/skyline";
-import NavGenerator from "../utils/navigation/NavGenerator";
+require('../navigation/baked/battleship_bay_nav'); // Load nav mesh
 
 export default class BattleshipBayMap extends BioshockMap {
     private readonly skylineOrigin = Vector(6450.64, -3950.89, 1500.97);
     private readonly pathScale = 25;
 
     private testSkyline: Skyline;
-    private navGen: NavGenerator;
 
     public constructor() {
         super();
@@ -27,8 +26,6 @@ export default class BattleshipBayMap extends BioshockMap {
         this.testSkyline = new Skyline(testSkylinePoints, true);
         this.addSkyline(this.testSkyline);
 
-        this.navGen = new NavGenerator(Vector(5005, -4214, 1288));
-
         print("init finished for battleship_bay");
     }
 
@@ -43,7 +40,6 @@ export default class BattleshipBayMap extends BioshockMap {
     public update(delta: number) {
         super.update(delta);
 
-        // this.navGen.tickGeneration(delta);
         this.testSkyline.DebugDrawSkylineSpline();
 
         let speed = this.percentSpeed * delta;

@@ -2,7 +2,7 @@ import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LineTrace} from "../../../utils/Trace";
 import {VTunnel, VTunnelMessage} from "../../../vconsole_tunnel/VTunnel";
-import NAV_MESH from "../../../navigation/battleship_bay_nav";
+import {TheNavMesh} from "../../../navigation/NavMesh";
 import {DebugDrawNavArea, findAreaForPosition, findPath} from "../../../navigation/PathFinding";
 
 export default class MoveComponent extends LizComponent {
@@ -33,10 +33,10 @@ export default class MoveComponent extends LizComponent {
             const position = msg.indexPartDataAsVector(0);
             DebugDrawSphere(position, Vector(0, 0, 255), 1, 5, false, 1.4);
 
-            const startArea = findAreaForPosition(position, NAV_MESH);
-            if (startArea) {
-                DebugDrawNavArea(startArea, NAV_MESH, 5);
-            }
+            // const startArea = findAreaForPosition(position, TheNavMesh);
+            // if (startArea) {
+            //     DebugDrawNavArea(startArea, TheNavMesh, 5);
+            // }
 
             this.moveTo(position);
         });
@@ -89,21 +89,21 @@ export default class MoveComponent extends LizComponent {
 
     public moveTo(position: Vector): void {
         const startPos = this.liz.getPosition();
-        const path = findPath(startPos, position, NAV_MESH);
+        // const path = findPath(startPos, position, NAV_MESH);
 
-        if (path.length > 0) {
-            // for (let i = 1; i < path.length - 1 ; i++) {
-            //     const point = path[i];
-            //     DebugDrawSphere(point, Vector(0, 255, 255), 1, 5, false, 5);
-            // }
-
-            this.path = path;
-            this.currentPathIndex = 0;
-            this.targetPosition = path[0];
-            this.targetSpeed = this.runSpeed;
-        } else {
-            print("No valid path found.");
-        }
+        // if (path.length > 0) {
+        //     // for (let i = 1; i < path.length - 1 ; i++) {
+        //     //     const point = path[i];
+        //     //     DebugDrawSphere(point, Vector(0, 255, 255), 1, 5, false, 5);
+        //     // }
+        //
+        //     this.path = path;
+        //     this.currentPathIndex = 0;
+        //     this.targetPosition = path[0];
+        //     this.targetSpeed = this.runSpeed;
+        // } else {
+        //     print("No valid path found.");
+        // }
     }
 
     public stop(): void {
