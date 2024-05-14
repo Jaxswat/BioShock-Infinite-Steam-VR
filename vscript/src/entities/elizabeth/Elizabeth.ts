@@ -88,6 +88,7 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 			} else {
 				// Player found, begin Liz'ing
 				this.stateManager.begin(LizStateName.Idle);
+				// this.abandon.setEnabled(false);
 			}
 		}
 

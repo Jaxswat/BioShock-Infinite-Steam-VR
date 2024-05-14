@@ -5,6 +5,47 @@ export enum NavDir {
     West = 3
 }
 
+export enum AreaCorner {
+    NorthWest = 0,
+    SouthWest = 1,
+    SouthEast = 2,
+    NorthEast = 3
+}
+
+export function directionToEdgeIndex(dir: NavDir): number {
+    switch (dir) {
+        case NavDir.North:
+            return 0;
+        case NavDir.East:
+            return 3;
+        case NavDir.South:
+            return 2;
+        case NavDir.West:
+            return 1;
+        default:
+            return 0;
+    }
+}
+
+export function edgeIndexSafe(edgeIndex: number): number {
+    return edgeIndex % 4;
+}
+
+export function oppositeDirection(dir: NavDir): NavDir {
+    switch (dir) {
+        case NavDir.North:
+            return NavDir.South;
+        case NavDir.South:
+            return NavDir.North;
+        case NavDir.East:
+            return NavDir.West;
+        case NavDir.West:
+            return NavDir.East;
+        default:
+            return NavDir.North;
+    }
+}
+
 export const NAV_DIRECTION_COUNT = 4; // North, East, South, West
 
 export class NavArea {
@@ -62,8 +103,62 @@ export class NavArea {
         return this.connections[dir];
     }
 
+    public getConnectionByID(areaID: number): NavConnection | null {
+        for (const dir of this.connections) {
+            for (const connection of dir) {
+                if (connection.area.getID() === areaID) {
+                    return connection;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public getConnectionDirectionByID(areaID: number): NavDir | null {
+        for (let dir = 0; dir < NAV_DIRECTION_COUNT; dir++) {
+            const connections = this.connections[dir];
+            for (const connection of connections) {
+                if (connection.area.getID() === areaID) {
+                    return dir as NavDir;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public getCenter(): Vector {
         return this.center;
+    }
+
+    public isPointInArea(point: Vector, checkZ: boolean = true): boolean {
+        let inside = false;
+        for (let i = 0, j = this.polygon.length - 1; i < this.polygon.length; j = i++) {
+            const xi = this.polygon[i].x;
+            const yi = this.polygon[i].y;
+            const xj = this.polygon[j].x;
+            const yj = this.polygon[j].y;
+
+            const intersect =
+                ((yi > point.y) !== (yj > point.y)) &&
+                (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
+
+            if (intersect && checkZ) {
+                const zi = this.polygon[i].z;
+                const zj = this.polygon[j].z;
+                const zToleranceLow = point.z - 30;
+                const zToleranceHigh = point.z + 100;
+
+                if ((zi <= zToleranceHigh && zi >= zToleranceLow) &&
+                    (zj <= zToleranceHigh && zj >= zToleranceLow)) {
+                    inside = !inside;
+                }
+            } else if (intersect) {
+                inside = !inside;
+            }
+        }
+        return inside;
     }
 
     private recalculateCenter() {
@@ -87,9 +182,9 @@ export class NavArea {
 export interface NavConnection {
     // The area or area ID that the parent area is connected to.
     // After applying references, this will always be a NavArea object.
-    area: NavArea | number;
+    area: NavArea;
 
-    // The edge index that is connected to the parent area.
+    // The edge index of this area that is connected to the parent area.
     // Same ordering as NavArea.polygon
     edgeIndex: number;
 }
@@ -116,9 +211,9 @@ export const newNavArea = (
         Vector(x3, y3, z3)
     ],
     [
-        connections0.map(c => ({ area: c[0], edgeIndex: c[1] } as NavConnection)),
-        connections1.map(c => ({ area: c[0], edgeIndex: c[1] } as NavConnection)),
-        connections2.map(c => ({ area: c[0], edgeIndex: c[1] } as NavConnection)),
-        connections3.map(c => ({ area: c[0], edgeIndex: c[1] } as NavConnection)),
+        connections0.map(c => ({area: c[0] as any as NavArea, edgeIndex: c[1]} as NavConnection)),
+        connections1.map(c => ({area: c[0] as any as NavArea, edgeIndex: c[1]} as NavConnection)),
+        connections2.map(c => ({area: c[0] as any as NavArea, edgeIndex: c[1]} as NavConnection)),
+        connections3.map(c => ({area: c[0] as any as NavArea, edgeIndex: c[1]} as NavConnection)),
     ]
 );

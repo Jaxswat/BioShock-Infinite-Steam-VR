@@ -1,6 +1,7 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {PlayerReadyEvent} from "../lizEvents";
+import {getSpeechClip} from "../speechConfig";
 
 export default class FollowingState extends LizState {
     private lastPlayerPosition: Vector;
@@ -30,8 +31,13 @@ export default class FollowingState extends LizState {
 
     private goToPlayer(): void {
         const playerPos = this.liz.getPlayer().GetAbsOrigin();
-        this.liz.getMove().moveTo(playerPos);
+        const moveOk = this.liz.getMove().moveTo(playerPos);
         this.lastPlayerPosition = playerPos;
+
+        if (!moveOk) {
+            // TODO: abandon speech
+            // this.liz.getSpeech().queueClip(clip!);
+        }
     }
 
     public onPlayerReady(event: PlayerReadyEvent) {
