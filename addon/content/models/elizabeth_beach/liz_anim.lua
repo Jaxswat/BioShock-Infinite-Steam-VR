@@ -16,4 +16,7 @@ PoseMatrixFromSequence( { model = model, name = "face_smile_seq", pose_x = "face
 model:CreatePoseParameter( "face_blink", 0, 1, 0, false )
 PoseMatrixFromSequence( { model = model, name = "face_blink_seq", pose_x = "face_blink", source = "blink", subtract = "blink", subtractframe = 0, hidden = false, numrows = 1, numcolumns = 2, autoplay = true, righttoleft = true } )
 
+model:CreatePoseParameter( "face_speak", 0, 1, 0, false )
+PoseMatrixFromSequence( { model = model, name = "face_speak_seq", pose_x = "face_speak", source = "speak", subtract = "speak", subtractframe = 0, hidden = false, numrows = 1, numcolumns = 2, autoplay = true, righttoleft = true } )
+
 print("BUILT ELIZABETH ANIMS")

@@ -1,5 +1,6 @@
 import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
+import {LizSpeechType} from "../speechConfig";
 
 class BlinkingAnimation {
 
@@ -77,11 +78,74 @@ class BlinkingAnimation {
     }
 }
 
+class TalkingAnimation {
+    private mouthOpenMin: number;
+    private mouthOpenMax: number;
+    private mouthOpenSpeed: number;
+    private mouthCloseSpeed: number;
+
+    private mouthOpenPercentage: number;
+    private isSpeaking: boolean;
+    private speechTimer: number;
+    private speechDuration: number;
+
+    public constructor() {
+        this.mouthOpenMin = 0;
+        this.mouthOpenMax = 1;
+        this.mouthOpenSpeed = 8;
+        this.mouthCloseSpeed = 2;
+
+        this.mouthOpenPercentage = 0;
+        this.isSpeaking = false;
+        this.speechTimer = 0;
+        this.speechDuration = 0;
+    }
+
+    public update(delta: number): number {
+        if (this.isSpeaking) {
+            this.speechTimer += delta;
+            this.updateMouthOpenPercentage(delta);
+
+            if (this.speechTimer >= this.speechDuration) {
+                this.isSpeaking = false;
+                this.speechTimer = 0;
+            }
+        } else {
+            this.updateMouthClosePercentage(delta);
+        }
+
+        return this.mouthOpenPercentage;
+    }
+
+    private updateMouthOpenPercentage(delta: number): void {
+        const targetPercentage = Math.sin(this.speechTimer * this.mouthOpenSpeed) * 0.5 + 0.5;
+        const percentageDiff = targetPercentage - this.mouthOpenPercentage;
+        const percentageChange = Math.sign(percentageDiff) * Math.min(Math.abs(percentageDiff), delta * this.mouthOpenSpeed);
+        this.mouthOpenPercentage += percentageChange;
+        this.mouthOpenPercentage = Math.max(this.mouthOpenMin, Math.min(this.mouthOpenMax, this.mouthOpenPercentage));
+    }
+
+    private updateMouthClosePercentage(delta: number): void {
+        const percentageChange = Math.min(this.mouthOpenPercentage, delta * this.mouthCloseSpeed);
+        this.mouthOpenPercentage -= percentageChange;
+        this.mouthOpenPercentage = Math.max(this.mouthOpenMin, this.mouthOpenPercentage);
+    }
+
+    public setSpeaking(isSpeaking: boolean): void {
+        this.isSpeaking = isSpeaking;
+    }
+
+    public setSpeechDuration(speechDuration: number): void {
+        this.speechDuration = speechDuration;
+    }
+}
+
 export default class EmotionComponent extends LizComponent {
     private addSmile: boolean;
     private smile: number;
 
     private blinkingAnimation: BlinkingAnimation;
+    private talkingAnimation: TalkingAnimation;
 
     public constructor(liz: Elizabeth) {
         super(liz);
@@ -89,10 +153,27 @@ export default class EmotionComponent extends LizComponent {
         this.addSmile = true;
         this.smile = 0;
         this.blinkingAnimation = new BlinkingAnimation();
+        this.talkingAnimation = new TalkingAnimation();
+    }
+
+    public update(delta:number) {
+        const currentClip = this.liz.getSpeech().getCurrentClip();
+        let isSpeaking = currentClip !== null && currentClip.type === LizSpeechType.Speech;
+        let clipDuration = this.liz.getSpeech().getCurrentClipDuration();
+        const currentClipProgress = this.liz.getSpeech().getCurrentClipProgress()
+
+        // Stop speaking if the clip is mostly done
+        if (currentClipProgress > 0.6) {
+           isSpeaking = false;
+        }
+
+        this.talkingAnimation.setSpeaking(isSpeaking);
+        this.talkingAnimation.setSpeechDuration(clipDuration);
     }
 
     public updatePose(delta: number): void {
         const blink = this.blinkingAnimation.update(delta);
+        const mouthOpen = this.talkingAnimation.update(delta);
 
         if (this.smile >= 1) {
             this.addSmile = false;
@@ -108,6 +189,7 @@ export default class EmotionComponent extends LizComponent {
 
         this.liz.getEntity().SetPoseParameter("face_smile", this.smile);
         this.liz.getEntity().SetPoseParameter("face_blink", blink);
+        this.liz.getEntity().SetPoseParameter("face_speak", mouthOpen);
     }
 
     /**

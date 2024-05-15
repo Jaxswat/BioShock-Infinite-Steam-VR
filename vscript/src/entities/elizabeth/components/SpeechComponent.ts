@@ -8,6 +8,7 @@ export default class SpeechComponent extends LizComponent {
 
     private speechQueue: LizSpeechClip[];
     private currentClip: LizSpeechClip | null;
+    private currentClipDuration: number;
     private clipTimer: Timer;
 
     /**
@@ -25,11 +26,13 @@ export default class SpeechComponent extends LizComponent {
 
         this.speechQueue = [];
         this.currentClip = null;
+        this.currentClipDuration = 0;
         this.clipTimer = new Timer(0);
     }
 
     public update(delta: number) {
         this.clipTimer.tick(delta);
+
         if (!this.clipTimer.isDone() || this.speechQueue.length === 0) {
             return;
         }
@@ -44,12 +47,15 @@ export default class SpeechComponent extends LizComponent {
     public playClip(clip: LizSpeechClip) {
         if (this.currentClip !== null && !this.clipTimer.isDone()) {
             StopSoundOn(this.currentClip.assetName, this.speakerEntity);
+            this.currentClip = null;
+            this.currentClipDuration = 0;
         }
 
         this.currentClip = clip;
         EmitSoundOn(clip.assetName, this.speakerEntity);
         const clipDuration = this.speakerEntity.GetSoundDuration(clip.assetName, "");
         const waitSeconds = clipDuration + this.clipPaddingSeconds;
+        this.currentClipDuration = clipDuration;
         this.clipTimer.setWaitSeconds(waitSeconds);
         this.clipTimer.reset();
     }
@@ -63,5 +69,17 @@ export default class SpeechComponent extends LizComponent {
 
     public clearQueue() {
         this.speechQueue = [];
+    }
+
+    public getCurrentClip(): LizSpeechClip | null {
+        return this.currentClip;
+    }
+
+    public getCurrentClipDuration(): number {
+        return this.currentClipDuration;
+    }
+
+    public getCurrentClipProgress(): number {
+        return Math.min(this.clipTimer.getTime() / this.currentClipDuration, 1);
     }
 }
