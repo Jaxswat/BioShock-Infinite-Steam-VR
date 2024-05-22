@@ -105,8 +105,6 @@ export default class Pistol extends Tool {
         trace.setIgnoreEntity(this.player!);
         const result = trace.run();
 
-        DebugDrawLine(trace.getStartPosition(), trace.getEndPosition(), 255, 0, 0, false, 0.1);
-
         const hitEntity = result.getEntityHit();
         if (hitEntity === null) {
             return;
@@ -115,6 +113,8 @@ export default class Pistol extends Tool {
         const damageInfo = CreateDamageInfo(this.entity, this.player!, mulVector(muzzleForward, 200 as Vector), result.getHitPosition(), 50, DMG_BULLET);
         hitEntity.TakeDamage(damageInfo);
         DestroyDamageInfo(damageInfo);
+
+        DebugDrawLine(trace.getStartPosition(), result.getHitPosition(), 255, 0, 0, false, 0.1);
     }
 
     public equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean {
@@ -171,7 +171,7 @@ export default class Pistol extends Tool {
             this.disableFiring = false;
         }
 
-        let triggerPose = input.triggerValue * 0.8; // trigger throw
+        let triggerPose = input.triggerValue * 0.95; // trigger throw
         this.triggerDown = input.triggerValue === 1.0;
         if (this.triggerDown) {
             triggerPose = 1.0; // trigger break

@@ -20,6 +20,7 @@ declare abstract class CBaseEntity {
 	GetBounds(): any;
 	GetCenter(): Vector;
 	GetHealth(): number;
+	SetHealth(health: number): void;
 	GetLocalAngles(): QAngle;
 	GetLocalAngularVelocity(): QAngle;
 	GetLocalOrigin(): Vector;

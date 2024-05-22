@@ -35,6 +35,17 @@
         "payload" "local"
     }
 
+    "fair_game_start" {
+        "gameID" "short"
+        "userID" "short"
+    }
+
+    "fair_game_target_destroyed" {
+        "gameID" "short"
+        "entID"  "short"
+        "userID" "short"
+    }
+
 	//////////////////
 	// Liz Events
 	//////////////////

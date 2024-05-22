@@ -50,13 +50,10 @@ export default class Skyhook extends Tool {
 		const spawnPosition = entity.GetAttachmentOrigin( attachmentID );
 
 		const hooksSpawnInfo: EntitySpawnInfo & any = {
-			targetname: "hooks",
 			model: this.skyhookHooksModel,
 			origin: spawnPosition,
 			angles: entity.GetAngles(),
-			solid: 1,
-			DefaultAnim: "",
-			Collisions: "Solid",
+			solid: 6, // VPhysics
 			ScriptedMovement: 1
 		}
 

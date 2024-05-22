@@ -6,6 +6,7 @@ interface CEntities {
 	Next(startFrom: CBaseEntity): CBaseEntity | null;
 	GetLocalPlayer(): CBasePlayer;
 	FindByClassnameNearest(className: string, origin: Vector, radius: number): CBaseEntity;
+	FindByName(startFrom: CBaseEntity | null, name: string): CBaseEntity | null;
 }
 
 declare const Entities: CEntities;

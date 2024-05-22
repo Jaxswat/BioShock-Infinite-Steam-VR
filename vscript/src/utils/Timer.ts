@@ -17,6 +17,13 @@ export default class Timer {
         }
     }
 
+    /**
+     * Returns the progress of the timer as a percentage/number between 0 and 1
+     */
+    public getProgress(): number {
+        return Math.min(this.time / this.waitSeconds, 1.0);
+    }
+
     public getTime(): number {
         return this.time;
     }
@@ -38,6 +45,10 @@ export default class Timer {
      */
     public resetTime(){
         this.time = 0;
+    }
+
+    public getWaitSeconds(): number {
+        return this.waitSeconds;
     }
 
     public setWaitSeconds(waitSeconds: number){

@@ -100,3 +100,5 @@ declare function CreateDamageInfo(inflictor: EHandle, attacker: EHandle, force: 
  * If it's the same implementation, then we probably don't need to call this. Ever.
  */
 declare function DestroyDamageInfo(damageInfo: CTakeDamageInfo): void;
+
+declare function UTIL_Remove(entity: CBaseEntity): void;
