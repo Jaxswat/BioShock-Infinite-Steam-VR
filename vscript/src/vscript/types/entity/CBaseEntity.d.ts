@@ -40,6 +40,9 @@ declare abstract class CBaseEntity {
 	GetRenderColor(): Vector;
 	SetRenderColor(r: number, g: number, b: number): void;
 	SetRenderAlpha(alpha: number): void;
+	SetRenderMode(mode: number): void;
+
+	SetModel(modelName: string): void;
 
 	PrecacheScriptSound(soundName: string): void;
 
@@ -89,6 +92,8 @@ declare abstract class CBaseEntity {
 	// SetThink(name: string, self: void, updateRate: number): void;
 	// SetThink(thinkFunction: Function, thinkName: string, initialDelay: number): void;
 	SetThink(thinkFunction: any, thinkName: any, initialDelay: number): void;
+
+	TakeDamage(damageInfo: CTakeDamageInfo): number;
 
 	GetEntityHandle(): EHandle;
 	GetEntityIndex(): number;

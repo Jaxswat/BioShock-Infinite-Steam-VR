@@ -54,7 +54,7 @@ export default class Skyhook extends Tool {
 			model: this.skyhookHooksModel,
 			origin: spawnPosition,
 			angles: entity.GetAngles(),
-			solid: 1, // disable collisions
+			solid: 1,
 			DefaultAnim: "",
 			Collisions: "Solid",
 			ScriptedMovement: 1
@@ -68,7 +68,6 @@ export default class Skyhook extends Tool {
 		this.hooksAttachment.SetSequence(this.skyhookAnimName);
 
 		this.hooksAttachment.SetThink(this.think.bind(this), this, this.hookUpdateRate);
-		print("SKYHOOK ACTIVATE");
 	}
 
 	public think(): number {

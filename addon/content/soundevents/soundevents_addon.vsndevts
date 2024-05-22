@@ -137,6 +137,22 @@
 	}
 
 	/////////////////////////////
+    // Weapons
+    /////////////////////////////
+
+    pistol_shot =
+    {
+        type = "destinations.simple_vr"
+        volume = 0.8
+        pitch = 1.0
+        delay = 0.0
+        use_hrtf = 0.0
+        volume_falloff_min = 50
+        volume_falloff_max = 350.0
+        vsnd_files = "sounds/weapons/pistol_shot.vsnd"
+    }
+
+	/////////////////////////////
 	// Skyhook
 	/////////////////////////////
 
