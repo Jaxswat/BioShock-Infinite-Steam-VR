@@ -134,6 +134,8 @@ export class NavArea {
 
     public isPointInArea(point: Vector, checkZ: boolean = true): boolean {
         let inside = false;
+        let zHigh = -Infinity;
+        let zLow = Infinity;
         for (let i = 0, j = this.polygon.length - 1; i < this.polygon.length; j = i++) {
             const xi = this.polygon[i].x;
             const yi = this.polygon[i].y;
@@ -144,20 +146,24 @@ export class NavArea {
                 ((yi > point.y) !== (yj > point.y)) &&
                 (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
 
-            if (intersect && checkZ) {
-                const zi = this.polygon[i].z;
-                const zj = this.polygon[j].z;
-                const zToleranceLow = point.z - 30;
-                const zToleranceHigh = point.z + 100;
+            if (checkZ) {
+                const z = this.polygon[i].z;
+                zHigh = Math.max(zHigh, z);
+                zLow = Math.min(zLow, z);
+            }
 
-                if ((zi <= zToleranceHigh && zi >= zToleranceLow) &&
-                    (zj <= zToleranceHigh && zj >= zToleranceLow)) {
-                    inside = !inside;
-                }
-            } else if (intersect) {
+            if (intersect) {
                 inside = !inside;
             }
         }
+
+        if (inside && checkZ) {
+            const pz = point.z;
+            if (pz > zHigh || pz < zLow) {
+                inside = !inside;
+            }
+        }
+
         return inside;
     }
 
