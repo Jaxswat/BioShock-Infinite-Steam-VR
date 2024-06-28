@@ -1,15 +1,5 @@
+use bsi_tools_lib::format::format_float;
 use crate::nav_parser::nav::{NAV_DIRECTIONS, NavFile};
-
-const FLOAT_PRECISION: usize = 3;
-
-fn format_float(value: f64) -> String {
-    let formatted = format!("{:.*}", FLOAT_PRECISION, value);
-    if formatted.contains('.') {
-        formatted.trim_end_matches('0').trim_end_matches('.').to_string()
-    } else {
-        formatted
-    }
-}
 
 /// Bake the nav data into a TypeScript file.
 pub fn bake_nav_data_for_typescript(nav_file: NavFile) -> String {

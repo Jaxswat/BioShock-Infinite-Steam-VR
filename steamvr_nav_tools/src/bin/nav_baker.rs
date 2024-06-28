@@ -1,4 +1,4 @@
-use vconsole_tunnel::nav_parser::{bake, parser};
+use steamvr_nav_tools::nav_parser::{bake, parser};
 
 fn main() {
     println!("Reading nav data...");

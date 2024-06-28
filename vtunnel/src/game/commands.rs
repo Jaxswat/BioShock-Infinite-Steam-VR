@@ -1,4 +1,4 @@
-use crate::math::Vector3;
+use bsi_tools_lib::math::Vector3;
 use crate::vtunnel::{VTunnelMessage, VTunnelSerializable};
 
 pub struct DrawDebugSphere {

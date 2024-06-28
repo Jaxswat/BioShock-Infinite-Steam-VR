@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{BufReader, Seek, SeekFrom};
 use std::path::Path;
 use std::process::exit;
-use crate::math::Vector3;
+use bsi_tools_lib::math::Vector3;
 use crate::nav_parser::nav::{MAGIC_PREFIX, NavArea, NavAreaConnectionData, NavFile, STEAM_VR_HOME_NAV_SUB_VERSION, STEAM_VR_HOME_NAV_VERSION};
 use crate::nav_parser::read::*;
 
@@ -41,7 +41,7 @@ pub fn open(path: &str) -> Option<NavFile> {
     let area_count = read_u32(&mut reader).unwrap();
     nav_file.nav_areas.reserve(area_count as usize);
 
-    for i in 0..area_count {
+    for _ in 0..area_count {
         let mut nav_area = NavArea::default();
         nav_area.id = read_u32(&mut reader).unwrap();
         nav_area.attributes = read_u32(&mut reader).unwrap();

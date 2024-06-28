@@ -1,5 +1,5 @@
 use std::fmt::Write;
-use crate::math::Vector3;
+use bsi_tools_lib::math::Vector3;
 
 const VTUNNEL_PREFIX: &'static str = "$vt!";
 const VTUNNEL_TYPE_PREFIX: char = ':';

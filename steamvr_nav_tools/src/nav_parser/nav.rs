@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use crate::math::Vector3;
+use bsi_tools_lib::math::Vector3;
 
 /// Magic prefix for nav files. Yum.
 pub const MAGIC_PREFIX: u32 = 0xFEEDFACE;

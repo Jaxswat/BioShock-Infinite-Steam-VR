@@ -6,7 +6,7 @@ use crate::game::elizabeth::Elizabeth;
 use crate::game::gadget::{GadgetProgram};
 use crate::game::player::{input_button, PlayerInput};
 use crate::game::trace::{BoxTrace, LineTrace};
-use crate::math::Vector3;
+use bsi_tools_lib::math::Vector3;
 use crate::vtunnel::{VTunnelMessage, VTunnelMessageBatch, VTunnelSerializable};
 use crate::vtunnel_emitter::VTunnelEmitter;
 

@@ -1,0 +1,11 @@
+[package]
+name = "steamvr_nav_tools"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "nav_baker"
+path = "src/bin/nav_baker.rs"
+
+[dependencies]
+bsi_tools_lib = { path = "../bsi_tools_lib" }

@@ -1,0 +1,12 @@
+[package]
+name = "vsnd_tools"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "speech_anim"
+path = "src/bin/speech_anim.rs"
+
+[dependencies]
+bsi_tools_lib = { path = "../bsi_tools_lib" }
+hound = "3.5.1"

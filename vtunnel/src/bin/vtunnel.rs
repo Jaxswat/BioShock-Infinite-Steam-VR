@@ -4,14 +4,14 @@ use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed};
 use futures::SinkExt;
 use tokio::sync::{mpsc, Mutex};
-use vconsole_tunnel::{vconsole, vtunnel};
-use vconsole_tunnel::game::elizabeth::Elizabeth;
-use vconsole_tunnel::game::gadget::GadgetTool;
-use vconsole_tunnel::game::player::{Player, PlayerInput};
-use vconsole_tunnel::nav_builder::nav_builder::NavBuilderProgram;
-use vconsole_tunnel::vconsole::Packet;
-use vconsole_tunnel::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
-use vconsole_tunnel::vtunnel_emitter::VTunnelEmitter;
+use vtunnel::game::elizabeth::Elizabeth;
+use vtunnel::game::gadget::GadgetTool;
+use vtunnel::game::player::{Player, PlayerInput};
+use vtunnel::nav_builder::nav_builder::NavBuilderProgram;
+use vtunnel::vconsole;
+use vtunnel::vconsole::Packet;
+use vtunnel::vtunnel::{VTunnelDeserializable, VTunnelMessage, VTunnelSerializable};
+use vtunnel::vtunnel_emitter::VTunnelEmitter;
 
 
 #[tokio::main]
@@ -123,7 +123,7 @@ impl ConsoleState {
         match packet.packet_type {
             vconsole::PacketType::PRINT => {
                 let print_data = packet.get_print_data();
-                let vmsg = vtunnel::parse_vtunnel_message(&print_data);
+                let vmsg = vtunnel::vtunnel::parse_vtunnel_message(&print_data);
                 if vmsg.is_some() {
                     let vmsg = vmsg.unwrap();
                     if vmsg.id == 0 {
