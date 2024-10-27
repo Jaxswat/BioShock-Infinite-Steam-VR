@@ -2,7 +2,7 @@ import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {LizChoreoPoint, LizChoreoUtils} from "../LizChoreo";
 import Timer from "../../../utils/Timer";
-import {getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../speechConfig";
+import {getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../lizSpeech";
 
 export default class ChoreoState extends LizState {
     private choreoPoint: LizChoreoPoint | null;

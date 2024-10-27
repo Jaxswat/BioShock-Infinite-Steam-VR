@@ -1,0 +1,92 @@
+# Found some money!
+
+[cash_booker]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[found_some_money]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[found_this_for_you]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[heres_some_cash]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[hey_found_some_money]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "somber"
+
+[i_found_some_change]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "somber"
+
+[more_money]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[need_money]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[wanna_hold_on_to_this]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+
+[take_it]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[catch_booker]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[catch]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[here]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[here_you_go]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[catch2]
+speech_tag = "foundMoney"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"

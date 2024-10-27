@@ -1,0 +1,19 @@
+# Catch Money
+
+[amazing_what_people_leave_lying_around]
+speech_tag = "catchMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[dont_spend_it_all_in_one_place]
+speech_tag = "catchMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "neutral"
+
+[someone_must_have_dropped_this]
+speech_tag = "catchMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "neutral"

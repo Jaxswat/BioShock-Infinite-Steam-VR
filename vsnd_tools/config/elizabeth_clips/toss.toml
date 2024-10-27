@@ -1,0 +1,43 @@
+# Toss / Booker Catch
+
+[take_it]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[catch_booker]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[catch]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[here]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[here_you_go]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[catch_booker2]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[catch2]
+speech_tag = "toss"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"

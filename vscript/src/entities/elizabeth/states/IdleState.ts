@@ -1,7 +1,7 @@
 import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import Timer from "../../../utils/Timer";
-import {getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../speechConfig";
+import {getSpeechClip, LizSpeechTag} from "../lizSpeech";
 
 export default class IdleState extends LizState {
     private stateSwitchTimer: Timer;

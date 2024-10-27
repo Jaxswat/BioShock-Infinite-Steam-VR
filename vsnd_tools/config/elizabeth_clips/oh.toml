@@ -1,0 +1,31 @@
+# Oh!
+
+[oh01]
+speech_tag = "oh"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[oh02]
+speech_tag = "oh"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[oh03]
+speech_tag = "oh"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[oh04]
+speech_tag = "oh"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "neutral"
+
+[oh05]
+speech_tag = "oh"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"

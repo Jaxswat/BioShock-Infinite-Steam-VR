@@ -1,0 +1,19 @@
+# Body
+
+[cough01]
+speech_tag = "body"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[cough02]
+speech_tag = "body"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[sneeze01]
+speech_tag = "body"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"

@@ -1,7 +1,7 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {LizCuriousityPoint, LizCuriousityUtils} from "../lizCuriousity";
-import {getSpeechClip, LizSpeechTag} from "../speechConfig";
+import {getSpeechClip, LizSpeechTag} from "../lizSpeech";
 
 export default class CuriousState extends LizState {
     private curiousityPoints: LizCuriousityPoint[] = [];

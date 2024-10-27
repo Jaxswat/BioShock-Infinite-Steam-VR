@@ -1,0 +1,25 @@
+# Player Found Money
+
+[arent_we_the_well_to_do_types]
+speech_tag = "playerFoundMoney"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[i_imagine_sofa_cushions_turn_up_quarter]
+speech_tag = "playerFoundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[seems_like_were_fairly_well_healed]
+speech_tag = "playerFoundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[seems_like_were_fairly_well_healed2]
+speech_tag = "playerFoundMoney"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"

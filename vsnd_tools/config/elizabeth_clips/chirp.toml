@@ -1,0 +1,379 @@
+# Chirps.
+
+## Actual Chirp
+
+[and_how_has_that_worked_out_for_you]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[har_har]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[will_the_circle_humming_short]
+speech_tag = "chirp"
+speech_type = "nonSpeech"
+sentiment = "like"
+intensity = "cheerful"
+animate = false
+
+[you_do_have_your_useful_qualities]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[you_do_have_your_useful_qualities2]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[youve_got_quite_a_knack_for_that]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+
+## Uncategorized Chirp
+[have_it_your_way_i_suppose]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+[i_have_a_better_idea]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[indeed]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+# TODO: When it's about 7:30
+[its_about_7_30]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[no]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[no2]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+[yes]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+
+## Discussion Questions
+[are_you_interested_in_gardening]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[are_you_trying_to_get_us_both_arrested]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "neutral"
+
+[do_you_hear_anything]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[exactly_what_business_do_you_have_in_here]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[okay_just_one_more]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[ready_now]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[really]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+[really2]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[well]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+
+## Object Questions
+[buffalo_tonic_whats_this]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+[madam_warblers_whiskey_cure]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+
+## Object Commentary
+[do_you_want_this]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[doesnt_seem_to_work_very_well]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[i_love_it]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[maybe_that_machine_has_some_things_we_can_use]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[maybe_you_should_get_that]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+# TODO: when picking up shock jockey
+[shock_jockey_who_needs_the_power_company]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[this_is_it_isnt_it]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+# TODO: maybe at a locked door?
+[where_do_you_think_this_goes]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[you_really_should_pick_that_up]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[youve_got_a_keen_eye_booker_noticed_trinkets]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+
+## Level Commentary
+
+# TODO: when in shop near pump door
+[almost_ocean_pumps_raincatchers]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+# TODO: when at level transition
+[guess_we_should_come_back_later]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[thats_foolish]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "somber"
+
+[well_ill_be]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[what_happened_there]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+# TODO: when another player connects? or when selecting friends off panel?
+[whos_that]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+
+## Plot
+[fifty_percent]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+# TODO: after doing dancing choreo
+[i_wanna_see_paris_everything]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[imagining_you_on_a_carousel]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+# TODO: if she sees herself (although there should only be 1 liz on the map)
+[its_her]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[look_on_the_other_side]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[seems_like_an_unnecessary_complication]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[that_was_odd]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+# TODO: When picking up a skyhook?
+[this_is_going_to_be_fantastic]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[watch_this]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+# TODO: when you pick up a coin that was thrown and dropped?
+[well_the_mans_got_an_ego]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[whats_going_on]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+
+## Combat
+
+# TODO: when people on the beach?
+[better_to_stay_away_from_that_crowd]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[looks_like_trouble_we_should_be_careful]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[i_am_glad_were_on_the_same_side]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "assertive"
+
+[incredible]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "assertive"
+
+[three_cheers_for_us]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "yelling"
+
+[you_can_stop_shooting_hes_dead]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[youve_done_this_before_havent_you]
+speech_tag = "chirp"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"

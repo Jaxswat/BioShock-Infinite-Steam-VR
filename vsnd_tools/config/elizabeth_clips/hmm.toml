@@ -1,0 +1,246 @@
+# Hmms!
+
+[huh01]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[huh02]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "neutral"
+
+[huh03]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[huh04]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "like"
+intensity = "neutral"
+
+[huh05]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[huh06]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "somber"
+
+[huh07]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[huh08]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[huh09]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[huh10]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[huh11]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "like"
+intensity = "cheerful"
+
+
+[hmm01]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "neutral"
+animate = false
+
+[hmm02]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "somber"
+animate = false
+
+[hmm03]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "strongLike"
+intensity = "cheerful"
+animate = false
+
+[hmm04]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+animate = false
+
+[hmm05]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "neutral"
+animate = false
+
+[hmm06]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+animate = false
+
+[hmm07]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "assertive"
+animate = false
+
+[hmm08]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "cheerful"
+animate = false
+
+[hmm09]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "cheerful"
+animate = false
+
+[hmm10]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "assertive"
+animate = false
+
+[hmm11]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "neutral"
+animate = false
+
+[hmm12]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "neutral"
+intensity = "assertive"
+animate = false
+
+[hmm13]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "dislike"
+intensity = "assertive"
+animate = false
+
+
+[ahh01]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[ahh02]
+speech_tag = "hmm"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+
+[oh01]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[oh02]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[oh03]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[oh04]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "neutral"
+
+[oh05]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+
+[hmm_interesting]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[strange]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[i_wonder]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[interesting01]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[interesting02]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[odd01]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"
+
+[odd02]
+speech_tag = "hmm"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "assertive"

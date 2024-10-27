@@ -1,7 +1,7 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {PlayerReadyEvent} from "../lizEvents";
-import {getSpeechClip} from "../speechConfig";
+import {getSpeechClip} from "../lizSpeech";
 
 export default class FollowingState extends LizState {
     private lastPlayerPosition: Vector;

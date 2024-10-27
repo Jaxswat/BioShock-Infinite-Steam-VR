@@ -217,1787 +217,1791 @@
 		vsnd_files = "sounds/elizabeth/liz_humming.vsnd"
 	}
 	
-	liz_clip_greetings_bright_hey =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/bright_hey.vsnd"
-	}
-	liz_clip_greetings_bright_hey2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/bright_hey2.vsnd"
-	}
-	liz_clip_greetings_hello =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/hello.vsnd"
-	}
-	liz_clip_greetings_hi_there =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/hi_there.vsnd"
-	}
-	liz_clip_greetings_my_name_is_elizabeth =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/my_name_is_elizabeth.vsnd"
-	}
-	liz_clip_greetings_regular_hey =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/regular_hey.vsnd"
-	}
-	liz_clip_greetings_soft_hey =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/greetings/soft_hey.vsnd"
-	}
-	liz_clip_hmms_huh01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh01.vsnd"
-	}
-	liz_clip_hmms_huh02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh02.vsnd"
-	}
-	liz_clip_hmms_huh03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh03.vsnd"
-	}
-	liz_clip_hmms_huh04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh04.vsnd"
-	}
-	liz_clip_hmms_huh05 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh05.vsnd"
-	}
-	liz_clip_hmms_huh06 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh06.vsnd"
-	}
-	liz_clip_hmms_huh07 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh07.vsnd"
-	}
-	liz_clip_hmms_huh08 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh08.vsnd"
-	}
-	liz_clip_hmms_huh09 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh09.vsnd"
-	}
-	liz_clip_hmms_huh10 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh10.vsnd"
-	}
-	liz_clip_hmms_huh11 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/huh11.vsnd"
-	}
-	liz_clip_hmms_hmm01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm01.vsnd"
-	}
-	liz_clip_hmms_hmm02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm02.vsnd"
-	}
-	liz_clip_hmms_hmm03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm03.vsnd"
-	}
-	liz_clip_hmms_hmm04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm04.vsnd"
-	}
-	liz_clip_hmms_hmm05 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm05.vsnd"
-	}
-	liz_clip_hmms_hmm06 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm06.vsnd"
-	}
-	liz_clip_hmms_hmm07 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm07.vsnd"
-	}
-	liz_clip_hmms_hmm08 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm08.vsnd"
-	}
-	liz_clip_hmms_hmm09 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm09.vsnd"
-	}
-	liz_clip_hmms_hmm10 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm10.vsnd"
-	}
-	liz_clip_hmms_hmm11 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm11.vsnd"
-	}
-	liz_clip_hmms_hmm12 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm12.vsnd"
-	}
-	liz_clip_hmms_hmm13 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm13.vsnd"
-	}
-	liz_clip_hmms_ahh01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/ahh01.vsnd"
-	}
-	liz_clip_hmms_ahh02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/ahh02.vsnd"
-	}
-	liz_clip_hmms_oh01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/oh01.vsnd"
-	}
-	liz_clip_hmms_oh02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/oh02.vsnd"
-	}
-	liz_clip_hmms_oh03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/oh03.vsnd"
-	}
-	liz_clip_hmms_oh04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/oh04.vsnd"
-	}
-	liz_clip_hmms_oh05 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/oh05.vsnd"
-	}
-	liz_clip_hmms_hmm_interesting =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/hmm_interesting.vsnd"
-	}
-	liz_clip_hmms_strange =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/strange.vsnd"
-	}
-	liz_clip_hmms_i_wonder =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/i_wonder.vsnd"
-	}
-	liz_clip_hmms_interesting01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/interesting01.vsnd"
-	}
-	liz_clip_hmms_interesting02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/interesting02.vsnd"
-	}
-	liz_clip_hmms_odd01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/odd01.vsnd"
-	}
-	liz_clip_hmms_odd02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/hmms/odd02.vsnd"
-	}
-	liz_clip_look_at_this_booker_here =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/booker_here.vsnd"
-	}
-	liz_clip_look_at_this_come_look_at_these =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/come_look_at_these.vsnd"
-	}
-	liz_clip_look_at_this_do_you_want_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/do_you_want_this.vsnd"
-	}
-	liz_clip_look_at_this_huh_whats_this01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/huh_whats_this01.vsnd"
-	}
-	liz_clip_look_at_this_huh_whats_this02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/huh_whats_this02.vsnd"
-	}
-	liz_clip_look_at_this_i_think_you_should_see_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/i_think_you_should_see_this.vsnd"
-	}
-	liz_clip_look_at_this_look_at_that01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that01.vsnd"
-	}
-	liz_clip_look_at_this_look_at_that02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that02.vsnd"
-	}
-	liz_clip_look_at_this_look_at_that03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that03.vsnd"
-	}
-	liz_clip_look_at_this_look_at_that04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that04.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this01.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this02.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this03.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this04.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this05 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this05.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this06 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this06.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this07 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this07.vsnd"
-	}
-	liz_clip_look_at_this_look_at_this08 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this08.vsnd"
-	}
-	liz_clip_look_at_this_look_mr_dewitt01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/look_mr_dewitt01.vsnd"
-	}
-	liz_clip_look_at_this_oh_whats_that =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/oh_whats_that.vsnd"
-	}
-	liz_clip_look_at_this_over_here01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/over_here01.vsnd"
-	}
-	liz_clip_look_at_this_over_here02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/over_here02.vsnd"
-	}
-	liz_clip_look_at_this_see_this01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/see_this01.vsnd"
-	}
-	liz_clip_look_at_this_this_looks_important01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/this_looks_important01.vsnd"
-	}
-	liz_clip_look_at_this_this_looks_important02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/this_looks_important02.vsnd"
-	}
-	liz_clip_look_at_this_what_is_this01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/what_is_this01.vsnd"
-	}
-	liz_clip_look_at_this_what_is_this02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/what_is_this02.vsnd"
-	}
-	liz_clip_look_at_this_whats_that =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/look_at_this/whats_that.vsnd"
-	}
-	liz_clip_smelly_smelly01 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/smelly01.vsnd"
-	}
-	liz_clip_smelly_smelly02 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/smelly02.vsnd"
-	}
-	liz_clip_smelly_smelly03 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/smelly03.vsnd"
-	}
-	liz_clip_smelly_smelly04 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/smelly04.vsnd"
-	}
-	liz_clip_smelly_smelly05 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/smelly05.vsnd"
-	}
-	liz_clip_smelly_oh_whats_that_smell =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/smelly/oh_whats_that_smell.vsnd"
-	}
-	liz_clip_found_money_cash_booker =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/cash_booker.vsnd"
-	}
-	liz_clip_found_money_found_some_money =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/found_some_money.vsnd"
-	}
-	liz_clip_found_money_found_this_for_you =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/found_this_for_you.vsnd"
-	}
-	liz_clip_found_money_heres_some_cash =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/heres_some_cash.vsnd"
-	}
-	liz_clip_found_money_hey_found_some_money =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/hey_found_some_money.vsnd"
-	}
-	liz_clip_found_money_i_found_some_change =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/i_found_some_change.vsnd"
-	}
-	liz_clip_found_money_more_money =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/more_money.vsnd"
-	}
-	liz_clip_found_money_need_money =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/need_money.vsnd"
-	}
-	liz_clip_found_money_wanna_hold_on_to_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/found_money/wanna_hold_on_to_this.vsnd"
-	}
-	liz_clip_toss_take_it =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/take_it.vsnd"
-	}
-	liz_clip_toss_catch_booker =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/catch_booker.vsnd"
-	}
-	liz_clip_toss_catch =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/catch.vsnd"
-	}
-	liz_clip_toss_here =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/here.vsnd"
-	}
-	liz_clip_toss_here_you_go =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/here_you_go.vsnd"
-	}
-	liz_clip_toss_catch_booker2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/catch_booker2.vsnd"
-	}
-	liz_clip_toss_catch2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/toss/catch2.vsnd"
-	}
-	liz_clip_chirps_amazing_what_people_leave_lying_around =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/amazing_what_people_leave_lying_around.vsnd"
-	}
-	liz_clip_chirps_arent_we_the_well_to_do_types =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/arent_we_the_well_to_do_types.vsnd"
-	}
-	liz_clip_chirps_dont_spend_it_all_in_one_place =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/dont_spend_it_all_in_one_place.vsnd"
-	}
-	liz_clip_chirps_someone_must_have_dropped_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/someone_must_have_dropped_this.vsnd"
-	}
-	liz_clip_chirps_i_imagine_sofa_cushions_turn_up_quarter =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/i_imagine_sofa_cushions_turn_up_quarter.vsnd"
-	}
-	liz_clip_chirps_seems_like_were_fairly_well_healed =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/seems_like_were_fairly_well_healed.vsnd"
-	}
-	liz_clip_chirps_seems_like_were_fairly_well_healed2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/seems_like_were_fairly_well_healed2.vsnd"
-	}
-	liz_clip_chirps_and_how_has_that_worked_out_for_you =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/and_how_has_that_worked_out_for_you.vsnd"
-	}
-	liz_clip_chirps_har_har =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/har_har.vsnd"
-	}
-	liz_clip_chirps_will_the_circle_humming_short =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/will_the_circle_humming_short.vsnd"
-	}
-	liz_clip_chirps_you_do_have_your_useful_qualities =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/you_do_have_your_useful_qualities.vsnd"
-	}
-	liz_clip_chirps_you_do_have_your_useful_qualities2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/you_do_have_your_useful_qualities2.vsnd"
-	}
-	liz_clip_chirps_youve_got_quite_a_knack_for_that =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/youve_got_quite_a_knack_for_that.vsnd"
-	}
-	liz_clip_chirps_have_it_your_way_i_suppose =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/have_it_your_way_i_suppose.vsnd"
-	}
-	liz_clip_chirps_i_have_a_better_idea =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/i_have_a_better_idea.vsnd"
-	}
-	liz_clip_chirps_indeed =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/indeed.vsnd"
-	}
-	liz_clip_chirps_its_about_7_30 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/its_about_7_30.vsnd"
-	}
-	liz_clip_chirps_no =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/no.vsnd"
-	}
-	liz_clip_chirps_no =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/no.vsnd"
-	}
-	liz_clip_chirps_yes =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/yes.vsnd"
-	}
-	liz_clip_chirps_are_you_interested_in_gardening =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/are_you_interested_in_gardening.vsnd"
-	}
-	liz_clip_chirps_are_you_trying_to_get_us_both_arrested =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/are_you_trying_to_get_us_both_arrested.vsnd"
-	}
-	liz_clip_chirps_do_you_hear_anything =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/do_you_hear_anything.vsnd"
-	}
-	liz_clip_chirps_exactly_what_business_do_you_have_in_here =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/exactly_what_business_do_you_have_in_here.vsnd"
-	}
-	liz_clip_chirps_okay_just_one_more =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/okay_just_one_more.vsnd"
-	}
-	liz_clip_chirps_ready_now =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/ready_now.vsnd"
-	}
-	liz_clip_chirps_really =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/really.vsnd"
-	}
-	liz_clip_chirps_really2 =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/really2.vsnd"
-	}
-	liz_clip_chirps_well =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/well.vsnd"
-	}
-	liz_clip_chirps_buffalo_tonic_whats_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/buffalo_tonic_whats_this.vsnd"
-	}
-	liz_clip_chirps_madam_warblers_whiskey_cure =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/madam_warblers_whiskey_cure.vsnd"
-	}
-	liz_clip_chirps_doest_seem_to_work_very_well =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/doest_seem_to_work_very_well.vsnd"
-	}
-	liz_clip_chirps_i_love_it =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/i_love_it.vsnd"
-	}
-	liz_clip_chirps_maybe_that_machine_has_some_things_we_can_use =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/maybe_that_machine_has_some_things_we_can_use.vsnd"
-	}
-	liz_clip_chirps_maybe_you_should_get_that =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/maybe_you_should_get_that.vsnd"
-	}
-	liz_clip_chirps_shock_jockey_who_needs_the_power_company =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/shock_jockey_who_needs_the_power_company.vsnd"
-	}
-	liz_clip_chirps_this_is_it_isnt_it =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/this_is_it_isnt_it.vsnd"
-	}
-	liz_clip_chirps_where_do_you_think_this_goes =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/where_do_you_think_this_goes.vsnd"
-	}
-	liz_clip_chirps_you_really_should_pick_that_up =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/you_really_should_pick_that_up.vsnd"
-	}
-	liz_clip_chirps_youve_got_a_keen_eye_booker_noticed_trinkets =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/youve_got_a_keen_eye_booker_noticed_trinkets.vsnd"
-	}
-	liz_clip_chirps_almost_pumps_raincatchers =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/almost_pumps_raincatchers.vsnd"
-	}
-	liz_clip_chirps_guess_we_should_come_back_later =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/guess_we_should_come_back_later.vsnd"
-	}
-	liz_clip_chirps_thats_foolish =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/thats_foolish.vsnd"
-	}
-	liz_clip_chirps_well_ill_be =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/well_ill_be.vsnd"
-	}
-	liz_clip_chirps_what_happened_there =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/what_happened_there.vsnd"
-	}
-	liz_clip_chirps_whos_that =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/whos_that.vsnd"
-	}
-	liz_clip_chirps_fifty_percent =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/fifty_percent.vsnd"
-	}
-	liz_clip_chirps_i_wanna_see_paris_everything =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/i_wanna_see_paris_everything.vsnd"
-	}
-	liz_clip_chirps_imagining_you_on_a_carousel =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/imagining_you_on_a_carousel.vsnd"
-	}
-	liz_clip_chirps_its_her =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/its_her.vsnd"
-	}
-	liz_clip_chirps_look_on_the_other_side =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/look_on_the_other_side.vsnd"
-	}
-	liz_clip_chirps_seems_like_an_unnecessary_complication =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/seems_like_an_unnecessary_complication.vsnd"
-	}
-	liz_clip_chirps_that_was_odd =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/that_was_odd.vsnd"
-	}
-	liz_clip_chirps_this_is_going_to_be_fantastic =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/this_is_going_to_be_fantastic.vsnd"
-	}
-	liz_clip_chirps_watch_this =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/watch_this.vsnd"
-	}
-	liz_clip_chirps_well_the_mans_got_an_ego =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/well_the_mans_got_an_ego.vsnd"
-	}
-	liz_clip_chirps_whats_going_on =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/whats_going_on.vsnd"
-	}
-	liz_clip_chirps_better_to_stay_away_from_that_crowd =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/better_to_stay_away_from_that_crowd.vsnd"
-	}
-	liz_clip_chirps_looks_like_trouble_we_should_be_careful =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/looks_like_trouble_we_should_be_careful.vsnd"
-	}
-	liz_clip_chirps_i_am_glad_were_on_the_same_side =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/i_am_glad_were_on_the_same_side.vsnd"
-	}
-	liz_clip_chirps_incredible =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/incredible.vsnd"
-	}
-	liz_clip_chirps_three_cheers_for_us =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/three_cheers_for_us.vsnd"
-	}
-	liz_clip_chirps_you_can_stop_shooting_hes_dead =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/you_can_stop_shooting_hes_dead.vsnd"
-	}
-	liz_clip_chirps_youve_done_this_before_havent_you =
-	{
-		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
-		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
-		vsnd_files = "sounds/elizabeth/chirps/youve_done_this_before_havent_you.vsnd"
-	}
+	//////////////////////////////////////////////////////////
+	// Elizabeth - CODE GENERATED CLIPS DATA. DO NOT EDIT.
+	//////////////////////////////////////////////////////////
+
 	liz_clip_body_cough01 =
 	{
 		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
 		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
+		volume_falloff_max = 1000
 		vsnd_files = "sounds/elizabeth/body/cough01.vsnd"
 	}
 	liz_clip_body_cough02 =
 	{
 		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
 		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
+		volume_falloff_max = 1000
 		vsnd_files = "sounds/elizabeth/body/cough02.vsnd"
 	}
 	liz_clip_body_sneeze01 =
 	{
 		type = "destinations.simple_vr"
-		volume = 1.0
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 1.0
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
 		volume_falloff_min = 100
-		volume_falloff_max = 1000.0
+		volume_falloff_max = 1000
 		vsnd_files = "sounds/elizabeth/body/sneeze01.vsnd"
+	}
+	liz_clip_chirps_almost_ocean_pumps_raincatchers =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/almost_ocean_pumps_raincatchers.vsnd"
+	}
+	liz_clip_chirps_amazing_what_people_leave_lying_around =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/amazing_what_people_leave_lying_around.vsnd"
+	}
+	liz_clip_chirps_and_how_has_that_worked_out_for_you =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/and_how_has_that_worked_out_for_you.vsnd"
+	}
+	liz_clip_chirps_are_you_interested_in_gardening =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/are_you_interested_in_gardening.vsnd"
+	}
+	liz_clip_chirps_are_you_trying_to_get_us_both_arrested =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/are_you_trying_to_get_us_both_arrested.vsnd"
+	}
+	liz_clip_chirps_arent_we_the_well_to_do_types =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/arent_we_the_well_to_do_types.vsnd"
+	}
+	liz_clip_chirps_better_to_stay_away_from_that_crowd =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/better_to_stay_away_from_that_crowd.vsnd"
+	}
+	liz_clip_chirps_buffalo_tonic_whats_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/buffalo_tonic_whats_this.vsnd"
+	}
+	liz_clip_chirps_do_you_hear_anything =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/do_you_hear_anything.vsnd"
+	}
+	liz_clip_chirps_do_you_want_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/do_you_want_this.vsnd"
+	}
+	liz_clip_chirps_doesnt_seem_to_work_very_well =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/doesnt_seem_to_work_very_well.vsnd"
+	}
+	liz_clip_chirps_dont_spend_it_all_in_one_place =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/dont_spend_it_all_in_one_place.vsnd"
+	}
+	liz_clip_chirps_exactly_what_business_do_you_have_in_here =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/exactly_what_business_do_you_have_in_here.vsnd"
+	}
+	liz_clip_chirps_fifty_percent =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/fifty_percent.vsnd"
+	}
+	liz_clip_chirps_guess_we_should_come_back_later =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/guess_we_should_come_back_later.vsnd"
+	}
+	liz_clip_chirps_har_har =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/har_har.vsnd"
+	}
+	liz_clip_chirps_have_it_your_way_i_suppose =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/have_it_your_way_i_suppose.vsnd"
+	}
+	liz_clip_chirps_i_am_glad_were_on_the_same_side =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/i_am_glad_were_on_the_same_side.vsnd"
+	}
+	liz_clip_chirps_i_have_a_better_idea =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/i_have_a_better_idea.vsnd"
+	}
+	liz_clip_chirps_i_imagine_sofa_cushions_turn_up_quarter =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/i_imagine_sofa_cushions_turn_up_quarter.vsnd"
+	}
+	liz_clip_chirps_i_love_it =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/i_love_it.vsnd"
+	}
+	liz_clip_chirps_i_wanna_see_paris_everything =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/i_wanna_see_paris_everything.vsnd"
+	}
+	liz_clip_chirps_imagining_you_on_a_carousel =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/imagining_you_on_a_carousel.vsnd"
+	}
+	liz_clip_chirps_incredible =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/incredible.vsnd"
+	}
+	liz_clip_chirps_indeed =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/indeed.vsnd"
+	}
+	liz_clip_chirps_its_about_7_30 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/its_about_7_30.vsnd"
+	}
+	liz_clip_chirps_its_her =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/its_her.vsnd"
+	}
+	liz_clip_chirps_look_on_the_other_side =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/look_on_the_other_side.vsnd"
+	}
+	liz_clip_chirps_looks_like_trouble_we_should_be_careful =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/looks_like_trouble_we_should_be_careful.vsnd"
+	}
+	liz_clip_chirps_madam_warblers_whiskey_cure =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/madam_warblers_whiskey_cure.vsnd"
+	}
+	liz_clip_chirps_maybe_that_machine_has_some_things_we_can_use =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/maybe_that_machine_has_some_things_we_can_use.vsnd"
+	}
+	liz_clip_chirps_maybe_you_should_get_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/maybe_you_should_get_that.vsnd"
+	}
+	liz_clip_chirps_no =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/no.vsnd"
+	}
+	liz_clip_chirps_no2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/no2.vsnd"
+	}
+	liz_clip_chirps_okay_just_one_more =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/okay_just_one_more.vsnd"
+	}
+	liz_clip_chirps_ready_now =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/ready_now.vsnd"
+	}
+	liz_clip_chirps_really =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/really.vsnd"
+	}
+	liz_clip_chirps_really2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/really2.vsnd"
+	}
+	liz_clip_chirps_seems_like_an_unnecessary_complication =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/seems_like_an_unnecessary_complication.vsnd"
+	}
+	liz_clip_chirps_seems_like_were_fairly_well_healed =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/seems_like_were_fairly_well_healed.vsnd"
+	}
+	liz_clip_chirps_seems_like_were_fairly_well_healed2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/seems_like_were_fairly_well_healed2.vsnd"
+	}
+	liz_clip_chirps_shock_jockey_who_needs_the_power_company =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/shock_jockey_who_needs_the_power_company.vsnd"
+	}
+	liz_clip_chirps_someone_must_have_dropped_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/someone_must_have_dropped_this.vsnd"
+	}
+	liz_clip_chirps_that_was_odd =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/that_was_odd.vsnd"
+	}
+	liz_clip_chirps_thats_foolish =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/thats_foolish.vsnd"
+	}
+	liz_clip_chirps_this_is_going_to_be_fantastic =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/this_is_going_to_be_fantastic.vsnd"
+	}
+	liz_clip_chirps_this_is_it_isnt_it =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/this_is_it_isnt_it.vsnd"
+	}
+	liz_clip_chirps_three_cheers_for_us =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/three_cheers_for_us.vsnd"
+	}
+	liz_clip_chirps_watch_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/watch_this.vsnd"
+	}
+	liz_clip_chirps_well =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/well.vsnd"
+	}
+	liz_clip_chirps_well_ill_be =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/well_ill_be.vsnd"
+	}
+	liz_clip_chirps_well_the_mans_got_an_ego =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/well_the_mans_got_an_ego.vsnd"
+	}
+	liz_clip_chirps_what_happened_there =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/what_happened_there.vsnd"
+	}
+	liz_clip_chirps_whats_going_on =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/whats_going_on.vsnd"
+	}
+	liz_clip_chirps_where_do_you_think_this_goes =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/where_do_you_think_this_goes.vsnd"
+	}
+	liz_clip_chirps_whos_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/whos_that.vsnd"
+	}
+	liz_clip_chirps_will_the_circle_humming_short =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/will_the_circle_humming_short.vsnd"
+	}
+	liz_clip_chirps_yes =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/yes.vsnd"
+	}
+	liz_clip_chirps_you_can_stop_shooting_hes_dead =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/you_can_stop_shooting_hes_dead.vsnd"
+	}
+	liz_clip_chirps_you_do_have_your_useful_qualities =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/you_do_have_your_useful_qualities.vsnd"
+	}
+	liz_clip_chirps_you_do_have_your_useful_qualities2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/you_do_have_your_useful_qualities2.vsnd"
+	}
+	liz_clip_chirps_you_really_should_pick_that_up =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/you_really_should_pick_that_up.vsnd"
+	}
+	liz_clip_chirps_youve_done_this_before_havent_you =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/youve_done_this_before_havent_you.vsnd"
+	}
+	liz_clip_chirps_youve_got_a_keen_eye_booker_noticed_trinkets =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/youve_got_a_keen_eye_booker_noticed_trinkets.vsnd"
+	}
+	liz_clip_chirps_youve_got_quite_a_knack_for_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/chirps/youve_got_quite_a_knack_for_that.vsnd"
+	}
+	liz_clip_found_money_cash_booker =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/cash_booker.vsnd"
+	}
+	liz_clip_found_money_found_some_money =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/found_some_money.vsnd"
+	}
+	liz_clip_found_money_found_this_for_you =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/found_this_for_you.vsnd"
+	}
+	liz_clip_found_money_heres_some_cash =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/heres_some_cash.vsnd"
+	}
+	liz_clip_found_money_hey_found_some_money =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/hey_found_some_money.vsnd"
+	}
+	liz_clip_found_money_i_found_some_change =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/i_found_some_change.vsnd"
+	}
+	liz_clip_found_money_more_money =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/more_money.vsnd"
+	}
+	liz_clip_found_money_need_money =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/need_money.vsnd"
+	}
+	liz_clip_found_money_wanna_hold_on_to_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/found_money/wanna_hold_on_to_this.vsnd"
+	}
+	liz_clip_greetings_bright_hey =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/bright_hey.vsnd"
+	}
+	liz_clip_greetings_bright_hey2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/bright_hey2.vsnd"
+	}
+	liz_clip_greetings_hello =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/hello.vsnd"
+	}
+	liz_clip_greetings_hi_there =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/hi_there.vsnd"
+	}
+	liz_clip_greetings_my_name_is_elizabeth =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/my_name_is_elizabeth.vsnd"
+	}
+	liz_clip_greetings_regular_hey =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/regular_hey.vsnd"
+	}
+	liz_clip_greetings_soft_hey =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/greetings/soft_hey.vsnd"
+	}
+	liz_clip_hmms_ahh01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/ahh01.vsnd"
+	}
+	liz_clip_hmms_ahh02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/ahh02.vsnd"
+	}
+	liz_clip_hmms_hmm01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm01.vsnd"
+	}
+	liz_clip_hmms_hmm02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm02.vsnd"
+	}
+	liz_clip_hmms_hmm03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm03.vsnd"
+	}
+	liz_clip_hmms_hmm04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm04.vsnd"
+	}
+	liz_clip_hmms_hmm05 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm05.vsnd"
+	}
+	liz_clip_hmms_hmm06 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm06.vsnd"
+	}
+	liz_clip_hmms_hmm07 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm07.vsnd"
+	}
+	liz_clip_hmms_hmm08 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm08.vsnd"
+	}
+	liz_clip_hmms_hmm09 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm09.vsnd"
+	}
+	liz_clip_hmms_hmm10 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm10.vsnd"
+	}
+	liz_clip_hmms_hmm11 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm11.vsnd"
+	}
+	liz_clip_hmms_hmm12 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm12.vsnd"
+	}
+	liz_clip_hmms_hmm13 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm13.vsnd"
+	}
+	liz_clip_hmms_hmm_interesting =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/hmm_interesting.vsnd"
+	}
+	liz_clip_hmms_huh01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh01.vsnd"
+	}
+	liz_clip_hmms_huh02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh02.vsnd"
+	}
+	liz_clip_hmms_huh03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh03.vsnd"
+	}
+	liz_clip_hmms_huh04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh04.vsnd"
+	}
+	liz_clip_hmms_huh05 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh05.vsnd"
+	}
+	liz_clip_hmms_huh06 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh06.vsnd"
+	}
+	liz_clip_hmms_huh07 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh07.vsnd"
+	}
+	liz_clip_hmms_huh08 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh08.vsnd"
+	}
+	liz_clip_hmms_huh09 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh09.vsnd"
+	}
+	liz_clip_hmms_huh10 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh10.vsnd"
+	}
+	liz_clip_hmms_huh11 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/huh11.vsnd"
+	}
+	liz_clip_hmms_i_wonder =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/i_wonder.vsnd"
+	}
+	liz_clip_hmms_interesting01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/interesting01.vsnd"
+	}
+	liz_clip_hmms_interesting02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/interesting02.vsnd"
+	}
+	liz_clip_hmms_odd01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/odd01.vsnd"
+	}
+	liz_clip_hmms_odd02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/odd02.vsnd"
+	}
+	liz_clip_hmms_oh01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/oh01.vsnd"
+	}
+	liz_clip_hmms_oh02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/oh02.vsnd"
+	}
+	liz_clip_hmms_oh03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/oh03.vsnd"
+	}
+	liz_clip_hmms_oh04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/oh04.vsnd"
+	}
+	liz_clip_hmms_oh05 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/oh05.vsnd"
+	}
+	liz_clip_hmms_strange =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/hmms/strange.vsnd"
+	}
+	liz_clip_look_at_this_booker_here =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/booker_here.vsnd"
+	}
+	liz_clip_look_at_this_come_look_at_these =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/come_look_at_these.vsnd"
+	}
+	liz_clip_look_at_this_huh_whats_this01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/huh_whats_this01.vsnd"
+	}
+	liz_clip_look_at_this_huh_whats_this02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/huh_whats_this02.vsnd"
+	}
+	liz_clip_look_at_this_i_think_you_should_see_this =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/i_think_you_should_see_this.vsnd"
+	}
+	liz_clip_look_at_this_look_at_that01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that01.vsnd"
+	}
+	liz_clip_look_at_this_look_at_that02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that02.vsnd"
+	}
+	liz_clip_look_at_this_look_at_that03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that03.vsnd"
+	}
+	liz_clip_look_at_this_look_at_that04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_that04.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this01.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this02.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this03.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this04.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this05 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this05.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this06 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this06.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this07 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this07.vsnd"
+	}
+	liz_clip_look_at_this_look_at_this08 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_at_this08.vsnd"
+	}
+	liz_clip_look_at_this_look_mr_dewitt01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/look_mr_dewitt01.vsnd"
+	}
+	liz_clip_look_at_this_oh_whats_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/oh_whats_that.vsnd"
+	}
+	liz_clip_look_at_this_over_here01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/over_here01.vsnd"
+	}
+	liz_clip_look_at_this_over_here02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/over_here02.vsnd"
+	}
+	liz_clip_look_at_this_see_this01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/see_this01.vsnd"
+	}
+	liz_clip_look_at_this_this_looks_important01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/this_looks_important01.vsnd"
+	}
+	liz_clip_look_at_this_this_looks_important02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/this_looks_important02.vsnd"
+	}
+	liz_clip_look_at_this_what_is_this01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/what_is_this01.vsnd"
+	}
+	liz_clip_look_at_this_what_is_this02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/what_is_this02.vsnd"
+	}
+	liz_clip_look_at_this_whats_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/look_at_this/whats_that.vsnd"
+	}
+	liz_clip_smelly_oh_whats_that_smell =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/oh_whats_that_smell.vsnd"
+	}
+	liz_clip_smelly_smelly01 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/smelly01.vsnd"
+	}
+	liz_clip_smelly_smelly02 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/smelly02.vsnd"
+	}
+	liz_clip_smelly_smelly03 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/smelly03.vsnd"
+	}
+	liz_clip_smelly_smelly04 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/smelly04.vsnd"
+	}
+	liz_clip_smelly_smelly05 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/smelly/smelly05.vsnd"
+	}
+	liz_clip_toss_catch =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/catch.vsnd"
+	}
+	liz_clip_toss_catch2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/catch2.vsnd"
+	}
+	liz_clip_toss_catch_booker =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/catch_booker.vsnd"
+	}
+	liz_clip_toss_catch_booker2 =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/catch_booker2.vsnd"
+	}
+	liz_clip_toss_here =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/here.vsnd"
+	}
+	liz_clip_toss_here_you_go =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/here_you_go.vsnd"
+	}
+	liz_clip_toss_take_it =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/toss/take_it.vsnd"
 	}
 
 }

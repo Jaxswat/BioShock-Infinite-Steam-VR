@@ -1,0 +1,163 @@
+# Look at this!
+
+[booker_here]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "yelling"
+
+[come_look_at_these]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "assertive"
+
+[huh_whats_this01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+[huh_whats_this02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[i_think_you_should_see_this]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[look_at_that01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[look_at_that02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[look_at_that03]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "neutral"
+
+[look_at_that04]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "neutral"
+
+[look_at_this01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"
+
+[look_at_this02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[look_at_this03]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongDislike"
+intensity = "somber"
+
+[look_at_this04]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[look_at_this05]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[look_at_this06]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[look_at_this07]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "assertive"
+
+[look_at_this08]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[look_mr_dewitt01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "yelling"
+
+[oh_whats_that]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[over_here01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[over_here02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[see_this01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[this_looks_important01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[this_looks_important02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "neutral"
+
+[what_is_this01]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"
+
+[what_is_this02]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[whats_that]
+speech_tag = "lookAtThis"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "somber"

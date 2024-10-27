@@ -1,10 +1,12 @@
 import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
-import {LizSpeechClip} from "../speechConfig";
+import {LizSpeechClip} from "../lizSpeech";
 import Timer from "../../../utils/Timer";
+import {PoseParamAnimation, PoseParamAnimationComponent, speechClipToAnimation} from "./PoseParamAnimationComponent";
 
 export default class SpeechComponent extends LizComponent {
     private speakerEntity: CBaseEntity;
+    private mouthPoseAnimComponent: PoseParamAnimationComponent;
 
     private speechQueue: LizSpeechClip[];
     private currentClip: LizSpeechClip | null;
@@ -23,6 +25,7 @@ export default class SpeechComponent extends LizComponent {
         this.speakerEntity.SetParent(this.liz.getEntity(), "mouth");
         this.speakerEntity.SetLocalOrigin( Vector(0, 0, 0) );
         this.speakerEntity.SetLocalAngles( 0, 0, 0 );
+        this.mouthPoseAnimComponent = new PoseParamAnimationComponent(this.liz, "face_speak", null);
 
         this.speechQueue = [];
         this.currentClip = null;
@@ -39,6 +42,10 @@ export default class SpeechComponent extends LizComponent {
 
         const clip = this.speechQueue.shift()!;
         this.playClip(clip);
+    }
+
+    public updatePose(delta: number) {
+        this.mouthPoseAnimComponent.updatePose(delta);
     }
 
     /**
@@ -58,6 +65,7 @@ export default class SpeechComponent extends LizComponent {
         this.currentClipDuration = clipDuration;
         this.clipTimer.setWaitSeconds(waitSeconds);
         this.clipTimer.reset();
+        this.mouthPoseAnimComponent.setAnimation(speechClipToAnimation(clip));
     }
 
     /**

@@ -1,0 +1,43 @@
+# Greetings!
+
+[bright_hey]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[bright_hey2]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[hello]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "strongLike"
+intensity = "cheerful"
+
+[hi_there]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[my_name_is_elizabeth]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "neutral"
+intensity = "cheerful"
+
+[regular_hey]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "like"
+intensity = "cheerful"
+
+[soft_hey]
+speech_tag = "greeting"
+speech_type = "speech"
+sentiment = "like"
+intensity = "somber"

@@ -1,0 +1,37 @@
+# Smelly!
+
+[smelly01]
+speech_tag = "smelly"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[smelly02]
+speech_tag = "smelly"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[smelly03]
+speech_tag = "smelly"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[smelly04]
+speech_tag = "smelly"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[smelly05]
+speech_tag = "smelly"
+speech_type = "nonSpeech"
+sentiment = "strongDislike"
+intensity = "assertive"
+
+[oh_whats_that_smell]
+speech_tag = "smelly"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "somber"

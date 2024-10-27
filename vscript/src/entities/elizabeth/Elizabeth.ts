@@ -20,6 +20,8 @@ import ChoreoState from "./states/ChoreoState";
 import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
 import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../../vconsole_tunnel/VTunnel";
 
+require('./baked/lizSpeechClips'); // Register all liz speech clips
+
 export default class Elizabeth extends BioshockEntity implements VTunnelSerializable {
 	private animController: LizAnimationController;
 

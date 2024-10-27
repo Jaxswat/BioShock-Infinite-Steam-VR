@@ -1,6 +1,6 @@
 import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
-import {getClipByName, getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../speechConfig";
+import {getClipByName, getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../lizSpeech";
 import {sqrMagnitude} from "../../../utils/Math";
 import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
 import {LizStateManager} from "./LizStateManager";
