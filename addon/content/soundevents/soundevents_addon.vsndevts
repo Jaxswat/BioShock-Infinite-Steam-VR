@@ -72,6 +72,17 @@
 		volume_falloff_max = 800.0
 		vsnd_files = "sounds/after_youve_gone.vsnd"
 	}
+	solace =
+	{
+		type = "destinations.simple_vr"
+		volume = 0.6
+		pitch = 1.0
+		delay = 0.0
+		use_hrtf = 0.0
+		volume_falloff_min = 100.0
+		volume_falloff_max = 800.0
+		vsnd_files = "sounds/solace.vsnd"
+	}
 	bship_bay_kinetoscope_music =
 	{
 		type = "destinations.simple_vr"
