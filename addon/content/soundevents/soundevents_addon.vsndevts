@@ -61,7 +61,7 @@
 		volume_falloff_max = 1400.0
 		vsnd_files = "sounds/girls_just_wanna_have_fun.vsnd"
 	}
-	after_youve_gone =
+	after_youve_gone_solace =
 	{
 		type = "destinations.simple_vr"
 		volume = 0.6
@@ -70,18 +70,7 @@
 		use_hrtf = 0.0
 		volume_falloff_min = 100.0
 		volume_falloff_max = 800.0
-		vsnd_files = "sounds/after_youve_gone.vsnd"
-	}
-	solace =
-	{
-		type = "destinations.simple_vr"
-		volume = 0.6
-		pitch = 1.0
-		delay = 0.0
-		use_hrtf = 0.0
-		volume_falloff_min = 100.0
-		volume_falloff_max = 800.0
-		vsnd_files = "sounds/solace.vsnd"
+		vsnd_files = "sounds/after_youve_gone_solace.vsnd"
 	}
 	bship_bay_kinetoscope_music =
 	{

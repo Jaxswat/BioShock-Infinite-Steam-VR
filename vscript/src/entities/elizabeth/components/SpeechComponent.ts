@@ -2,7 +2,7 @@ import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LizSpeechClip} from "../lizSpeech";
 import Timer from "../../../utils/Timer";
-import {PoseParamAnimation, PoseParamAnimationComponent, speechClipToAnimation} from "./PoseParamAnimationComponent";
+import {PoseParamAnimationComponent, speechClipToAnimation} from "./PoseParamAnimationComponent";
 
 export default class SpeechComponent extends LizComponent {
     private speakerEntity: CBaseEntity;

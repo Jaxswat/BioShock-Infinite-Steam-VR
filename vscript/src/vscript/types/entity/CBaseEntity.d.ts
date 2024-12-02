@@ -96,6 +96,8 @@ declare abstract class CBaseEntity {
 
 	TakeDamage(damageInfo: CTakeDamageInfo): number;
 
+	FireOutput(outputName: string, activator: EHandle, caller: EHandle, args: object, delay: number): void;
+
 	GetEntityHandle(): EHandle;
 	GetEntityIndex(): number;
 }
