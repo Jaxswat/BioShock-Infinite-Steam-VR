@@ -7,12 +7,12 @@ import {regigerDefaultVTunnelMessageHandlers} from "../vconsole_tunnel/MessageHa
 
 export abstract class BioshockMap implements VTunnelSerializable {
 	protected skylines: Skyline[];
-	protected players: BioshockPlayer[];
+	protected players: Map<number, BioshockPlayer>;
 	private playerCheckTimer: Timer;
 
 	public constructor() {
 		this.skylines = [];
-		this.players = [];
+		this.players = new Map();
 		this.playerCheckTimer = new Timer(1);
 
 		ListenToGameEvent(DefaultEvents.PlayerConnect, this.onPlayerConnect, this);
@@ -44,15 +44,26 @@ export abstract class BioshockMap implements VTunnelSerializable {
 
 			const allPlayerEntities = Entities.FindAllByClassname("player") as CBasePlayer[];
 			for (let entity of allPlayerEntities) {
-				const player = this.players.find(player => !player.hasConnected() && player.getUserID() === entity.GetUserID());
-				if (player) {
+				const userID = entity.GetUserID();
+				const player = this.players.get(userID);
+				if (player && !player.hasConnected()) {
+					player.setEntity(entity);
+					player.onConnect();
+				} else if (!player) {
+					// Can't seem to get player_connect to work for the room's host.
+					const initialPlayerEvent = {
+						userid: userID,
+						name: "" + userID,
+					} as unknown as PlayerConnectEvent;
+					const player = new BioshockPlayer(initialPlayerEvent);
+					this.players.set(player.getUserID(), player);
 					player.setEntity(entity);
 					player.onConnect();
 				}
 			}
 		}
 
-		for (let player of this.players) {
+		for (let [_, player] of this.players) {
 			if (player.hasConnected()) {
 				player.update(delta);
 			}
@@ -66,17 +77,18 @@ export abstract class BioshockMap implements VTunnelSerializable {
 	 */
 	public onPlayerConnect(event: PlayerConnectEvent) {
 		const player = new BioshockPlayer(event);
-		this.players.push(player);
+		this.players.set(player.getUserID(), player);
 	}
 
 	/**
 	 * Called when a player disconnects
 	 */
 	public onPlayerDisconnect(event: PlayerDisconnectEvent) {
-		const index = this.players.findIndex(player => player.getConnectEvent().networkid === event.networkid);
-		this.players[index].onDisconnect();
-		if (index !== -1) {
-			this.players.splice(index, 1);
+		const userID = event.userid;
+		const player = this.players.get(userID);
+		if (player) {
+			player.onDisconnect();
+			this.players.delete(userID);
 		}
 	}
 

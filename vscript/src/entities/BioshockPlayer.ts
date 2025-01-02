@@ -63,14 +63,14 @@ export default class BioshockPlayer extends BioshockEntity implements VTunnelSer
      * Called when the player is added to the map and ready to use
      */
     public onConnect() {
-        print("Bioshock player connected", this.connectEvent.name, this.steamID, this.userID);
+        print("Bioshock player connected", this.name, this.steamID, this.userID);
     }
 
     /**
      * Called when the player is removed from the map
      */
     public onDisconnect() {
-        print("Bioshock player disconnected", this.connectEvent.name, this.steamID, this.userID);
+        print("Bioshock player disconnected", this.name, this.steamID, this.userID);
     }
 
     private lastPress = false;
