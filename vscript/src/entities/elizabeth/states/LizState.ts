@@ -1,5 +1,5 @@
 import Elizabeth from "../Elizabeth";
-import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
+import { LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
 
 export enum LizStateName {
     Idle = 'idle',
@@ -60,9 +60,9 @@ export abstract class LizState {
         return false;
     }
 
-    public onPlayerReady(event: PlayerReadyEvent): void {
+    public onPlayerReady(event: LizPlayerReadyEvent): void {
     }
 
-    public onObjectCaught(event: ObjectCaughtEvent): void {
+    public onObjectCaught(event: LizObjectCaughtEvent): void {
     }
 }

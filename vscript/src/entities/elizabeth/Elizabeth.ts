@@ -1,6 +1,5 @@
 import {LizAnimationController} from "./animationController";
 import {LizCuriousityUtils} from "./lizCuriousity";
-import {LizEvent, LizEventManager, ObjectCaughtEvent, PlayerReadyEvent} from "./lizEvents";
 import IdleState from "./states/IdleState";
 import ThrowingState from "./states/ThrowingState";
 import {LizStateName} from "./states/LizState";
@@ -19,6 +18,8 @@ import FollowingState from "./states/FollowingState";
 import ChoreoState from "./states/ChoreoState";
 import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
 import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../../vconsole_tunnel/VTunnel";
+import BioshockEventManager from "../../events/BioshockEventManager";
+import { BioshockEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../events/BioshockEvents";
 
 require('./baked/lizSpeechClips'); // Register all liz speech clips
 
@@ -75,8 +76,8 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 		this.stateManager.addState(new FollowingState(this));
 		this.stateManager.addState(new ChoreoState(this));
 
-		LizEventManager.on(LizEvent.PlayerReady, this.onPlayerReady, this);
-		LizEventManager.on(LizEvent.ObjectCaught, this.onObjectCaught, this);
+		BioshockEventManager.on(BioshockEvent.LizPlayerReady, this.onPlayerReady, this);
+		BioshockEventManager.on(BioshockEvent.LizObjectCaught, this.onObjectCaught, this);
 
 		print("Elizabeth spawned");
 	}
@@ -120,11 +121,6 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 		this.components.updatePose(delta);
 	}
 
-	private getPlayerByUserID(userID: number): CBasePlayer | null {
-		const allPlayerEntities = Entities.FindAllByClassname("player") as CBasePlayer[];
-		return allPlayerEntities.find(p => p.GetUserID() === userID) || null;
-	}
-
 	/**
 	 * Called when liz gets teleported back to the player
 	 */
@@ -132,23 +128,11 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 		this.stateManager.setState(LizStateName.Idle);
 	}
 
-	private onPlayerReady(event: PlayerReadyEvent) {
-		const player = this.getPlayerByUserID(event.userID);
-		if (!player) {
-			return;
-		}
-
-		event.player = player;
+	private onPlayerReady(event: LizPlayerReadyEvent) {
 		this.stateManager.onPlayerReady(event);
 	}
 
-	private onObjectCaught(event: ObjectCaughtEvent) {
-		const player = this.getPlayerByUserID(event.userID);
-		if (!player) {
-			return;
-		}
-
-		event.player = player;
+	private onObjectCaught(event: LizObjectCaughtEvent) {
 		this.stateManager.onObjectCaught(event);
 	}
 

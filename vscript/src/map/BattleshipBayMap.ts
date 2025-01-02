@@ -1,6 +1,7 @@
 import {BioshockMap} from "./BioshockMap";
 import {Skyline} from "../entities/skyline/skyline";
 require('../navigation/baked/battleship_bay_nav'); // Load nav mesh
+require('../events/BioshockEventSerializers'); // Register Bioshock events
 
 export default class BattleshipBayMap extends BioshockMap {
     private readonly skylineOrigin = Vector(6450.64, -3950.89, 1500.97);

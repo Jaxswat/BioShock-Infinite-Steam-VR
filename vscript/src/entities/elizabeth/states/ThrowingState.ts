@@ -2,7 +2,7 @@ import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import {getClipByName, getSpeechClip, LizSpeechSentiment, LizSpeechTag} from "../lizSpeech";
 import {sqrMagnitude} from "../../../utils/Math";
-import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
+import { LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
 import {LizStateManager} from "./LizStateManager";
 import Timer from "../../../utils/Timer";
 
@@ -105,7 +105,7 @@ class ThrowWaitingState extends ThrowBaseState {
         this.setThrowObject(throwObject);
     }
 
-    public onPlayerReady(event: PlayerReadyEvent) {
+    public onPlayerReady(event: LizPlayerReadyEvent) {
         if (event.userID !== this.liz.getPlayer().GetUserID()) {
             return;
         }
@@ -245,7 +245,7 @@ class ThrowCatchingState extends ThrowBaseState {
         }
     }
 
-    public onObjectCaught(event: ObjectCaughtEvent) {
+    public onObjectCaught(event: LizObjectCaughtEvent) {
         const entID = event.entID;
         if (entID === -1 || entID !== this.getThrowObjectEntID()) {
             return;
@@ -255,7 +255,7 @@ class ThrowCatchingState extends ThrowBaseState {
             const clip = getClipByName("liz_clip_chirps_well_the_mans_got_an_ego");
             this.liz.getSpeech().queueClip(clip!);
         } else {
-            EmitSoundOnClient("coin_catch", event.player);
+            EmitSoundOnClient("coin_catch", event.player!);
 
             const clip = getSpeechClip(LizSpeechTag.CatchMoney, null, null);
             this.liz.getSpeech().queueClip(clip!);
@@ -374,11 +374,11 @@ export default class ThrowingState extends LizState {
         this.throwCanceled = true;
     }
 
-    public onPlayerReady(event: PlayerReadyEvent) {
+    public onPlayerReady(event: LizPlayerReadyEvent) {
         this.throwStateManager.onPlayerReady(event);
     }
 
-    public onObjectCaught(event: ObjectCaughtEvent) {
+    public onObjectCaught(event: LizObjectCaughtEvent) {
         this.throwStateManager.onObjectCaught(event);
     }
 

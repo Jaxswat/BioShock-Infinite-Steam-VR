@@ -1,8 +1,9 @@
 import {PlayerConnectEvent} from "../utils/DefaultEvents";
 import Timer from "../utils/Timer";
-import {LizEvent, LizEventManager} from "./elizabeth/lizEvents";
 import BioshockEntity from "./BioshockEntity";
 import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../vconsole_tunnel/VTunnel";
+import BioshockEventManager from "../events/BioshockEventManager";
+import { BioshockEvent, LizPlayerReadyEvent } from "../events/BioshockEvents";
 
 export default class BioshockPlayer extends BioshockEntity implements VTunnelSerializable {
     private connectEvent: PlayerConnectEvent;
@@ -84,7 +85,7 @@ export default class BioshockPlayer extends BioshockEntity implements VTunnelSer
         if (currentPress !== this.lastPress && currentPress) {
             this.lizReadyClicks++;
             if (this.lizReadyClicks == 2) {
-                LizEventManager.emit(LizEvent.PlayerReady, { userID: this.getUserID() });
+                BioshockEventManager.emit<LizPlayerReadyEvent>(BioshockEvent.LizPlayerReady, { userID: this.getUserID() });
                 this.lizReadyTimer.reset();
                 this.lizReadyClicks = 0;
             }

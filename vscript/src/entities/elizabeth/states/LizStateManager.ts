@@ -1,5 +1,5 @@
 import {LizState} from "./LizState";
-import {ObjectCaughtEvent, PlayerReadyEvent} from "../lizEvents";
+import { LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
 
 export class LizStateManager {
     private managerName: string;
@@ -59,7 +59,7 @@ export class LizStateManager {
         this.currentState.update(delta);
     }
 
-    public onPlayerReady(event: PlayerReadyEvent) {
+    public onPlayerReady(event: LizPlayerReadyEvent) {
         if (this.currentState === null) {
             return;
         }
@@ -67,7 +67,7 @@ export class LizStateManager {
         this.currentState.onPlayerReady(event);
     }
 
-    public onObjectCaught(event: ObjectCaughtEvent) {
+    public onObjectCaught(event: LizObjectCaughtEvent) {
         if (this.currentState === null) {
             return;
         }

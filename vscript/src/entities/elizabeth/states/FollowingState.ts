@@ -1,6 +1,6 @@
 import {LizStateName, LizState} from "./LizState";
 import Elizabeth from "../Elizabeth";
-import {PlayerReadyEvent} from "../lizEvents";
+import { LizPlayerReadyEvent } from "../../../events/BioshockEvents";
 import {getSpeechClip} from "../lizSpeech";
 
 export default class FollowingState extends LizState {
@@ -40,7 +40,7 @@ export default class FollowingState extends LizState {
         }
     }
 
-    public onPlayerReady(event: PlayerReadyEvent) {
+    public onPlayerReady(event: LizPlayerReadyEvent) {
         this.goToPlayer();
     }
 

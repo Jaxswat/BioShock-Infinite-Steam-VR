@@ -1,4 +1,5 @@
-import {LizEvent, LizEventManager} from "../entities/elizabeth/lizEvents";
+import { BioshockEvent, LizObjectCaughtEvent } from "../events/BioshockEvents";
+import BioshockEventManager from "../events/BioshockEventManager";
 
 export const __BundleAsGameScript = null;
 
@@ -10,5 +11,5 @@ export function OnPickedUp(handle: EHandle, hand: CPropVRHand): void {
 	pickedUp = true;
 
 	const entID = thisEntity.Attribute_GetIntValue("liz_ent_id", -1);
-	LizEventManager.emit(LizEvent.ObjectCaught, { entID, userID: hand.GetPlayer().GetUserID() });
+	BioshockEventManager.emit<LizObjectCaughtEvent>(BioshockEvent.LizObjectCaught, { entID, userID: hand.GetPlayer().GetUserID() });				
 }
