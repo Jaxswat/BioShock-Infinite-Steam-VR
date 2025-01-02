@@ -1,17 +1,8 @@
 import TickDelta from "../utils/TickDelta";
 import Timer from "../utils/Timer";
 import BioshockEntity from "../entities/BioshockEntity";
-
-interface FairGameStartEvent {
-    gameID: number;
-    userID: number;
-}
-
-interface FairGameTargetDestroyedEvent {
-    gameID: number;
-    entID: number;
-    userID: number;
-}
+import BioshockEventManager from "../events/BioshockEventManager";
+import { BioshockEvent, FairGameTargetDestroyedEvent } from "../events/BioshockEvents";
 
 /**
  * Scoreboard is composed of two decagons, one for left/right digits.
@@ -193,7 +184,7 @@ class SkylineVoxGame {
         this.targets = [];
         this.targetSpawnTimer = new Timer(1);
 
-        ListenToGameEvent("fair_game_target_destroyed", this.onTargetDestroyed, this);
+        BioshockEventManager.on(BioshockEvent.FairGameTargetDestroyed, this.onTargetDestroyed, this);
     }
 
     private reset(): void {
