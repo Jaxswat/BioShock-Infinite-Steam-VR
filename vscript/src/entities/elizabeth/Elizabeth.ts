@@ -15,11 +15,12 @@ import FollowingState from "./states/FollowingState";
 import ChoreoState from "./states/ChoreoState";
 import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
 import BioshockEventManager from "../../events/BioshockEventManager";
-import { BioshockEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../events/BioshockEvents";
+import { BioshockEvent, LizGunPointEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../events/BioshockEvents";
+import LizEventHandler from "./lizEvents";
 
 require('./baked/lizSpeechClips'); // Register all liz speech clips
 
-export default class Elizabeth extends BioshockEntity {
+export default class Elizabeth extends BioshockEntity implements LizEventHandler {
 	private animController: LizAnimationController;
 
 	private choreoPoints: LizChoreoPoint[];
@@ -74,6 +75,7 @@ export default class Elizabeth extends BioshockEntity {
 
 		BioshockEventManager.on(BioshockEvent.LizPlayerReady, this.onPlayerReady, this);
 		BioshockEventManager.on(BioshockEvent.LizObjectCaught, this.onObjectCaught, this);
+		BioshockEventManager.on(BioshockEvent.LizGunPoint, this.onGunPoint, this);
 
 		print("Elizabeth spawned");
 	}
@@ -128,6 +130,10 @@ export default class Elizabeth extends BioshockEntity {
 
 	private onObjectCaught(event: LizObjectCaughtEvent) {
 		this.stateManager.onObjectCaught(event);
+	}
+
+	private onGunPoint(event: LizGunPointEvent) {
+		this.stateManager.onGunPoint(event);
 	}
 
 	/**

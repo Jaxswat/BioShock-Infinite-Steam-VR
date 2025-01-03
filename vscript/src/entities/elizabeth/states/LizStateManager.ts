@@ -1,77 +1,86 @@
 import {LizState} from "./LizState";
-import { LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
+import { LizGunPointEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
+import LizEventHandler from "../lizEvents";
 
-export class LizStateManager {
-    private managerName: string;
-    private states: { [key: string]: LizState };
-    private currentState: LizState | null;
+export class LizStateManager implements LizEventHandler {
+	private managerName: string;
+	private states: { [key: string]: LizState };
+	private currentState: LizState | null;
 
-    public constructor(managerName?: string) {
-        this.managerName = managerName || "Unknown";
-        this.states = {};
-        this.currentState = null;
-    }
+	public constructor(managerName?: string) {
+		this.managerName = managerName || "Unknown";
+		this.states = {};
+		this.currentState = null;
+	}
 
-    public addState(state: LizState) {
-        this.states[state.getStateName()] = state;
-    }
+	public addState(state: LizState) {
+		this.states[state.getStateName()] = state;
+	}
 
-    public getState(stateName: string): LizState {
-        return this.states[stateName];
-    }
+	public getState(stateName: string): LizState {
+		return this.states[stateName];
+	}
 
-    public isCurrentState(stateName: string): boolean {
-        return this.currentState !== null && this.currentState.getStateName() === stateName;
-    }
+	public isCurrentState(stateName: string): boolean {
+		return this.currentState !== null && this.currentState.getStateName() === stateName;
+	}
 
-    public getCurrentState(): LizState | null {
-        return this.currentState;
-    }
+	public getCurrentState(): LizState | null {
+		return this.currentState;
+	}
 
-    public begin(initialStateName: string) {
-        this.setState(initialStateName);
-    }
+	public begin(initialStateName: string) {
+		this.setState(initialStateName);
+	}
 
-    public end() {
-        if (this.currentState !== null) {
-            this.currentState.exit();
-        }
+	public end() {
+		if (this.currentState !== null) {
+			this.currentState.exit();
+		}
 
-        this.currentState = null;
-    }
+		this.currentState = null;
+	}
 
-    public setState(stateName: string) {
-        if (this.currentState !== null && this.currentState.getStateName() !== stateName) {
-            this.currentState.exit();
-            // print("[STATE MANAGER / " + this.managerName + "] EXITING STATE: " + this.currentState.getStateName());
-        }
+	public setState(stateName: string) {
+		if (this.currentState !== null && this.currentState.getStateName() !== stateName) {
+			this.currentState.exit();
+			// print("[STATE MANAGER / " + this.managerName + "] EXITING STATE: " + this.currentState.getStateName());
+		}
 
-        this.currentState = this.getState(stateName);
-        print("[STATE MANAGER / " + this.managerName + "] ENTERING STATE: " + this.currentState.getStateName());
-        this.currentState.enter();
-    }
+		this.currentState = this.getState(stateName);
+		print("[STATE MANAGER / " + this.managerName + "] ENTERING STATE: " + this.currentState.getStateName());
+		this.currentState.enter();
+	}
 
-    public update(delta: number) {
-        if (this.currentState === null) {
-            return;
-        }
+	public update(delta: number) {
+		if (this.currentState === null) {
+			return;
+		}
 
-        this.currentState.update(delta);
-    }
+		this.currentState.update(delta);
+	}
 
-    public onPlayerReady(event: LizPlayerReadyEvent) {
-        if (this.currentState === null) {
-            return;
-        }
+	public onPlayerReady(event: LizPlayerReadyEvent) {
+		if (this.currentState === null) {
+			return;
+		}
 
-        this.currentState.onPlayerReady(event);
-    }
+		this.currentState.onPlayerReady(event);
+	}
 
-    public onObjectCaught(event: LizObjectCaughtEvent) {
-        if (this.currentState === null) {
-            return;
-        }
+	public onObjectCaught(event: LizObjectCaughtEvent) {
+		if (this.currentState === null) {
+			return;
+		}
 
-        this.currentState.onObjectCaught(event);
-    }
+		this.currentState.onObjectCaught(event);
+	}
+
+	public onGunPoint(event: LizGunPointEvent) {
+		if (this.currentState === null) {
+			return;
+		}
+
+		this.currentState.onGunPoint(event);
+	}
 }
