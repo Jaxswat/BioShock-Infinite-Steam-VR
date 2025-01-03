@@ -7,14 +7,14 @@ export default class IdleState extends LizState {
     private stateSwitchTimer: Timer;
     private lookTimer: Timer;
     private greetingTimer: Timer;
-    private playedGretting: boolean;
+    private playedGreeting: boolean;
 
     public constructor(liz: Elizabeth) {
         super(LizStateName.Idle, liz);
         this.stateSwitchTimer = new Timer(5);
         this.lookTimer = new Timer(0.3);
         this.greetingTimer = new Timer(2);
-        this.playedGretting = false;
+        this.playedGreeting = false;
     }
 
     public enter(): void {
@@ -39,11 +39,11 @@ export default class IdleState extends LizState {
             this.liz.getLookAt().setTarget(this.liz.getPlayer().GetHMDAvatar()!.GetAbsOrigin());
         }
 
-        if (!this.playedGretting) {
+        if (!this.playedGreeting) {
             this.greetingTimer.tick(delta);
 
             if (this.greetingTimer.isDone()) {
-                this.playedGretting = true;
+                this.playedGreeting = true;
                 const clip = getSpeechClip(LizSpeechTag.Greeting, null, null);
                 this.liz.getSpeech().queueClip(clip!);
             }
