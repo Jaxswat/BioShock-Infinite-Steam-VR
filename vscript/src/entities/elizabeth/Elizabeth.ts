@@ -1,5 +1,4 @@
 import {LizAnimationController} from "./animationController";
-import {LizCuriousityUtils} from "./lizCuriousity";
 import IdleState from "./states/IdleState";
 import ThrowingState from "./states/ThrowingState";
 import {LizStateName} from "./states/LizState";
@@ -10,20 +9,17 @@ import FloorSnapComponent from "./components/FloorSnapComponent";
 import SpeechComponent from "./components/SpeechComponent";
 import BioshockEntity from "../BioshockEntity";
 import AbandonComponent from "./components/AbandonComponent";
-import {LineTrace} from "../../utils/Trace";
 import PlayerLookingComponent from "./components/PlayerLookingComponent";
-import {BioshockEntityComponentManager} from "../BioshockEntityComponent";
 import MoveComponent from "./components/MoveComponent";
 import FollowingState from "./states/FollowingState";
 import ChoreoState from "./states/ChoreoState";
 import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
-import {VTunnel, VTunnelMessage, VTunnelSerializable} from "../../vconsole_tunnel/VTunnel";
 import BioshockEventManager from "../../events/BioshockEventManager";
 import { BioshockEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../events/BioshockEvents";
 
 require('./baked/lizSpeechClips'); // Register all liz speech clips
 
-export default class Elizabeth extends BioshockEntity implements VTunnelSerializable {
+export default class Elizabeth extends BioshockEntity {
 	private animController: LizAnimationController;
 
 	private choreoPoints: LizChoreoPoint[];
@@ -113,8 +109,6 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 				this.stateManager.setState(LizStateName.Idle);
 			}
 		}
-
-		// VTunnel.send(this.serialize());
 	}
 
 	public updatePose(delta: number) {
@@ -198,13 +192,5 @@ export default class Elizabeth extends BioshockEntity implements VTunnelSerializ
 
 	public getChoreoPoints(): LizChoreoPoint[] {
 		return this.choreoPoints;
-	}
-
-	public serialize(): VTunnelMessage {
-		const msg = new VTunnelMessage(VTunnelMessage.NO_ID, "liz_state");
-		msg.writeVector(this.getPosition());
-		msg.writeVector(this.entity.GetAnglesAsVector());
-		msg.writeString(this.stateManager.getCurrentState()?.getStateName() || "");
-		return msg;
 	}
 }
