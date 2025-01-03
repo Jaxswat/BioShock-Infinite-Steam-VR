@@ -1,7 +1,7 @@
 import {LizAnimationController} from "./animationController";
 import IdleState from "./states/IdleState";
 import ThrowingState from "./states/ThrowingState";
-import {LizStateName} from "./states/LizState";
+import {LizState, LizStateName} from "./states/LizState";
 import {LizStateManager} from "./states/LizStateManager";
 import LookAtComponent from "./components/LookAtComponent";
 import EmotionComponent from "./components/EmotionComponent";
@@ -17,6 +17,7 @@ import {LizChoreoPoint, LizChoreoUtils} from "./LizChoreo";
 import BioshockEventManager from "../../events/BioshockEventManager";
 import { BioshockEvent, LizGunPointEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../events/BioshockEvents";
 import LizEventHandler from "./lizEvents";
+import AvoidGunState from "./states/AvoidGunState";
 
 require('./baked/lizSpeechClips'); // Register all liz speech clips
 
@@ -72,6 +73,7 @@ export default class Elizabeth extends BioshockEntity implements LizEventHandler
 		this.stateManager.addState(new ThrowingState(this));
 		this.stateManager.addState(new FollowingState(this));
 		this.stateManager.addState(new ChoreoState(this));
+		this.stateManager.addState(new AvoidGunState(this));
 
 		BioshockEventManager.on(BioshockEvent.LizPlayerReady, this.onPlayerReady, this);
 		BioshockEventManager.on(BioshockEvent.LizObjectCaught, this.onObjectCaught, this);
@@ -124,16 +126,20 @@ export default class Elizabeth extends BioshockEntity implements LizEventHandler
 		this.stateManager.setState(LizStateName.Idle);
 	}
 
-	private onPlayerReady(event: LizPlayerReadyEvent) {
+	public onPlayerReady(event: LizPlayerReadyEvent) {
 		this.stateManager.onPlayerReady(event);
 	}
 
-	private onObjectCaught(event: LizObjectCaughtEvent) {
+	public onObjectCaught(event: LizObjectCaughtEvent) {
 		this.stateManager.onObjectCaught(event);
 	}
 
-	private onGunPoint(event: LizGunPointEvent) {
-		this.stateManager.onGunPoint(event);
+	public onGunPoint(event: LizGunPointEvent) {
+		if (this.stateManager.isCurrentState(LizStateName.AvoidGun)) {
+			return;
+		}
+
+		this.stateManager.setState(LizStateName.AvoidGun);
 	}
 
 	/**

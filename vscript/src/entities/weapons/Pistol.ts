@@ -1,6 +1,9 @@
 import Tool from "../Tool";
 import TickDelta from "../../utils/TickDelta";
-import {LineTrace} from "../../utils/Trace";
+import {LineTrace, TraceMask, TraceResult} from "../../utils/Trace";
+import Timer from "../../utils/Timer";
+import BioshockEventManager from "../../events/BioshockEventManager";
+import { BioshockEvent, LizGunPointEvent } from "../../events/BioshockEvents";
 
 /**
  * Pistol Weapon
@@ -25,160 +28,187 @@ import {LineTrace} from "../../utils/Trace";
  * Also, the code for this is ugly. Ugly code is a sign of great struggle with SteamVR Home.
  */
 export default class Pistol extends Tool {
-    private isEquipped: boolean = false;
-    private hand: CPropVRHand | null = null;
-    private handID: number = -1;
-    private handAttachment: CBaseEntity | null = null;
-    private modelAttachment: CBaseAnimating | null = null;
-    private player: CBasePlayer | null = null;
+	private isEquipped: boolean = false;
+	private hand: CPropVRHand | null = null;
+	private handID: number = -1;
+	private handAttachment: CBaseEntity | null = null;
+	private modelAttachment: CBaseAnimating | null = null;
+	private player: CBasePlayer | null = null;
+	private muzzleAttachmentID: number = 0;
 
-    private hiddenModel = "models/tools/vr_tool_root.vmdl";
-    private pistolModel = "models/weapons/pistol.vmdl";
+	private hiddenModel = "models/tools/vr_tool_root.vmdl";
+	private pistolModel = "models/weapons/pistol.vmdl";
 
-    private tickDelta: TickDelta;
-    private updateRate = 1 / 30 // 30 tps;
+	private tickDelta: TickDelta;
+	private updateRate = 1 / 30 // 30 tps;
 
-    private triggerDown = false;
-    private fired = false;
-    private disableFiring = true;
-    private disableFiringSeconds = 0.1;
-    private equippedAt = 0;
+	private triggerDown = false;
+	private fired = false;
+	private disableFiring = true;
+	private disableFiringSeconds = 0.1;
+	private equippedAt = 0;
 
-    constructor(entity: CDestinationsPropTool) {
-        super(entity);
-        this.tickDelta = new TickDelta();
-    }
+	private lizPointTimer: Timer;
 
-    public precache(context: any) {
-        PrecacheModel(this.hiddenModel, context);
-        PrecacheModel(this.pistolModel, context);
-    }
+	constructor(entity: CDestinationsPropTool) {
+		super(entity);
+		this.tickDelta = new TickDelta();
+		this.lizPointTimer = new Timer(0.5);
+	}
 
-    public activate() {
-        const entity = this.getEntity();
+	public precache(context: any) {
+		PrecacheModel(this.hiddenModel, context);
+		PrecacheModel(this.pistolModel, context);
+	}
 
-        const spawnInfo: EntitySpawnInfo & any = {
-            model: this.pistolModel,
-            origin: entity.GetAbsOrigin(),
-            angles: entity.GetAngles(),
-            solid: 1,
-            DefaultAnim: "",
-            Collisions: "Solid"
-        }
+	public activate() {
+		const entity = this.getEntity();
 
-        this.modelAttachment = SpawnEntityFromTableSynchronous( "prop_dynamic", spawnInfo ) as CBaseAnimating;
-        this.modelAttachment.SetParent( entity, "" );
+		const spawnInfo: EntitySpawnInfo & any = {
+			model: this.pistolModel,
+			origin: entity.GetAbsOrigin(),
+			angles: entity.GetAngles(),
+			solid: 1,
+			DefaultAnim: "",
+			Collisions: "Solid"
+		}
 
-        this.modelAttachment.SetLocalOrigin( Vector(0, 0, 0) );
-        this.modelAttachment.SetLocalAngles( 0, 0, 0 );
-        this.modelAttachment.ResetSequence("idle");
+		this.modelAttachment = SpawnEntityFromTableSynchronous( "prop_dynamic", spawnInfo ) as CBaseAnimating;
+		this.modelAttachment.SetParent( entity, "" );
 
-        this.modelAttachment.SetThink(this.think.bind(this), this, this.updateRate);
-    }
+		this.modelAttachment.SetLocalOrigin( Vector(0, 0, 0) );
+		this.modelAttachment.SetLocalAngles( 0, 0, 0 );
+		this.modelAttachment.ResetSequence("idle");
 
-    public think(): number {
-        const delta = this.tickDelta.tick();
-        if (this.disableFiring || this.hand === null) {
-            return this.updateRate;
-        }
+		this.modelAttachment.SetThink(this.think.bind(this), this, this.updateRate);
 
-        if (this.triggerDown && !this.fired) {
-            this.fired = true;
-            this.onFire();
-        } else if (!this.triggerDown && this.fired) {
-            this.fired = false;
-        }
+		this.muzzleAttachmentID = this.modelAttachment.ScriptLookupAttachment("muzzle");
 
-        return this.updateRate;
-    }
+		this.lizPointTimer.reset();
+	}
 
-    private onFire() {
-        this.modelAttachment!.ResetSequence("fire");
-        EmitSoundOn("pistol_shot", this.modelAttachment!);
-        this.hand!.FireHapticPulse(2);
+	private runMuzzleTrace(): TraceResult {
+		const muzzlePosition = this.modelAttachment!.GetAttachmentOrigin(this.muzzleAttachmentID);
+		const muzzleForward = this.modelAttachment!.GetAttachmentForward(this.muzzleAttachmentID);
 
-        const muzzleAttachmentID = this.modelAttachment!.ScriptLookupAttachment("muzzle");
-        const muzzlePosition = this.modelAttachment!.GetAttachmentOrigin(muzzleAttachmentID);
-        const muzzleForward = this.modelAttachment!.GetAttachmentForward(muzzleAttachmentID);
-
-        const trace = new LineTrace(muzzlePosition, addVector(muzzlePosition, mulVector(muzzleForward, 3000 as Vector)));
+		const trace = new LineTrace(muzzlePosition, addVector(muzzlePosition, mulVector(muzzleForward, 3000 as Vector)));
         trace.setIgnoreEntity(this.player!);
-        const result = trace.run();
+        return trace.run();
+	}
 
-        const hitEntity = result.getEntityHit();
-        if (hitEntity === null) {
-            return;
+	public think(): number {
+		const delta = this.tickDelta.tick();
+		if (this.disableFiring || this.hand === null) {
+			return this.updateRate;
+		}
+
+		const muzzleTrace = this.runMuzzleTrace();
+
+		if (this.triggerDown && !this.fired) {
+			this.fired = true;
+			this.onFire(muzzleTrace);
+		} else if (!this.triggerDown && this.fired) {
+			this.fired = false;
+		}
+
+		// Entity may have been destroyed by bullet in the above onFire call
+		const hitEntity = muzzleTrace.getEntityHit();
+        if (hitEntity === null || !IsValidEntity(hitEntity)) {
+			return this.updateRate;
         }
+		
+		if (hitEntity.Attribute_GetIntValue("is_liz", 0) === 1) {
+			this.lizPointTimer.tick(delta);
+		} else {
+			this.lizPointTimer.reset();
+		}
 
-        const damageInfo = CreateDamageInfo(this.entity, this.player!, mulVector(muzzleForward, 200 as Vector), result.getHitPosition(), 50, DMG_BULLET);
-        hitEntity.TakeDamage(damageInfo);
-        DestroyDamageInfo(damageInfo);
+		if (this.lizPointTimer.isDone()) {
+			this.lizPointTimer.reset();
+			BioshockEventManager.emit<LizGunPointEvent>(BioshockEvent.LizGunPoint, { userID: this.player!.GetUserID() })
+		}
 
-        DebugDrawLine(trace.getStartPosition(), result.getHitPosition(), 255, 0, 0, false, 0.1);
-    }
+		return this.updateRate;
+	}
 
-    public equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean {
-        this.isEquipped = true;
-        this.hand = hand;
-        this.handID = handID;
-        this.handAttachment = handAttachment;
-        this.player = player;
+	private onFire(muzzleTrace: TraceResult) {
+		this.modelAttachment!.ResetSequence("fire");
+		EmitSoundOn("pistol_shot", this.modelAttachment!);
+		this.hand!.FireHapticPulse(2);
 
-        this.disableFiring = true;
-        this.equippedAt = Time();
+		const hitEntity = muzzleTrace.getEntityHit();
+		if (hitEntity === null) {
+			return;
+		}
 
-        this.modelAttachment!.SetParent(this.handAttachment, "");
-        this.modelAttachment!.SetLocalOrigin(Vector(0, 0, 0));
-        this.modelAttachment!.SetLocalAngles(0, -90, 0);
-        this.modelAttachment!.ResetSequence("fire_idle");
-        EmitSoundOn("skyhook_equip", this.modelAttachment!);
+		const muzzleForward = this.modelAttachment!.GetAttachmentForward(this.muzzleAttachmentID);
+		const damageInfo = CreateDamageInfo(this.entity, this.player!, mulVector(muzzleForward, 200 as Vector), muzzleTrace.getHitPosition(), 50, DMG_BULLET);
+		hitEntity.TakeDamage(damageInfo);
+		DestroyDamageInfo(damageInfo);
+	}
 
-        return true;
-    }
+	public equip(hand: CPropVRHand, handID: number, handAttachment: CBaseEntity, player: CBasePlayer): boolean {
+		this.isEquipped = true;
+		this.hand = hand;
+		this.handID = handID;
+		this.handAttachment = handAttachment;
+		this.player = player;
 
-    public drop(): boolean {
-        this.modelAttachment!.SetParent(this.getEntity(), "");
-        this.modelAttachment!.SetLocalOrigin(Vector(0, 0, 0));
-        this.modelAttachment!.SetLocalAngles(0, 0, 0);
-        this.modelAttachment!.ResetSequence("idle");
+		this.disableFiring = true;
+		this.equippedAt = Time();
 
-        this.isEquipped = false;
-        this.hand = null;
-        this.handID = -1;
-        this.handAttachment = null;
-        this.player = null;
+		this.modelAttachment!.SetParent(this.handAttachment, "");
+		this.modelAttachment!.SetLocalOrigin(Vector(0, 0, 0));
+		this.modelAttachment!.SetLocalAngles(0, -90, 0);
+		this.modelAttachment!.ResetSequence("fire_idle");
+		EmitSoundOn("skyhook_equip", this.modelAttachment!);
 
-        return true;
-    }
+		return true;
+	}
 
-    public handleInput(input: CHandInputData): CHandInputData {
-        const IN_TRIGGER = this.handID === 0 ? IN_USE_HAND0 : IN_USE_HAND1;
-        const IN_GRIP = this.handID === 0 ? IN_GRIP_HAND0 : IN_GRIP_HAND1;
+	public drop(): boolean {
+		this.modelAttachment!.SetParent(this.getEntity(), "");
+		this.modelAttachment!.SetLocalOrigin(Vector(0, 0, 0));
+		this.modelAttachment!.SetLocalAngles(0, 0, 0);
+		this.modelAttachment!.ResetSequence("idle");
 
-        if (input.buttonsReleased.IsBitSet(IN_TRIGGER)) {
-            // Prevent trigger release from dropping the tool
-            input.buttonsReleased.ClearBit(IN_TRIGGER);
-        }
+		this.isEquipped = false;
+		this.hand = null;
+		this.handID = -1;
+		this.handAttachment = null;
+		this.player = null;
 
-        if (input.buttonsReleased.IsBitSet(IN_GRIP)) {
-            input.buttonsReleased.ClearBit(IN_GRIP);
+		return true;
+	}
 
-            // Drop the tool when grip is pressed
-            this.getEntity().ForceDropTool();
-        }
+	public handleInput(input: CHandInputData): CHandInputData {
+		const IN_TRIGGER = this.handID === 0 ? IN_USE_HAND0 : IN_USE_HAND1;
+		const IN_GRIP = this.handID === 0 ? IN_GRIP_HAND0 : IN_GRIP_HAND1;
 
-        if (this.disableFiring && input.triggerValue == 0 && (Time() - this.equippedAt) > this.disableFiringSeconds) {
-            this.disableFiring = false;
-        }
+		if (input.buttonsReleased.IsBitSet(IN_TRIGGER)) {
+			// Prevent trigger release from dropping the tool
+			input.buttonsReleased.ClearBit(IN_TRIGGER);
+		}
 
-        let triggerPose = input.triggerValue * 0.95; // trigger throw
-        this.triggerDown = input.triggerValue === 1.0;
-        if (this.triggerDown) {
-            triggerPose = 1.0; // trigger break
-        }
+		if (input.buttonsReleased.IsBitSet(IN_GRIP)) {
+			input.buttonsReleased.ClearBit(IN_GRIP);
 
-        this.modelAttachment!.SetPoseParameter("trigger", triggerPose);
+			// Drop the tool when grip is pressed
+			this.getEntity().ForceDropTool();
+		}
 
-        return input;
-    }
+		if (this.disableFiring && input.triggerValue == 0 && (Time() - this.equippedAt) > this.disableFiringSeconds) {
+			this.disableFiring = false;
+		}
+
+		let triggerPose = input.triggerValue * 0.95; // trigger throw
+		this.triggerDown = input.triggerValue === 1.0;
+		if (this.triggerDown) {
+			triggerPose = 1.0; // trigger break
+		}
+
+		this.modelAttachment!.SetPoseParameter("trigger", triggerPose);
+
+		return input;
+	}
 }

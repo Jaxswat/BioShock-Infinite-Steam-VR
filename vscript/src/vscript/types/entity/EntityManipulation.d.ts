@@ -6,13 +6,15 @@ declare function FireEntityIOInputVec(entity: EHandle, inputName: string, value:
 declare function GetHandHoldingEntity(entity: CBaseEntity): CPropVRHand | null;
 declare function GetPlayerFromUserID(userID: number): CBasePlayer | null;
 
+declare function IsValidEntity(entity: CBaseEntity | null): boolean;
+
 declare interface EntitySpawnInfo {
-    targetname: string; // name of entity?
-    model: string;
-    origin: Vector;
-    angles: QAngle;
-    solid: boolean; // collision enabled
-    DefaultAnim?: string
+	targetname: string; // name of entity?
+	model: string;
+	origin: Vector;
+	angles: QAngle;
+	solid: boolean; // collision enabled
+	DefaultAnim?: string
 }
 
 declare function SpawnEntityFromTableSynchronous(className: string, spawnInfo: EntitySpawnInfo & any): CBaseEntity;
@@ -54,42 +56,42 @@ declare const DMG_BLAST_SURFACE = 134217728;
 declare const DMG_DIRECT = 268435456;
 
 declare interface CTakeDamageInfo {
-    AddDamage(addAmount: number): void;
-    AddDamageType(bitsDamageType: number): void;
-    AllowFriendlyFire(): boolean;
-    BaseDamageIsValid(): boolean;
-    CanBeBlocked(): boolean;
-    GetAmmoType(): number;
-    GetAttacker(): CBaseEntity;
-    GetBaseDamage(): number;
-    GetDamage(): number;
-    GetDamageCustom(): number;
-    GetDamageForce(): Vector;
-    GetDamagePosition(): number;
-    GetDamageTaken(): number;
-    GetDamageType(): number;
-    GetInflictor(): CBaseEntity;
-    GetMaxDamage(): number;
-    GetOriginalDamage(): number;
-    GetRadius(): number;
-    GetReportedPosition(): Vector;
-    GetStabilityDamage(): number;
-    ScaleDamage(scaleAmount: number): void;
-    SetAllowFriendlyFire(allow: boolean): void;
-    SetAmmoType(ammoType: number): void;
-    SetAttacker(attacker: CBaseEntity): void;
-    SetCanBeBlocked(block: boolean): void;
-    SetDamage(damage: number): void;
-    SetDamageCustom(damageCustom: number): void;
-    SetDamageForce(damageForce: Vector): void;
-    SetDamagePosition(damagePosition: Vector): void;
-    SetDamageTaken(damageTaken: number): void;
-    SetDamageType(bitsDamageType: number): void;
-    SetMaxDamage(maxDamage: number): void;
-    SetOriginalDamage(originalDamage: number): void;
-    SetRadius(radius: number): void;
-    SetReportedPosition(reportedPosition: Vector): void;
-    SetStabilityDamage(stabilityDamage: number): void;
+	AddDamage(addAmount: number): void;
+	AddDamageType(bitsDamageType: number): void;
+	AllowFriendlyFire(): boolean;
+	BaseDamageIsValid(): boolean;
+	CanBeBlocked(): boolean;
+	GetAmmoType(): number;
+	GetAttacker(): CBaseEntity;
+	GetBaseDamage(): number;
+	GetDamage(): number;
+	GetDamageCustom(): number;
+	GetDamageForce(): Vector;
+	GetDamagePosition(): number;
+	GetDamageTaken(): number;
+	GetDamageType(): number;
+	GetInflictor(): CBaseEntity;
+	GetMaxDamage(): number;
+	GetOriginalDamage(): number;
+	GetRadius(): number;
+	GetReportedPosition(): Vector;
+	GetStabilityDamage(): number;
+	ScaleDamage(scaleAmount: number): void;
+	SetAllowFriendlyFire(allow: boolean): void;
+	SetAmmoType(ammoType: number): void;
+	SetAttacker(attacker: CBaseEntity): void;
+	SetCanBeBlocked(block: boolean): void;
+	SetDamage(damage: number): void;
+	SetDamageCustom(damageCustom: number): void;
+	SetDamageForce(damageForce: Vector): void;
+	SetDamagePosition(damagePosition: Vector): void;
+	SetDamageTaken(damageTaken: number): void;
+	SetDamageType(bitsDamageType: number): void;
+	SetMaxDamage(maxDamage: number): void;
+	SetOriginalDamage(originalDamage: number): void;
+	SetRadius(radius: number): void;
+	SetReportedPosition(reportedPosition: Vector): void;
+	SetStabilityDamage(stabilityDamage: number): void;
 }
 
 

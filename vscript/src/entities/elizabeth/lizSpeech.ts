@@ -18,6 +18,7 @@ export enum LizSpeechTag {
 	Chirp = 9,
 	Body = 10,
 	Oh = 11,
+	GunPoint = 12,
 }
 
 export enum LizSpeechSentiment {

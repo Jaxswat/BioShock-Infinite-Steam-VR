@@ -49,6 +49,7 @@ export default class MoveComponent extends LizComponent {
 
 			const traceStart = Vector(nextPos.x, nextPos.y, entity.GetCenter().z);
 			const floorTrace = new LineTrace(traceStart, subVector(traceStart, Vector(0, 0, 1000)));
+			floorTrace.setIgnoreEntity(entity);
 			const floorTraceResult = floorTrace.run();
 			if (floorTraceResult.hasHit()) {
 				nextPos.z = floorTraceResult.getHitPosition().z;
