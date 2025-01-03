@@ -7,6 +7,7 @@ export enum LizStateName {
 	Throwing = 'throwing',
 	Following = 'following',
 	Choreo = 'choreo',
+	AvoidGun = 'avoid_gun',
 }
 
 /**

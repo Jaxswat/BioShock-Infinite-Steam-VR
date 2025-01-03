@@ -1,0 +1,31 @@
+# Gun point
+
+[booker_careful]
+speech_tag = "gunPoint"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[hey_dont_point_that_at_me]
+speech_tag = "gunPoint"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[point_that_somewhere_else]
+speech_tag = "gunPoint"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[put_that_away]
+speech_tag = "gunPoint"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"
+
+[watch_where_youre_pointing_that]
+speech_tag = "gunPoint"
+speech_type = "speech"
+sentiment = "dislike"
+intensity = "cheerful"

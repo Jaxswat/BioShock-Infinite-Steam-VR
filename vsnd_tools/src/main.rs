@@ -37,6 +37,7 @@ fn create_tag_to_folder_map() -> HashMap<&'static str, &'static str> {
     map.insert("toss", "toss");
     map.insert("chirp", "chirps");
     map.insert("body", "body");
+    map.insert("gunPoint", "gun_point");
     map
 }
 

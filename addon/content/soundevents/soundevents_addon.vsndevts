@@ -216,7 +216,7 @@
 		volume_falloff_max = 800.0
 		vsnd_files = "sounds/elizabeth/liz_humming.vsnd"
 	}
-	
+
 	//////////////////////////////////////////////////////////
 	// Elizabeth - CODE GENERATED CLIPS DATA. DO NOT EDIT.
 	//////////////////////////////////////////////////////////
@@ -1144,6 +1144,61 @@
 		volume_falloff_min = 100
 		volume_falloff_max = 1000
 		vsnd_files = "sounds/elizabeth/greetings/soft_hey.vsnd"
+	}
+	liz_clip_gun_point_booker_careful =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/gun_point/booker_careful.vsnd"
+	}
+	liz_clip_gun_point_hey_dont_point_that_at_me =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/gun_point/hey_dont_point_that_at_me.vsnd"
+	}
+	liz_clip_gun_point_point_that_somewhere_else =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/gun_point/point_that_somewhere_else.vsnd"
+	}
+	liz_clip_gun_point_put_that_away =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/gun_point/put_that_away.vsnd"
+	}
+	liz_clip_gun_point_watch_where_youre_pointing_that =
+	{
+		type = "destinations.simple_vr"
+		volume = 1
+		pitch = 1
+		delay = 0
+		use_hrtf = 1
+		volume_falloff_min = 100
+		volume_falloff_max = 1000
+		vsnd_files = "sounds/elizabeth/gun_point/watch_where_youre_pointing_that.vsnd"
 	}
 	liz_clip_hmms_ahh01 =
 	{
