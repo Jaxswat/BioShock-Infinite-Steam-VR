@@ -159,6 +159,7 @@ class ThrowThrowingState extends ThrowBaseState {
 		const player = this.liz.getPlayer();
 		const playerPos = player.GetHMDAvatar()!.GetAbsOrigin();
 		const playerDirection = subVector(playerPos, throwObject.GetAbsOrigin());
+		this.liz.getLookAt().setTargetEntity(throwObject);
 
 		const velocity = this.getTossVelocity(playerDirection, this.maxThrowSpeed);
 		const throwAngles = VectorToAngles(playerDirection.Normalized());
@@ -291,6 +292,8 @@ class ThrowCanceledState extends ThrowBaseState {
 		// You stole the object before she could throw it, or failed to catch it
 		const clip = getSpeechClip(LizSpeechTag.Oh, LizSpeechSentiment.Dislike, null);
 		this.liz.getSpeech().playClip(clip!);
+
+		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
 	}
 
 	public update(delta: number) {
@@ -331,9 +334,13 @@ export default class ThrowingState extends LizState {
 		this.throwCompleted = false;
 
 		this.throwStateManager.begin(ThrowingStateName.Waiting);
+
+		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
 	}
 
 	public exit(): void {
+		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
+
 		this.throwStateManager.end();
 
 		// Possible early exit, drop it like it's hot

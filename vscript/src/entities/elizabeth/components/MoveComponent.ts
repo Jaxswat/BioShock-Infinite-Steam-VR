@@ -62,7 +62,9 @@ export default class MoveComponent extends LizComponent {
 				this.currentPathIndex++;
 				if (this.currentPathIndex < this.path.length) {
 					this.targetPosition = this.path[this.currentPathIndex];
+					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())));
 				} else {
+					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())));
 					this.stop();
 				}
 			} else {
@@ -102,6 +104,8 @@ export default class MoveComponent extends LizComponent {
 			this.targetPosition = path[0];
 			this.targetSpeed = this.runSpeed;
 
+
+			this.liz.getLookAt().setTargetPosition(addVector(path[0], Vector(0, 0, this.liz.getHeadOffset())));
 			return true;
 		} else {
 			// print("no valid path found.");
@@ -111,6 +115,7 @@ export default class MoveComponent extends LizComponent {
 	}
 
 	public stop(): void {
+		this.liz.getLookAt().setTargetModeEntity(true);
 		this.liz.getEntity().ResetSequence("standing_idle");
 		this.targetSpeed = 0;
 		this.currentSpeed = 0;

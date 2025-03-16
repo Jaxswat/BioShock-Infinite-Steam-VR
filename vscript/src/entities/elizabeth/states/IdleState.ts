@@ -5,14 +5,12 @@ import {getSpeechClip, LizSpeechTag} from "../lizSpeech";
 
 export default class IdleState extends LizState {
     private stateSwitchTimer: Timer;
-    private lookTimer: Timer;
     private greetingTimer: Timer;
     private playedGreeting: boolean;
 
     public constructor(liz: Elizabeth) {
         super(LizStateName.Idle, liz);
         this.stateSwitchTimer = new Timer(5);
-        this.lookTimer = new Timer(0.3);
         this.greetingTimer = new Timer(2);
         this.playedGreeting = false;
     }
@@ -22,22 +20,14 @@ export default class IdleState extends LizState {
         this.stateSwitchTimer.reset();
 
         this.liz.facePlayer();
-        this.liz.getLookAt().setTarget(this.liz.getPlayer().GetHMDAvatar()!.GetAbsOrigin());
-        this.liz.getLookAt().setEnabled(true);
+        this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
     }
 
     public exit(): void {
-        this.liz.getLookAt().setEnabled(false);
     }
 
     public update(delta: number): void {
         this.stateSwitchTimer.tick(delta);
-        this.lookTimer.tick(delta);
-
-        if (this.lookTimer.isDone()) {
-            this.lookTimer.reset();
-            this.liz.getLookAt().setTarget(this.liz.getPlayer().GetHMDAvatar()!.GetAbsOrigin());
-        }
 
         if (!this.playedGreeting) {
             this.greetingTimer.tick(delta);

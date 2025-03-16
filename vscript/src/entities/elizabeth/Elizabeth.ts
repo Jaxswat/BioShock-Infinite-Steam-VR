@@ -180,6 +180,10 @@ export default class Elizabeth extends BioshockEntity implements LizEventHandler
 		return this.entity.GetAbsOrigin();
 	}
 
+	public getHeadOffset(): number {
+		return this.headOffset;
+	}
+
 	public getHeadPosition(): Vector {
 		const pos = this.getPosition();
 		return Vector(pos.x, pos.y, pos.z + this.headOffset);
