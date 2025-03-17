@@ -5,6 +5,8 @@ import {sqrMagnitude} from "../../../utils/Math";
 import { LizGunPointEvent, LizObjectCaughtEvent, LizPlayerReadyEvent } from "../../../events/BioshockEvents";
 import {LizStateManager} from "./LizStateManager";
 import Timer from "../../../utils/Timer";
+import { LookBehavior } from "../components/LookAtComponent";
+import { LizEmotionalState } from "../components/EmotionComponent";
 
 enum ThrowingStateName {
 	Waiting = 'waiting',
@@ -67,6 +69,8 @@ class ThrowWaitingState extends ThrowBaseState {
 		this.liz.getSpeech().queueClip(clip!);
 
 		this.liz.facePlayer();
+		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar(), LookBehavior.TRACKING);
+		this.liz.getEmotion().setEmotionalState(LizEmotionalState.FOCUSED, this.throwTimeoutSeconds);
 	}
 
 	public update(delta: number): void {
@@ -159,7 +163,8 @@ class ThrowThrowingState extends ThrowBaseState {
 		const player = this.liz.getPlayer();
 		const playerPos = player.GetHMDAvatar()!.GetAbsOrigin();
 		const playerDirection = subVector(playerPos, throwObject.GetAbsOrigin());
-		this.liz.getLookAt().setTargetEntity(throwObject);
+		this.liz.getLookAt().setTargetEntity(throwObject, LookBehavior.TRACKING);
+		this.liz.getEmotion().setEmotionalState(LizEmotionalState.FOCUSED);
 
 		const velocity = this.getTossVelocity(playerDirection, this.maxThrowSpeed);
 		const throwAngles = VectorToAngles(playerDirection.Normalized());
@@ -293,7 +298,7 @@ class ThrowCanceledState extends ThrowBaseState {
 		const clip = getSpeechClip(LizSpeechTag.Oh, LizSpeechSentiment.Dislike, null);
 		this.liz.getSpeech().playClip(clip!);
 
-		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
+		this.liz.getEmotion().setEmotionalState(LizEmotionalState.TIRED, 5);
 	}
 
 	public update(delta: number) {
@@ -334,13 +339,9 @@ export default class ThrowingState extends LizState {
 		this.throwCompleted = false;
 
 		this.throwStateManager.begin(ThrowingStateName.Waiting);
-
-		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
 	}
 
 	public exit(): void {
-		this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
-
 		this.throwStateManager.end();
 
 		// Possible early exit, drop it like it's hot

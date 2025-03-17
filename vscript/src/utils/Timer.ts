@@ -35,15 +35,23 @@ export default class Timer {
     /**
      * Resets the timer to 0 and sets done to false
      */
-    public reset(){
+    public reset() {
         this.time = 0;
         this.done = false;
     }
 
     /**
+     * Alias for calling setWaitSeconds() and reset()
+     */
+    public resetWithWaitSeconds(waitSeconds: number) {
+        this.setWaitSeconds(waitSeconds);
+        this.reset();
+    }
+
+    /**
      * Resets the timer to 0, does not reset done status
      */
-    public resetTime(){
+    public resetTime() {
         this.time = 0;
     }
 
@@ -51,7 +59,7 @@ export default class Timer {
         return this.waitSeconds;
     }
 
-    public setWaitSeconds(waitSeconds: number){
+    public setWaitSeconds(waitSeconds: number) {
         this.waitSeconds = waitSeconds;
     }
 }

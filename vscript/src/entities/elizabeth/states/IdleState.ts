@@ -2,6 +2,7 @@ import {LizState, LizStateName} from "./LizState";
 import Elizabeth from "../Elizabeth";
 import Timer from "../../../utils/Timer";
 import {getSpeechClip, LizSpeechTag} from "../lizSpeech";
+import { LookBehavior } from "../components/LookAtComponent";
 
 export default class IdleState extends LizState {
     private stateSwitchTimer: Timer;
@@ -20,7 +21,7 @@ export default class IdleState extends LizState {
         this.stateSwitchTimer.reset();
 
         this.liz.facePlayer();
-        this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar());
+        this.liz.getLookAt().setTargetEntity(this.liz.getPlayer().GetHMDAvatar(), LookBehavior.TRACKING);
     }
 
     public exit(): void {

@@ -2,6 +2,7 @@ import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
 import {LineTrace} from "../../../utils/Trace";
 import {findPath} from "../../../navigation/PathFinding";
+import { LookBehavior } from "./LookAtComponent";
 
 export default class MoveComponent extends LizComponent {
 	private readonly stepSpeed: number = 5;
@@ -62,9 +63,9 @@ export default class MoveComponent extends LizComponent {
 				this.currentPathIndex++;
 				if (this.currentPathIndex < this.path.length) {
 					this.targetPosition = this.path[this.currentPathIndex];
-					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())));
+					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())), LookBehavior.NATURAL);
 				} else {
-					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())));
+					this.liz.getLookAt().setTargetPosition(addVector(this.targetPosition, Vector(0, 0, this.liz.getHeadOffset())), LookBehavior.NATURAL);
 					this.stop();
 				}
 			} else {
@@ -105,7 +106,7 @@ export default class MoveComponent extends LizComponent {
 			this.targetSpeed = this.runSpeed;
 
 
-			this.liz.getLookAt().setTargetPosition(addVector(path[0], Vector(0, 0, this.liz.getHeadOffset())));
+			this.liz.getLookAt().setTargetPosition(addVector(path[0], Vector(0, 0, this.liz.getHeadOffset())), LookBehavior.NATURAL);
 			return true;
 		} else {
 			// print("no valid path found.");

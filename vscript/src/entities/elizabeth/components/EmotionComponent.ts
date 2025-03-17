@@ -1,58 +1,87 @@
 import LizComponent from "./LizComponent";
 import Elizabeth from "../Elizabeth";
-import {LizSpeechType} from "../lizSpeech";
+import Timer from "../../../utils/Timer";
 
-class BlinkingAnimation {
-
+export class BlinkingAnimation {
     // durations/intervals in seconds
     private blinkDurationMin: number;
     private blinkDurationMax: number;
     private blinkIntervalMin: number;
     private blinkIntervalMax: number;
-
     private blinkTimer: number;
     private blinkPercentage: number;
     private isBlinking: boolean;
     private currentBlinkDuration: number;
     private currentBlinkInterval: number;
-
+    
+    private emotionalState: LizEmotionalState;
+    private readonly EMOTION_MULTIPLIERS = {
+        [LizEmotionalState.NEUTRAL]: 1.0,
+        [LizEmotionalState.ALERT]: 0.7,  
+        [LizEmotionalState.TIRED]: 1.5,    
+        [LizEmotionalState.STRESSED]: 1.3, 
+        [LizEmotionalState.FOCUSED]: 0.8   
+    };
+    
     public constructor() {
         this.blinkDurationMin = 0.1;
         this.blinkDurationMax = 0.4;
-        this.blinkIntervalMin = 2;
-        this.blinkIntervalMax = 8;
+        this.blinkIntervalMin = 2.5;  
+        this.blinkIntervalMax = 7.0;  
         this.blinkTimer = 0;
         this.blinkPercentage = 0;
         this.isBlinking = false;
         this.currentBlinkDuration = 0;
         this.currentBlinkInterval = this.getRandomBlinkInterval();
+        this.emotionalState = LizEmotionalState.NEUTRAL;
     }
-
+    
     public update(delta: number): number {
         this.blinkTimer += delta;
-
         if (!this.isBlinking && this.blinkTimer >= this.currentBlinkInterval) {
             this.startBlink();
         }
-
         if (this.isBlinking) {
             this.updateBlinkPercentage(delta);
         }
-
         return this.blinkPercentage;
     }
-
-    private startBlink(): void {
+    
+    public startBlink(): void {
+        if (this.isBlinking) {
+            return;
+        }
+        
         this.isBlinking = true;
         this.blinkTimer = 0;
         this.blinkPercentage = 0;
         this.currentBlinkDuration = this.getRandomBlinkDuration();
         this.currentBlinkInterval = this.getRandomBlinkInterval();
     }
-
+    
+    public triggerBlink(force: boolean = false, probability: number = 0.3): boolean {
+        if (this.isBlinking) {
+            return false;
+        }
+        
+        if (force || Math.random() < probability) {
+            this.startBlink();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public setEmotionalState(state: LizEmotionalState): void {
+        this.emotionalState = state;
+    }
+    
+    public getEmotionalState(): LizEmotionalState {
+        return this.emotionalState;
+    }
+    
     private updateBlinkPercentage(delta: number): void {
         const halfDuration = this.currentBlinkDuration / 2;
-
         if (this.blinkTimer < halfDuration) {
             // Eyelids closing
             this.blinkPercentage = this.blinkTimer / halfDuration;
@@ -65,50 +94,76 @@ class BlinkingAnimation {
             this.blinkPercentage = 0;
         }
     }
-
+    
     private getRandomBlinkDuration(): number {
         return Math.random() * (this.blinkDurationMax - this.blinkDurationMin) + this.blinkDurationMin;
     }
-
+    
     private getRandomBlinkInterval(): number {
-        return Math.random() * (this.blinkIntervalMax - this.blinkIntervalMin) + this.blinkIntervalMin;
+        const multiplier = this.EMOTION_MULTIPLIERS[this.emotionalState] || 1.0;
+        const interval = Math.random() * (this.blinkIntervalMax - this.blinkIntervalMin) + this.blinkIntervalMin;
+        return interval * multiplier;
+    }
+    
+    public isCurrentlyBlinking(): boolean {
+        return this.isBlinking;
+    }
+    
+    public getBlinkPercentage(): number {
+        return this.blinkPercentage;
     }
 }
 
+export enum LizEmotionalState {
+    NEUTRAL = 0,
+    ALERT = 1,
+    TIRED = 2,
+    STRESSED = 3,
+    FOCUSED = 4
+}
+
 export default class EmotionComponent extends LizComponent {
-    private addSmile: boolean;
     private smile: number;
 
     private blinkingAnimation: BlinkingAnimation;
-
+    private currentEmotionalState: LizEmotionalState;
+    private emotionTimer: Timer;
+    
     public constructor(liz: Elizabeth) {
         super(liz);
-
-        this.addSmile = true;
         this.smile = 0;
         this.blinkingAnimation = new BlinkingAnimation();
+        this.currentEmotionalState = LizEmotionalState.NEUTRAL;
+        this.emotionTimer = new Timer(0);
     }
-
-    public update(delta: number) {
+    
+    public getBlinkingAnimation(): BlinkingAnimation {
+        return this.blinkingAnimation;
     }
-
+    
+    public setEmotionalState(state: LizEmotionalState, duration: number = 0): void {
+        this.currentEmotionalState = state;
+        this.blinkingAnimation.setEmotionalState(state);
+        
+        if (duration > 0) {
+            this.emotionTimer.resetWithWaitSeconds(duration);
+        }
+    }
+    
+    public update(delta: number) { 
+        if (this.currentEmotionalState !== LizEmotionalState.NEUTRAL) {
+            this.emotionTimer.tick(delta);
+            
+            if (this.emotionTimer.isDone()) {
+                this.setEmotionalState(LizEmotionalState.NEUTRAL);
+            }
+        }
+    }
+    
     public updatePose(delta: number): void {
         const blink = this.blinkingAnimation.update(delta);
-
-        // if (this.smile >= 1) {
-        //     this.addSmile = false;
-        // } else if (this.smile <= 0){
-        //     this.addSmile = true;
-        // }
-
-        // if (this.addSmile) {
-        //     this.smile += 0.002
-        // } else {
-        //     this.smile -= 0.002
-        // }
-
-        // this.liz.getEntity().SetPoseParameter("face_smile", this.smile);
         this.liz.getEntity().SetPoseParameter("face_blink", blink);
+        this.liz.getEntity().SetPoseParameter("face_smile", this.smile);
     }
 
     /**
