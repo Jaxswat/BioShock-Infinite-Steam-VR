@@ -41,6 +41,7 @@ export default class ChoreoState extends LizState {
     }
 
     public exit(): void {
+        this.liz.getEmotion().setSmile(0.0);
     }
 
     public update(delta: number): void {
