@@ -10,7 +10,6 @@ export default class BioshockPlayer extends BioshockEntity {
 	private name: string;
 	private userID: number;
 
-	private weaponCheckTimer: Timer;
 	private lizReadyTimer: Timer;
 	private lizReadyClicks: number;
 
@@ -22,7 +21,6 @@ export default class BioshockPlayer extends BioshockEntity {
 		this.name = this.connectEvent.name;
 		this.userID = this.connectEvent.userid
 
-		this.weaponCheckTimer = new Timer(0.2);
 		this.lizReadyTimer = new Timer(0.75);
 		this.lizReadyClicks = 0;
 	}
@@ -96,36 +94,5 @@ export default class BioshockPlayer extends BioshockEntity {
 			this.lizReadyTimer.reset();
 			this.lizReadyClicks = 0;
 		}
-
-		this.weaponCheckTimer.tick(delta);
-		if (this.weaponCheckTimer.isDone()) {
-			this.weaponCheckTimer.reset();
-
-			// const leftTool = this.getToolInHand(0);
-			const tool = this.getToolInHand(1);
-			if (tool !== null) {
-				// const hand = this.entity!.GetHMDAvatar()!.GetVRHand(1)?.GetHandAttachment();
-				const target: CBaseEntity = tool;
-				const origin = target.GetAbsOrigin();
-				const forwardVector = target.GetForwardVector();
-				const upVector = target.GetUpVector();
-				const rightVector = target.GetRightVector();
-				const forwardEndPoint = addVector(origin, mulVector(forwardVector, 5 as Vector));
-				const upEndPoint = addVector(origin, mulVector(upVector, 5 as Vector));
-				const rightEndPoint = addVector(origin, mulVector(rightVector, 5 as Vector));
-				DebugDrawLine(origin, forwardEndPoint, 255, 0, 0, false, 0.2);
-				DebugDrawLine(origin, upEndPoint, 0, 0, 255, false, 0.2);
-				DebugDrawLine(origin, rightEndPoint, 0, 255, 0, false, 0.2);
-			}
-		}
-	}
-
-	private getToolInHand(handID: number): CDestinationsPropTool | null {
-		const hand = this.getEntity().GetHMDAvatar()!.GetVRHand(handID);
-		if (hand === null) {
-			return null;
-		}
-
-		return hand.GetChildren()?.find(e => e.GetClassname() === "steamTours_item_tool") as CDestinationsPropTool || null;
 	}
 }
